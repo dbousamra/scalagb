@@ -6,7 +6,13 @@ class Cpu {
   
 }
 
-class MemoryManager {
+class MemoryManager (romFileName : String) {
+  
+  val rom 			= loadRom(romFileName)
+  val bios			= new Array[Byte](256)
+  val workingRam 	= new Array[Byte](8192)
+  val externalRam 	= new Array[Byte](8192)
+  val zeroPageRam 	= new Array[Byte](128)
   
   def loadRom(filename: String) : Array[Byte] = {
     val is = new FileInputStream(filename)
