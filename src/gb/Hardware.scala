@@ -8,6 +8,8 @@ class Cpu {
 
 class MemoryManager (romFileName : String) {
   
+  val inBios = false
+  
   val rom 			= loadRom(romFileName)
   val bios			= new Array[Byte](256)
   val workingRam 	= new Array[Byte](8192)
@@ -17,6 +19,16 @@ class MemoryManager (romFileName : String) {
   def loadRom(filename: String) : Array[Byte] = {
     val is = new FileInputStream(filename)
     Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
+  }
+  
+  def readByte(address : Byte) = address & 0xF000 match {
+	case 0x0000 if inBios => address match {
+	  case address if address < 0x0100 => bios(address)
+	  case address if 
+	}
+//    case 0x20 if (f & 0x20) != 0 => true
+//    case 0x10 if (f & 0x10) != 0 => true
+//    
   }
   
 }
