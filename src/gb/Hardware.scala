@@ -1,12 +1,28 @@
 package gb
-import scala.collection.mutable.BitSet
+import java.io._
+
+class Cpu {
+  var Register : Registers = new Registers()
+  
+}
+
+class MemoryManager {
+  
+  def loadRom(filename: String) : Array[Byte] = {
+    val is = new FileInputStream(filename)
+    Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
+  }
+  
+}
+
 
 class Registers {
   
+  type Byte = Int
   var a, b, c, d, e, h, l, f : Int = 0
   
-  var instructionPointer : BitSet = BitSet()
-  var stackPointer : BitSet = BitSet()
+  var instructionPointer : Byte = 0
+  var stackPointer : Byte = 0
   
   var mClock, tClock : Int = 0
   
@@ -17,7 +33,7 @@ class Registers {
     case 0x10 if (f & 0x10) != 0 => true
   }
 
-  def setFlag2(flag : Int) = flag match {
+  def setFlag(flag : Int) = flag match {
     case 0x80 => f |= 0x80
     case 0x40 => f |= 0x40
     case 0x20 => f |= 0x20
