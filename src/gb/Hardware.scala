@@ -8,7 +8,7 @@ class Cpu {
 
 class MemoryManager (romFileName : String) {
   
-  val inBios = false
+  var inBios = false
   
   val rom 			= loadRom(romFileName)
   val bios			= new Array[Byte](256)
@@ -21,14 +21,29 @@ class MemoryManager (romFileName : String) {
     Stream.continually(is.read).takeWhile(-1 !=).map(_.toByte).toArray
   }
   
-  def readByte(address : Byte) = address & 0xF000 match {
-	case 0x0000 if inBios => address match {
-	  case address if address < 0x0100 => bios(address)
-	  case address if 
-	}
-//    case 0x20 if (f & 0x20) != 0 => true
-//    case 0x10 if (f & 0x10) != 0 => true
-//    
+  def readByte(address : Int) = address & 0xF000 match {
+    case 0x0000 if inBios && address < 0x0100 => bios(address)
+    case 0x0000 if inBios && 1 > 2 => inBios = false
+    case 0x0000 => rom(address)
+    
+    case 0x1000 | 0x2000 | 0x3000 => rom(address)
+    
+    case 0x4000 | 0x5000 | 0x6000 | 0x7000 => rom(address)
+    
+    //TODO: GPU ram stuff
+    case 0x8000 | 0x9000 => 1
+    
+    case 0xA000 | 0xB000 => externalRam(address & 0x1FFF)
+    case 0xC000 | 0xD000 => workingRam(address & 0x1FFF)
+    
+    case 0xE000 => workingRam(address & 0x1FFF)
+    
+    case 0xF00 => handleWorkingRamShadow(address)
+    
+  }
+  
+  def handleWorkingRamShadow(address: Int) = {
+    
   }
   
 }
