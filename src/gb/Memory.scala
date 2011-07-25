@@ -16,7 +16,7 @@ class Memory (romFilename : String) {
     Stream.continually(is.read).takeWhile(-1 !=).toArray
   }
   
-  def readByte8(address : Int, cpu : Cpu) : Int = address & 0xF000 match {
+  def readByte8(cpu : Cpu, address : Int) : Int = address & 0xF000 match {
     case 0x0000 if inBios && address < 0x0100 => bios(address)
     case 0x0000 if inBios && cpu.registers.pc == 0x0100 => inBios = false; rom(address)
     case 0x0000 => rom(address)   
@@ -32,21 +32,21 @@ class Memory (romFilename : String) {
   
    //Helper function that just reads next Int and concatenates them.
   //eg. Int 1 = 0x4f and Int 2 = 0x13 would give 0x134f
-  def readByte16(address : Int, cpu : Cpu) : Int = {
-    (readByte8(address, cpu) + (readByte8(address+1, cpu) << 8))
+  def readByte16(cpu : Cpu, address : Int) : Int = {
+    (readByte8(cpu, address) + (readByte8(cpu, address+1) << 8))
   }
   
   
-  def writeByte8(address : Int, cpu : Cpu, value: Int) = address & 0xF000 match {
+  def writeByte8(cpu : Cpu, address : Int, value: Int) = address & 0xF000 match {
     case 0x8000 | 0x9000 => 1
     case 0xA000 | 0xB000 => externalRam(address & 0x1FFF) = value
     case 0xC000 | 0xD000 | 0xE000 => workingRam(address & 0x1FFF) = value  
     case 0xF000 => handleWramShadowWrite(address, value)
   }
   
-  def writeByte16(address : Int, cpu : Cpu, value : Int) = {
-    writeByte8(address, cpu, value & 255)
-    writeByte8(address + 1, cpu, value >> 8)
+  def writeByte16(cpu : Cpu, address : Int, value : Int) = {
+    writeByte8(cpu, address, value & 255)
+    writeByte8(cpu, address + 1, value >> 8)
   }
   
   def handleWramShadowRead(address: Int) : Int = address & 0x0F00 match{

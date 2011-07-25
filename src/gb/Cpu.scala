@@ -14,7 +14,7 @@ class Cpu(romFilename : String) {
   
   def run() = {
     while (true) {
-	    val opcode = memory.readByte8(registers.pc, this)
+	    val opcode = memory.readByte8(this, registers.pc)
 	    registers.pc = (registers.pc + 1) & 0xFFFF //prevent overflow
 	    opcodes.execute(opcode, this)
 	    if (DEBUG_MODE) {
