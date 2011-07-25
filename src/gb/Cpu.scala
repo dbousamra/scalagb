@@ -24,13 +24,13 @@ class Cpu(romFilename : String) {
   }
   
   def debugTraces(opcode : Int) = {
-    "PC = " + registers.pc + " Just executed=" + opcode + " \tSP=" + registers.sp + 
-        " A=" + registers.a + 
-        " B=" + registers.b + 
-        " C=" + registers.c +
-        " D=" + registers.d + 
-        " E=" + registers.e +
-        " H=" + registers.h + 
+    "PC = " + registers.pc.toHexString + " Just executed=" + opcode.toHexString + " \tSP=" + registers.sp.toHexString + 
+        " A=" + registers.a.toHexString + 
+        " B=" + registers.b.toHexString + 
+        " C=" + registers.c.toHexString +
+        " D=" + registers.d.toHexString + 
+        " E=" + registers.e.toHexString +
+        " H=" + registers.h.toHexString + 
         " F=" + registers.f.toBinaryString
   }
   
