@@ -1597,7 +1597,146 @@ class Opcodes() {
     cpu.registers.lastInstrClockm = 2
   }
 
+def INCr_b(opcode: Int, cpu: Cpu) = {
+cpu.registers.b += 1
+ cpu.registers.b &= 255
+ if (cpu.registers.b != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ if (cpu.registers.b != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_c(opcode: Int, cpu: Cpu) = {
+cpu.registers.c += 1
+ cpu.registers.c &= 255
+ if (cpu.registers.c != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_d(opcode: Int, cpu: Cpu) = {
+cpu.registers.d += 1
+ cpu.registers.d &= 255
+ if (cpu.registers.d != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_e(opcode: Int, cpu: Cpu) = {
+cpu.registers.e += 1
+ cpu.registers.e &= 255
+ if (cpu.registers.e != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_h(opcode: Int, cpu: Cpu) = {
+cpu.registers.h += 1
+ cpu.registers.h &= 255
+ if (cpu.registers.h != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_l(opcode: Int, cpu: Cpu) = {
+cpu.registers.l += 1
+ cpu.registers.l &= 255
+ if (cpu.registers.l != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCr_a(opcode: Int, cpu: Cpu) = {
+cpu.registers.a += 1
+ cpu.registers.a &= 255
+ if (cpu.registers.f != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def INCHLm(opcode: Int, cpu: Cpu) = {
+var i=cpu.memory.readByte8(cpu, (cpu.registers.h<<8)+cpu.registers.l)+1
+ i &= 255
+ cpu.memory.writeByte8(cpu, (cpu.registers.h<<8)+cpu.registers.l, i)
+ if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=3
+}
 
+def DECr_b(opcode: Int, cpu: Cpu) = {
+cpu.registers.b -= 1
+ cpu.registers.b &= 255
+ if (cpu.registers.b != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_c(opcode: Int, cpu: Cpu) = {
+cpu.registers.c -= 1
+ cpu.registers.c &= 255
+ if (cpu.registers.c != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_d(opcode: Int, cpu: Cpu) = {
+cpu.registers.d -= 1
+ cpu.registers.d &= 255
+ if (cpu.registers.d != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_e(opcode: Int, cpu: Cpu) = {
+cpu.registers.e -= 1
+ cpu.registers.e &= 255
+ if (cpu.registers.e != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_h(opcode: Int, cpu: Cpu) = {
+cpu.registers.h -= 1
+ cpu.registers.h &= 255
+ if (cpu.registers.h != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_l(opcode: Int, cpu: Cpu) = {
+cpu.registers.l -= 1
+ cpu.registers.l &= 255
+ if (cpu.registers.l != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECr_a(opcode: Int, cpu: Cpu) = {
+cpu.registers.a -= 1
+ cpu.registers.a &= 255
+ if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=1
+}
+def DECHLm(opcode: Int, cpu: Cpu) = {
+var i=cpu.memory.readByte8(cpu, (cpu.registers.h<<8)+cpu.registers.l)-1
+ i &= 255
+ cpu.memory.writeByte8(cpu, (cpu.registers.h<<8)+cpu.registers.l, i)
+ if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+ cpu.registers.lastInstrClockm=3
+}
+
+def INCBC(opcode: Int, cpu: Cpu) = {
+cpu.registers.c=(cpu.registers.c+1)&255
+ if(cpu.registers.c != 0) cpu.registers.b=(cpu.registers.b+1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def INCDE(opcode: Int, cpu: Cpu) = {
+cpu.registers.e=(cpu.registers.e+1)&255
+ if(cpu.registers.e != 0) cpu.registers.d=(cpu.registers.d+1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def INCHL(opcode: Int, cpu: Cpu) = {
+cpu.registers.l=(cpu.registers.l+1)&255
+ if(cpu.registers.l != 0) cpu.registers.h=(cpu.registers.h+1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def INCSP(opcode: Int, cpu: Cpu) = {
+cpu.registers.sp=(cpu.registers.sp+1)&65535
+ cpu.registers.lastInstrClockm=1
+}
+
+def DECBC(opcode: Int, cpu: Cpu) = {
+cpu.registers.c=(cpu.registers.c-1)&255
+ if(cpu.registers.c==255) cpu.registers.b=(cpu.registers.b-1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def DECDE(opcode: Int, cpu: Cpu) = {
+cpu.registers.e=(cpu.registers.e-1)&255
+ if(cpu.registers.e==255) cpu.registers.d=(cpu.registers.d-1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def DECHL(opcode: Int, cpu: Cpu) = {
+cpu.registers.l=(cpu.registers.l-1)&255
+ if(cpu.registers.l==255) cpu.registers.h=(cpu.registers.h-1)&255
+ cpu.registers.lastInstrClockm=1
+}
+def DECSP(opcode: Int, cpu: Cpu) = {
+cpu.registers.sp=(cpu.registers.sp-1)&65535
+ cpu.registers.lastInstrClockm=1
+}
   
 //  //TODO
 //  def JP_NN_C3(opcode: Int, cpu: Cpu) = {
