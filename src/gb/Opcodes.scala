@@ -132,38 +132,38 @@ class Opcodes() {
     case 0x7d => LDrr_al(opcode, cpu)
     case 0x7e => LDrHLm_a(opcode, cpu)
     case 0x7f => LDrr_aa(opcode, cpu)
-//    case 0x80 => ADDr_b(opcode, cpu)
-//    case 0x81 => ADDr_c(opcode, cpu)
-//    case 0x82 => ADDr_d(opcode, cpu)
-//    case 0x83 => ADDr_e(opcode, cpu)
-//    case 0x84 => ADDr_h(opcode, cpu)
-//    case 0x85 => ADDr_l(opcode, cpu)
-//    case 0x86 => ADDHL(opcode, cpu)
-//    case 0x87 => ADDr_a(opcode, cpu)
-//    case 0x88 => ADCr_b(opcode, cpu)
-//    case 0x89 => ADCr_c(opcode, cpu)
-//    case 0x8a => ADCr_d(opcode, cpu)
-//    case 0x8b => ADCr_e(opcode, cpu)
-//    case 0x8c => ADCr_h(opcode, cpu)
-//    case 0x8d => ADCr_l(opcode, cpu)
-//    case 0x8e => ADCHL(opcode, cpu)
-//    case 0x8f => ADCr_a(opcode, cpu)
-//    case 0x90 => SUBr_b(opcode, cpu)
-//    case 0x91 => SUBr_c(opcode, cpu)
-//    case 0x92 => SUBr_d(opcode, cpu)
-//    case 0x93 => SUBr_e(opcode, cpu)
-//    case 0x94 => SUBr_h(opcode, cpu)
-//    case 0x95 => SUBr_l(opcode, cpu)
-//    case 0x96 => SUBHL(opcode, cpu)
-//    case 0x97 => SUBr_a(opcode, cpu)
-//    case 0x98 => SBCr_b(opcode, cpu)
-//    case 0x99 => SBCr_c(opcode, cpu)
-//    case 0x9a => SBCr_d(opcode, cpu)
-//    case 0x9b => SBCr_e(opcode, cpu)
-//    case 0x9c => SBCr_h(opcode, cpu)
-//    case 0x9d => SBCr_l(opcode, cpu)
-//    case 0x9e => SBCHL(opcode, cpu)
-//    case 0x9f => SBCr_a(opcode, cpu)
+    case 0x80 => ADDr_b(opcode, cpu)
+    case 0x81 => ADDr_c(opcode, cpu)
+    case 0x82 => ADDr_d(opcode, cpu)
+    case 0x83 => ADDr_e(opcode, cpu)
+    case 0x84 => ADDr_h(opcode, cpu)
+    case 0x85 => ADDr_l(opcode, cpu)
+    case 0x86 => ADDHL(opcode, cpu)
+    case 0x87 => ADDr_a(opcode, cpu)
+    case 0x88 => ADCr_b(opcode, cpu)
+    case 0x89 => ADCr_c(opcode, cpu)
+    case 0x8a => ADCr_d(opcode, cpu)
+    case 0x8b => ADCr_e(opcode, cpu)
+    case 0x8c => ADCr_h(opcode, cpu)
+    case 0x8d => ADCr_l(opcode, cpu)
+    case 0x8e => ADCHL(opcode, cpu)
+    case 0x8f => ADCr_a(opcode, cpu)
+    case 0x90 => SUBr_b(opcode, cpu)
+    case 0x91 => SUBr_c(opcode, cpu)
+    case 0x92 => SUBr_d(opcode, cpu)
+    case 0x93 => SUBr_e(opcode, cpu)
+    case 0x94 => SUBr_h(opcode, cpu)
+    case 0x95 => SUBr_l(opcode, cpu)
+    case 0x96 => SUBHL(opcode, cpu)
+    case 0x97 => SUBr_a(opcode, cpu)
+    case 0x98 => SBCr_b(opcode, cpu)
+    case 0x99 => SBCr_c(opcode, cpu)
+    case 0x9a => SBCr_d(opcode, cpu)
+    case 0x9b => SBCr_e(opcode, cpu)
+    case 0x9c => SBCr_h(opcode, cpu)
+    case 0x9d => SBCr_l(opcode, cpu)
+    case 0x9e => SBCHL(opcode, cpu)
+    case 0x9f => SBCr_a(opcode, cpu)
 //    case 0xa0 => ANDr_b(opcode, cpu)
 //    case 0xa1 => ANDr_c(opcode, cpu)
 //    case 0xa2 => ANDr_d(opcode, cpu)
@@ -188,14 +188,14 @@ class Opcodes() {
 //    case 0xb5 => ORr_l(opcode, cpu)
 //    case 0xb6 => ORHL(opcode, cpu)
 //    case 0xb7 => ORr_a(opcode, cpu)
-//    case 0xb8 => CPr_b(opcode, cpu)
-//    case 0xb9 => CPr_c(opcode, cpu)
-//    case 0xba => CPr_d(opcode, cpu)
-//    case 0xbb => CPr_e(opcode, cpu)
-//    case 0xbc => CPr_h(opcode, cpu)
-//    case 0xbd => CPr_l(opcode, cpu)
-//    case 0xbe => CPHL(opcode, cpu)
-//    case 0xbf => CPr_a(opcode, cpu)
+    case 0xb8 => CPr_b(opcode, cpu)
+    case 0xb9 => CPr_c(opcode, cpu)
+    case 0xba => CPr_d(opcode, cpu)
+    case 0xbb => CPr_e(opcode, cpu)
+    case 0xbc => CPr_h(opcode, cpu)
+    case 0xbd => CPr_l(opcode, cpu)
+    case 0xbe => CPHL(opcode, cpu)
+    case 0xbf => CPr_a(opcode, cpu)
 //    case 0xc0 => RETNZ(opcode, cpu)
 //    case 0xc1 => POPBC(opcode, cpu)
 //    case 0xc2 => JPNZnn(opcode, cpu)
@@ -1404,11 +1404,200 @@ class Opcodes() {
 	  cpu.registers.lastInstrClockm = 1
   }
 
+  def ANDr_b(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.b
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
 
-  
-  
-  
-  
+  def ANDr_c(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.c
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDr_d(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.d
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDr_e(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.e
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDr_h(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.h
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDr_l(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.l
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDr_a(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.registers.a
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ANDHL(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+  def ANDn(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a &= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.pc += 1
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+  def ORr_b(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.b
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_c(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.c
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_d(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.d
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_e(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.e
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_h(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.h
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_l(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.l
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORr_a(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.registers.a
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def ORHL(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+  def ORn(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a |= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.pc += 1
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+  def XORr_b(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.b
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_c(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.c
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_d(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.d
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_e(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.e
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_h(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.h
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_l(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.l
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORr_a(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.registers.a
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 1
+  }
+
+  def XORHL(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+  def XORn(opcode: Int, cpu: Cpu) = {
+    cpu.registers.a ^= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.pc += 1
+    cpu.registers.a &= 255
+    if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
+    cpu.registers.lastInstrClockm = 2
+  }
+
+
   
 //  //TODO
 //  def JP_NN_C3(opcode: Int, cpu: Cpu) = {
