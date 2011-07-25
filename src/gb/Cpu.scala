@@ -2,8 +2,9 @@ package gb
 
 class Cpu(romFilename : String) {
   
-  var registers : Registers = new Registers()
   var memory : Memory = new Memory(romFilename)
+  var registers : Registers = new Registers()
+  var opcodes: Opcodes = new Opcodes()
   
   def reset() = {
     registers.resetRegisters()
@@ -11,16 +12,10 @@ class Cpu(romFilename : String) {
   
   def run() = {
     while (true) {
-    val opcode = memory.readByte8(registers.pc + 1, this)
-    //perform instruction
-    //prevent overrun of memory - not sure if needed on GB. Might have to be ron size not 0xFFFF
-    registers.pc &= 0xFFFF
-    registers.clockM += registers.lastInstrClockm
-    registers.clockT += registers.lastInstrClockt
-    registers.pc += 1
-    println(registers.pc)
-    println(opcode)
-    }
+	    val opcode = memory.readByte8(registers.pc, this)
+	    registers.pc = (registers.pc + 1) & 0xFFFF //prevent overflow
+	    opcodes.execute(opcode, this)
+	    }
     
   }
   
