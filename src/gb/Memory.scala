@@ -68,6 +68,7 @@ class Memory (romFilename : String) {
     case 0xE00 if (address & 0xFF) < 0xA0 => 1
     case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
     case 0xF00 => println("In GPUWramShadowWrite"); handleGPUWramShadowWrite(address & 0xF0, value)
+    case _ => println("In handleWramShadowWrite - couldn't find match")
    
   }
   
