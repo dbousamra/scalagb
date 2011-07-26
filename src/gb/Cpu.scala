@@ -32,6 +32,6 @@ class Cpu(romFilename : String) {
         " E=" + registers.e.toHexString +
         " H=" + registers.h.toHexString + 
         " F=" + registers.f.toBinaryString
-  }
+  }	
   
 }

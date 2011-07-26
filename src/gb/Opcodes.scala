@@ -12,7 +12,7 @@ class Opcodes() {
     case 0x5 => DECr_b(opcode, cpu)
     case 0x6 => LDrn_b(opcode, cpu)
     case 0x7 => RLCA(opcode, cpu)
-    //case 0x8 => LDmmSP(opcode, cpu)
+    case 0x8 => LDmmSP(opcode, cpu)
     case 0x9 => ADDHLBC(opcode, cpu)
     case 0xa => LDABCm(opcode, cpu)
     case 0xb => DECBC(opcode, cpu)
@@ -573,6 +573,8 @@ class Opcodes() {
     cpu.registers.b = cpu.registers.l;
     cpu.registers.lastInstrClockm = 1
   }
+  
+  
 
   def LDrr_ba(opcode: Int, cpu: Cpu) = {
     cpu.registers.b = cpu.registers.a;
@@ -659,6 +661,8 @@ class Opcodes() {
     cpu.registers.lastInstrClockm = 1
   }
 
+  
+  
   def LDrr_ed(opcode: Int, cpu: Cpu) = {
     cpu.registers.e = cpu.registers.d;
     cpu.registers.lastInstrClockm = 1
@@ -922,6 +926,14 @@ class Opcodes() {
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 4
   }
+  
+  //TODO: PROBABLY INCORRECT
+  def LDmmSP(opcode : Int, cpu: Cpu) = {
+    cpu.memory.writeByte8(cpu, cpu.memory.readByte16(cpu, cpu.registers.pc), cpu.registers.sp)
+    cpu.registers.pc += 2
+    cpu.registers.lastInstrClockm = 4
+  }
+  
 
   def LDABCm(opcode: Int, cpu: Cpu) = {
     cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.b << 8) + cpu.registers.c)
