@@ -6,11 +6,14 @@ class Registers {
   
   var clockT, clockM : Int = 0
   var a, b, c, d, e, h, l, f : Int = 0
+  var reserve_a, reserve_b, reserve_c : Int = 0
+  var reserve_d, reserve_e, reserve_h, reserve_l, reserve_f : Int = 0
   
   var pc : Byte = 0
   var sp : Byte = 0
   
   var lastInstrClockm, lastInstrClockt : Int = 0
+  var ime, halt : Int = 0
   
   def resetRegisters() = {
     a = 0 ; b = 0 ; c = 0 

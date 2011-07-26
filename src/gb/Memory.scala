@@ -67,7 +67,20 @@ class Memory (romFilename : String) {
     //TODO: GPU ram stuff     
     case 0xE00 if (address & 0xFF) < 0xA0 => 1
     case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
+    case 0xF00 => println("In GPUWramShadowWrite"); handleGPUWramShadowWrite(address & 0xF0, value)
    
+  }
+  
+  def handleGPUWramShadowWrite(address : Int, value : Int) = address match {
+    case 0x00 if (address & 0xF) == 0 => Nil
+    case 0x00 if (address & 0xF) == 4 => Nil
+    case 0x00 if (address & 0xF) == 5 => Nil
+    case 0x00 if (address & 0xF) == 6 => Nil
+    case 0x00 if (address & 0xF) == 7 => Nil
+    
+    case 0x00 if (address & 0xF) == 15 => Nil
+    case 0x10 | 0x20 | 0x30 => Nil
+    case 0x40 | 0x50 | 0x60 | 0x70 => Nil
   }
   
   def loadBios() : Array[Int] = {
