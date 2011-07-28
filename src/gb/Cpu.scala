@@ -1,12 +1,10 @@
 package gb
 
-class Cpu(romFilename : String) {
+class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   
   var memory : Memory = new Memory(romFilename)
   var registers : Registers = new Registers()
   var opcodes: Opcodes = new Opcodes()
-  
-  var DEBUG_MODE = true
   
   def reset() = {
     registers.resetRegisters()
