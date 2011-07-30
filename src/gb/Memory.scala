@@ -1,7 +1,7 @@
 package gb
 import java.io._
 
-class Memory (romFilename : String) {
+class Memory (gpu: Gpu, romFilename : String) {
   
   var inBios = false
   
@@ -42,12 +42,13 @@ class Memory (romFilename : String) {
     	//TODO: IO stuff
     	case 0xF00 if address == 0xFFFF => 1 
     	case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
-    	case 0xF00 => (address & 0xF) match {
+    	case 0xF00 => (address & 0xFF) match {
     	  //TODO: IO stuff
     	  case 0x00 => 1
     	  case 0x10 | 0x20 | 0x30 => 1
     	  //TODO: GPU readByte stuff
     	  case 0x40 | 0x50 | 0x60 | 070 => 1
+    	  case _ => println("No match found"); 1
     	}
     	case _ => 1
     }
@@ -93,7 +94,9 @@ class Memory (romFilename : String) {
       case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
       case 0xF00 => (address & 0xF0) match {
         case 0x10 | 0x20 | 0x30 => 1
-        case 0x40 | 0x50 | 0x60 | 0x70 => gpuWriteByte8(address, value)
+        case 0x40 | 0x50 | 0x60 | 0x70 => gpu.writeByte8(address, value)
+        
+        case _ => println("No match found")
     }
       case _ => 1
       
@@ -104,10 +107,6 @@ class Memory (romFilename : String) {
   def writeByte16(cpu : Cpu, address : Int, value : Int) = {
     writeByte8(cpu, address, value & 255)
     writeByte8(cpu, address + 1, value >> 8)
-  }
-  
-  def gpuWriteByte8(address : Int, value : Int) = {
-    println("gpuWriteByte8")
   }
  
   def loadBios() : Array[Int] = {
