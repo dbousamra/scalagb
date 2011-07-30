@@ -51,7 +51,6 @@ class Memory (romFilename : String) {
     //TODO
     case 0x4000 | 0x5000 => 1 //handle rom bank switch
     
-    
     //TODO
     case 0x6000 | 0x7000 => 1 //handle rom bank switch
     
@@ -67,13 +66,18 @@ class Memory (romFilename : String) {
            0x300 | 0x400 | 0x500 | 0x600 | 
            0x700 | 0x800 | 0x900 | 0xA00 |
            0xB00 | 0xC00 | 0xD00 => workingRam(address & 0x1FFF) = value 
+           
       case 0xE00 if (address & 0xFF) < 0xA0 => gpuOam(address & 0xFF) = value
+      
+      case 0xF00 if address == 0xFFFF => 1
       case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
-      case 0xF00 => handleGPUWramShadowWrite(address & 0xF0, value)
+      case 0xF00 => (address & 0xF0) match {
+        case 0x10 | 0x20 | 0x30 => 1
+        case 0x40 | 0x50 | 0x60 | 0x70 => gpuWriteByte8(address, value)
+    }
       case _ => 1
       
     }
-    
     case _ => 1
   }
   
@@ -93,19 +97,11 @@ class Memory (romFilename : String) {
     case _ => 1
   }
   
-  def handleGPUWramShadowWrite(address : Int, value : Int) = address match {
-    case 0x00 if (address & 0xF) == 0 => Nil
-    case 0x00 if (address & 0xF) == 4 => Nil
-    case 0x00 if (address & 0xF) == 5 => Nil
-    case 0x00 if (address & 0xF) == 6 => Nil
-    case 0x00 if (address & 0xF) == 7 => Nil
-    
-    case 0x00 if (address & 0xF) == 15 => Nil
-    case 0x10 | 0x20 | 0x30 => Nil
-    case 0x40 | 0x50 | 0x60 | 0x70 => Nil
-    case _ => 1
-  }
   
+  def gpuWriteByte8(address : Int, value : Int) = {
+    println("gpuWriteByte8")
+  }
+ 
   def loadBios() : Array[Int] = {
   //The gameboy bios. When the GAMEBOY logo drops
     Array(0x31, 0xFE, 0xFF, 0xAF, 0x21, 0xFF, 0x9F, 0x32, 0xCB, 0x7C, 0x20, 0xFB, 0x21, 0x26, 0xFF, 0x0E,
