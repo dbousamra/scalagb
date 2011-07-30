@@ -10,14 +10,16 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
     registers.resetRegisters()
   }
   
-  def run() = {
-    while (true) {
+  def run(breakPoint : Int) = {
+    var x = 0
+    while (x < breakPoint) {
 	    val opcode = memory.readByte8(this, registers.pc)
 	    registers.pc = (registers.pc + 1) & 0xFFFF //prevent overflow
 	    opcodes.execute(opcode, this)
 	    if (DEBUG_MODE) {
-	      println(debugTraces(opcode))
+	    	println(debugTraces(opcode))
 	    }
+	    x += 1
     }  
   }
   

@@ -11,6 +11,9 @@ class Memory (romFilename : String) {
   val externalRam 	= new Array[Int](8192)
   val zeroPageRam 	= new Array[Int](128)
   
+  val gpuVram 		= new Array[Int](8192)
+  val gpuOam 		= new Array[Int](8192)
+  
   def loadRom(filename: String) : Array[Int] = {
     val is = new FileInputStream(filename)
     Stream.continually(is.read).takeWhile(-1 !=).toArray
@@ -38,11 +41,29 @@ class Memory (romFilename : String) {
   
   
   def writeByte8(cpu : Cpu, address : Int, value: Int) = address & 0xF000 match {
-    case 0x8000 | 0x9000 => 1
+    
+    //TODO
+    case 0x0000 | 0x1000 => 1 //turn exram on
+    
+    //TODO
+    case 0x2000 | 0x3000 => 1 //handle rom bank switch
+    
+    //TODO
+    case 0x4000 | 0x5000 => 1 //handle rom bank switch
+    
+    
+    //TODO
+    case 0x6000 | 0x7000 => 1 //handle rom bank switch
+    
+    case 0x8000 | 0x9000 => gpuVram(address & 0x1FFF) = value ; gpuUpdateTile(address & 0x1FFF, value)
+    						
     case 0xA000 | 0xB000 => externalRam(address & 0x1FFF) = value
+    
     case 0xC000 | 0xD000 | 0xE000 => workingRam(address & 0x1FFF) = value  
+    
     case 0xF000 => handleWramShadowWrite(address, value)
-    case _ => println ("In writeByte8: Couldn't find match"); 1
+    
+    case _ => 1
   }
   
   def writeByte16(cpu : Cpu, address : Int, value : Int) = {
@@ -58,7 +79,7 @@ class Memory (romFilename : String) {
     //TODO: GPU ram stuff     
     case 0xE00 if address < 0xFF7F => 1     
     case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
-    case _ => println ("In handleWramShadowRead: Couldn't find match"); 1
+    case _ => 1
   }
   
   def handleWramShadowWrite(address: Int, value : Int) = address & 0x0F00 match{
@@ -69,8 +90,8 @@ class Memory (romFilename : String) {
     //TODO: GPU ram stuff     
     case 0xE00 if (address & 0xFF) < 0xA0 => 1
     case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
-    case 0xF00 => println("In GPUWramShadowWrite"); handleGPUWramShadowWrite(address & 0xF0, value)
-    case _ => println("In handleWramShadowWrite - couldn't find match")
+    case 0xF00 => handleGPUWramShadowWrite(address & 0xF0, value)
+    case _ => 1
    
   }
   
@@ -84,7 +105,7 @@ class Memory (romFilename : String) {
     case 0x00 if (address & 0xF) == 15 => Nil
     case 0x10 | 0x20 | 0x30 => Nil
     case 0x40 | 0x50 | 0x60 | 0x70 => Nil
-    case _ => println("In handleGPUWramShadowWrite - couldn't find match")
+    case _ => 1
   }
   
   def loadBios() : Array[Int] = {
@@ -107,6 +128,12 @@ class Memory (romFilename : String) {
 	      0x21, 0x04, 0x01, 0x11, 0xA8, 0x00, 0x1A, 0x13, 0xBE, 0x20, 0xFE, 0x23, 0x7D, 0xFE, 0x34, 0x20,
 	      0xF5, 0x06, 0x19, 0x78, 0x86, 0x23, 0x05, 0x20, 0xFB, 0x86, 0x20, 0xFE, 0x3E, 0x01, 0xE0, 0x50)
 	}
+  
+  
+  //TODO
+  def gpuUpdateTile(address : Int, value : Int) = {
+    println("GPU UPDATE TILE");
+  }
   
 }
 
