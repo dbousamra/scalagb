@@ -60,8 +60,19 @@ class Memory (romFilename : String) {
     case 0xA000 | 0xB000 => externalRam(address & 0x1FFF) = value
     
     case 0xC000 | 0xD000 | 0xE000 => workingRam(address & 0x1FFF) = value  
-    
-    case 0xF000 => handleWramShadowWrite(address, value)
+
+    case 0xF000 => (address & 0x0F00) match { 
+      
+      case 0x000 | 0x000 | 0x100 | 0x200 | 
+           0x300 | 0x400 | 0x500 | 0x600 | 
+           0x700 | 0x800 | 0x900 | 0xA00 |
+           0xB00 | 0xC00 | 0xD00 => workingRam(address & 0x1FFF) = value 
+      case 0xE00 if (address & 0xFF) < 0xA0 => gpuOam(address & 0xFF) = value
+      case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
+      case 0xF00 => handleGPUWramShadowWrite(address & 0xF0, value)
+      case _ => 1
+      
+    }
     
     case _ => 1
   }
@@ -80,19 +91,6 @@ class Memory (romFilename : String) {
     case 0xE00 if address < 0xFF7F => 1     
     case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
     case _ => 1
-  }
-  
-  def handleWramShadowWrite(address: Int, value : Int) = address & 0x0F00 match{
-    case 0x000 | 0x000 | 0x100 | 0x200 | 
-         0x300 | 0x400 | 0x500 | 0x600 | 
-         0x700 | 0x800 | 0x900 | 0xA00 |
-         0xB00 | 0xC00 | 0xD00 => workingRam(address & 0x1FFF) = value    
-    //TODO: GPU ram stuff     
-    case 0xE00 if (address & 0xFF) < 0xA0 => 1
-    case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x7F) = value
-    case 0xF00 => handleGPUWramShadowWrite(address & 0xF0, value)
-    case _ => 1
-   
   }
   
   def handleGPUWramShadowWrite(address : Int, value : Int) = address match {

@@ -7,5 +7,5 @@ object Main {
   	cpu.reset()
     cpu.run(breakPoint = 1000)
   }
-  
+
 }
