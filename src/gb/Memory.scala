@@ -22,15 +22,35 @@ class Memory (romFilename : String) {
   def readByte8(cpu : Cpu, address : Int) : Int = address & 0xF000 match {
     case 0x0000 if inBios && address < 0x0100 => bios(address)
     case 0x0000 if inBios && cpu.registers.pc == 0x0100 => inBios = false; rom(address)
-    case 0x0000 => rom(address)   
+    case 0x0000 => rom(address)
     case 0x1000 | 0x2000 | 0x3000 => rom(address)  
     case 0x4000 | 0x5000 | 0x6000 | 0x7000 => rom(address)  
     //TODO: GPU ram stuff
-    case 0x8000 | 0x9000 => 1  
+    case 0x8000 | 0x9000 => gpuVram(address & 0x1FFF) 
     case 0xA000 | 0xB000 => externalRam(address & 0x1FFF)
     case 0xC000 | 0xD000 => workingRam(address & 0x1FFF)   
     case 0xE000 => workingRam(address & 0x1FFF)
-    case 0xF000 => handleWramShadowRead(address) 
+    case 0xF000 => (address & 0x0F00) match { 
+    
+    	case 0x000 | 0x000 | 0x100 | 0x200 | 
+	         0x300 | 0x400 | 0x500 | 0x600 | 
+	         0x700 | 0x800 | 0x900 | 0xA00 |
+	         0xB00 | 0xC00 | 0xD00 => workingRam(address & 0x1FFF)      
+	    //TODO: GPU ram stuff     
+    	case 0xE00 if ((address & 0xFF) < 0xA0) => gpuOam(address & 0xFF)
+    	case 0xE00 => 0
+    	//TODO: IO stuff
+    	case 0xF00 if address == 0xFFFF => 1 
+    	case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
+    	case 0xF00 => (address & 0xF) match {
+    	  //TODO: IO stuff
+    	  case 0x00 => 1
+    	  case 0x10 | 0x20 | 0x30 => 1
+    	  //TODO: GPU readByte stuff
+    	  case 0x40 | 0x50 | 0x60 | 070 => 1
+    	}
+    	case _ => 1
+    }
   }
   
    //Helper function that just reads next Int and concatenates them.
@@ -85,18 +105,6 @@ class Memory (romFilename : String) {
     writeByte8(cpu, address, value & 255)
     writeByte8(cpu, address + 1, value >> 8)
   }
-  
-  def handleWramShadowRead(address: Int) : Int = address & 0x0F00 match{
-    case 0x000 | 0x000 | 0x100 | 0x200 | 
-         0x300 | 0x400 | 0x500 | 0x600 | 
-         0x700 | 0x800 | 0x900 | 0xA00 |
-         0xB00 | 0xC00 | 0xD00 => workingRam(address & 0x1FFF)      
-    //TODO: GPU ram stuff     
-    case 0xE00 if address < 0xFF7F => 1     
-    case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
-    case _ => 1
-  }
-  
   
   def gpuWriteByte8(address : Int, value : Int) = {
     println("gpuWriteByte8")
