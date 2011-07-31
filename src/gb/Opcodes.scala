@@ -1247,7 +1247,7 @@ class Opcodes() {
 
   def ADDSPn(opcode: Int, cpu: Cpu) = {
     var i = cpu.memory.readByte8((cpu.registers.pc))
-    if (i > 127) i = -((~i + 1) & 255)
+    if (i > 0x7F) i -= 0x100
     cpu.registers.pc += 1
     cpu.registers.sp += i
     cpu.registers.lastInstrClockm = 4

@@ -61,7 +61,7 @@ class Gpu(memory : Memory) {
 	    			 objectSize = if((value & 0x04) != 0) 0x01 else 0x00
 	    			 bgOn       = if((value & 0x01) != 0) 0x01 else 0x00
 	    			 
-	    //case 0x01 => println("matching 1")
+	    case 0x01 => println("matching 1")
 	    case 0x02 => yScreenLine = value
 	    
 	    case 0x03 => xScreenLine = value
