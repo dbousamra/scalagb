@@ -794,257 +794,257 @@ class Opcodes() {
   }
 
   def LDrHLm_b(opcode: Int, cpu: Cpu) = {
-    cpu.registers.b = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.b = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_c(opcode: Int, cpu: Cpu) = {
-    cpu.registers.c = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.c = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_d(opcode: Int, cpu: Cpu) = {
-    cpu.registers.d = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.d = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_e(opcode: Int, cpu: Cpu) = {
-    cpu.registers.e = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.e = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_h(opcode: Int, cpu: Cpu) = {
-    cpu.registers.h = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.h = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_l(opcode: Int, cpu: Cpu) = {
-    cpu.registers.l = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.l = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrHLm_a(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_b(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.b)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.b)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_c(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.c)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.c)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_d(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.d)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.d)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_e(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.e)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.e)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_h(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.h)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.h)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_l(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.l)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.l)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmr_a(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_b(opcode: Int, cpu: Cpu) = {
-    cpu.registers.b = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.b = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_c(opcode: Int, cpu: Cpu) = {
-    cpu.registers.c = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.c = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_d(opcode: Int, cpu: Cpu) = {
-    cpu.registers.d = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.d = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_e(opcode: Int, cpu: Cpu) = {
-    cpu.registers.e = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.e = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_h(opcode: Int, cpu: Cpu) = {
-    cpu.registers.h = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.h = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_l(opcode: Int, cpu: Cpu) = {
-    cpu.registers.l = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.l = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDrn_a(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.a = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLmn(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.memory.readByte8(cpu, cpu.registers.pc))
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.memory.readByte8(cpu.registers.pc))
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDBCmA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.b << 8) + cpu.registers.c, cpu.registers.a)
+    cpu.memory.writeByte8((cpu.registers.b << 8) + cpu.registers.c, cpu.registers.a)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDDEmA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.d << 8) + cpu.registers.e, cpu.registers.a)
+    cpu.memory.writeByte8((cpu.registers.d << 8) + cpu.registers.e, cpu.registers.a)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDmmA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, cpu.memory.readByte16(cpu, cpu.registers.pc), cpu.registers.a)
+    cpu.memory.writeByte8(cpu.memory.readByte16(cpu.registers.pc), cpu.registers.a)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 4
   }
   
   //TODO: PROBABLY INCORRECT
   def LDmmSP(opcode : Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, cpu.memory.readByte16(cpu, cpu.registers.pc), cpu.registers.sp)
+    cpu.memory.writeByte8(cpu.memory.readByte16(cpu.registers.pc), cpu.registers.sp)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 4
   }
   
 
   def LDABCm(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.b << 8) + cpu.registers.c)
+    cpu.registers.a = cpu.memory.readByte8((cpu.registers.b << 8) + cpu.registers.c)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDADEm(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.d << 8) + cpu.registers.e)
+    cpu.registers.a = cpu.memory.readByte8((cpu.registers.d << 8) + cpu.registers.e)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDAmm(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, cpu.memory.readByte16(cpu, cpu.registers.pc))
+    cpu.registers.a = cpu.memory.readByte8(cpu.memory.readByte16(cpu.registers.pc))
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 4
   }
 
   def LDBCnn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.c = cpu.memory.readByte8(cpu, cpu.registers.pc)
-    cpu.registers.b = cpu.memory.readByte8(cpu, cpu.registers.pc + 1)
+    cpu.registers.c = cpu.memory.readByte8(cpu.registers.pc)
+    cpu.registers.b = cpu.memory.readByte8(cpu.registers.pc + 1)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDDEnn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.e = cpu.memory.readByte8(cpu, cpu.registers.pc)
-    cpu.registers.d = cpu.memory.readByte8(cpu, cpu.registers.pc + 1)
+    cpu.registers.e = cpu.memory.readByte8(cpu.registers.pc)
+    cpu.registers.d = cpu.memory.readByte8(cpu.registers.pc + 1)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDHLnn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.l = cpu.memory.readByte8(cpu, cpu.registers.pc)
-    cpu.registers.h = cpu.memory.readByte8(cpu, cpu.registers.pc + 1)
+    cpu.registers.l = cpu.memory.readByte8(cpu.registers.pc)
+    cpu.registers.h = cpu.memory.readByte8(cpu.registers.pc + 1)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDSPnn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.sp = cpu.memory.readByte16(cpu, cpu.registers.pc)
+    cpu.registers.sp = cpu.memory.readByte16(cpu.registers.pc)
     cpu.registers.pc += 2
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDHLmm(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte16(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte16(cpu.registers.pc)
     cpu.registers.pc += 2
-    cpu.registers.l = cpu.memory.readByte8(cpu, i)
-    cpu.registers.h = cpu.memory.readByte8(cpu, i + 1)
+    cpu.registers.l = cpu.memory.readByte8(i)
+    cpu.registers.h = cpu.memory.readByte8(i + 1)
     cpu.registers.lastInstrClockm = 5
   }
 
   def LDmmHL(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte16(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte16(cpu.registers.pc)
     cpu.registers.pc += 2
-    cpu.memory.writeByte16(cpu, i, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.memory.writeByte16(i, (cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.lastInstrClockm = 5
   }
 
   def LDHLIA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
     cpu.registers.l = (cpu.registers.l + 1) & 255
     if (cpu.registers.l != 0) cpu.registers.h = (cpu.registers.h + 1) & 255
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDAHLI(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.l = (cpu.registers.l + 1) & 255
     if (cpu.registers.l != 0) cpu.registers.h = (cpu.registers.h + 1) & 255
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLDA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, cpu.registers.a)
     cpu.registers.l = (cpu.registers.l - 1) & 255
     if (cpu.registers.l == 255) cpu.registers.h = (cpu.registers.h - 1) & 255
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDAHLD(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.l = (cpu.registers.l - 1) & 255
     if (cpu.registers.l == 255) cpu.registers.h = (cpu.registers.h - 1) & 255
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDAIOn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, 0xFF00 + cpu.memory.readByte8(cpu, cpu.registers.pc))
+    cpu.registers.a = cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(cpu.registers.pc))
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDIOnA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, 0xFF00 + cpu.memory.readByte8(cpu, cpu.registers.pc), cpu.registers.a)
+    cpu.memory.writeByte8(0xFF00 + cpu.memory.readByte8(cpu.registers.pc), cpu.registers.a)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def LDAIOC(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a = cpu.memory.readByte8(cpu, 0xFF00 + cpu.registers.c)
+    cpu.registers.a = cpu.memory.readByte8(0xFF00 + cpu.registers.c)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDIOCA(opcode: Int, cpu: Cpu) = {
-    cpu.memory.writeByte8(cpu, 0xFF00 + cpu.registers.c, cpu.registers.a)
+    cpu.memory.writeByte8(0xFF00 + cpu.registers.c, cpu.registers.a)
     cpu.registers.lastInstrClockm = 2
   }
 
   def LDHLSPn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     i += cpu.registers.sp
@@ -1182,7 +1182,7 @@ class Opcodes() {
 
   def ADDHL(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l))
+    var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
     cpu.registers.a += m
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
@@ -1194,7 +1194,7 @@ class Opcodes() {
 
   def ADDn(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var m = cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.a += m
     cpu.registers.pc += 1
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
@@ -1246,7 +1246,7 @@ class Opcodes() {
   }
 
   def ADDSPn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.pc))
+    var i = cpu.memory.readByte8((cpu.registers.pc))
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.sp += i
@@ -1340,7 +1340,7 @@ class Opcodes() {
 
   def ADCHL(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l))
+    var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
     cpu.registers.a += m
     if ((cpu.registers.f & 0x10) != 0) cpu.registers.a += 1 else cpu.registers.a += 0
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
@@ -1353,7 +1353,7 @@ class Opcodes() {
 
   def ADCn(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, (cpu.registers.pc))
+    var m = cpu.memory.readByte8((cpu.registers.pc))
     cpu.registers.a += m
     cpu.registers.pc += 1
     if ((cpu.registers.f & 0x10) != 0) cpu.registers.a += 1 else cpu.registers.a += 0
@@ -1432,21 +1432,30 @@ class Opcodes() {
     if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
-
+ 
   def SUBr_a(opcode: Int, cpu: Cpu) = {
-    var a = cpu.registers.a
+    var a = cpu.registers.a	
     cpu.registers.a -= cpu.registers.a
-    if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
+    if (cpu.registers.a < 0) {
+      cpu.registers.f = 0x50
+    }
+      else {
+        cpu.registers.f = 0x40
+      }
     cpu.registers.a &= 255
-    if (cpu.registers.a != 0) cpu.registers.f |= 0x80
+    if (cpu.registers.a == 0) { 
+      cpu.registers.f |= 0x80 
+      }
     val x = (cpu.registers.a ^ cpu.registers.a ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if (x != 0) { 
+      cpu.registers.f |= 0x20 
+    }
     cpu.registers.lastInstrClockm = 1
   }
 
   def SUBHL(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l))
+    var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
     cpu.registers.a -= m
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
@@ -1458,7 +1467,7 @@ class Opcodes() {
 
   def SUBn(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, (cpu.registers.pc))
+    var m = cpu.memory.readByte8((cpu.registers.pc))
     cpu.registers.a -= m
     cpu.registers.pc += 1
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
@@ -1558,7 +1567,7 @@ class Opcodes() {
 
   def SBCHL(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l))
+    var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
     cpu.registers.a -= m
     if ((cpu.registers.f & 0x10) != 0) cpu.registers.a -= 1 else cpu.registers.a -= 0
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
@@ -1572,7 +1581,7 @@ class Opcodes() {
 
   def SBCn(opcode: Int, cpu: Cpu) = {
     var a = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, (cpu.registers.pc))
+    var m = cpu.memory.readByte8((cpu.registers.pc))
     cpu.registers.a -= m
     cpu.registers.pc += 1
     if ((cpu.registers.f & 0x10) != 0) cpu.registers.a -= 1 else cpu.registers.a -= 0
@@ -1664,7 +1673,7 @@ class Opcodes() {
 
   def CPHL(opcode: Int, cpu: Cpu) = {
     var i = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l))
+    var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
     i -= m
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
@@ -1676,7 +1685,7 @@ class Opcodes() {
 
   def CPn(opcode: Int, cpu: Cpu) = {
     var i = cpu.registers.a
-    var m = cpu.memory.readByte8(cpu, (cpu.registers.pc))
+    var m = cpu.memory.readByte8((cpu.registers.pc))
     i -= m
     cpu.registers.pc += 1
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
@@ -1749,14 +1758,14 @@ class Opcodes() {
   }
 
   def ANDHL(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a &= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a &= cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.lastInstrClockm = 2
   }
 
   def ANDn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a &= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.a &= cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
@@ -1813,14 +1822,14 @@ class Opcodes() {
   }
 
   def ORHL(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a |= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a |= cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.lastInstrClockm = 2
   }
 
   def ORn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a |= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.a |= cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
@@ -1877,14 +1886,14 @@ class Opcodes() {
   }
 
   def XORHL(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a ^= cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    cpu.registers.a ^= cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.lastInstrClockm = 2
   }
 
   def XORn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.a ^= cpu.memory.readByte8(cpu, cpu.registers.pc)
+    cpu.registers.a ^= cpu.memory.readByte8(cpu.registers.pc)
     cpu.registers.pc += 1
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
@@ -1935,9 +1944,9 @@ class Opcodes() {
     cpu.registers.lastInstrClockm = 1
   }
   def INCHLm(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l) + 1
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l) + 1
     i &= 255
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.lastInstrClockm = 3
   }
@@ -1985,9 +1994,9 @@ class Opcodes() {
     cpu.registers.lastInstrClockm = 1
   }
   def DECHLm(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l) - 1
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l) - 1
     i &= 255
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.lastInstrClockm = 3
   }
@@ -2084,7 +2093,7 @@ class Opcodes() {
   def BIT0m(opcode: Int, cpu: Cpu) = {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x01) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x01) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2128,9 +2137,9 @@ class Opcodes() {
   }
 
   def RES0m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xFE
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2170,9 +2179,9 @@ class Opcodes() {
   }
 
   def SET0m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x01
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2229,7 +2238,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x02) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x02) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2273,9 +2282,9 @@ class Opcodes() {
   }
 
   def RES1m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xFD
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2315,9 +2324,9 @@ class Opcodes() {
   }
 
   def SET1m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x02
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2373,7 +2382,7 @@ class Opcodes() {
   def BIT2m(opcode: Int, cpu: Cpu) = {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x04) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x04) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2418,9 +2427,9 @@ class Opcodes() {
   }
 
   def RES2m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xFB
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2460,9 +2469,9 @@ class Opcodes() {
   }
 
   def SET2m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x04
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2519,7 +2528,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x08) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x08) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2563,9 +2572,9 @@ class Opcodes() {
   }
 
   def RES3m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xF7
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2605,9 +2614,9 @@ class Opcodes() {
   }
 
   def SET3m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x08
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2664,7 +2673,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x10) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x10) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2709,9 +2718,9 @@ class Opcodes() {
   }
 
   def RES4m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xEF
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2751,9 +2760,9 @@ class Opcodes() {
   }
 
   def SET4m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x10
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2810,7 +2819,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x20) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x20) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -2855,9 +2864,9 @@ class Opcodes() {
   }
 
   def RES5m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xDF
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2897,9 +2906,9 @@ class Opcodes() {
   }
 
   def SET5m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x20
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -2956,7 +2965,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x40) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x40) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -3000,9 +3009,9 @@ class Opcodes() {
   }
 
   def RES6m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0xBF
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -3042,9 +3051,9 @@ class Opcodes() {
   }
 
   def SET6m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x40
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -3101,7 +3110,7 @@ class Opcodes() {
     cpu.registers.f &= 0x1F
     cpu.registers.f |= 0x20
 
-    if (cpu.memory.readByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l) & 0x80) != 0) {
+    if (cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l) & 0x80) != 0) {
       cpu.registers.f = 0
     } else {
       cpu.registers.f = 0x80
@@ -3146,9 +3155,9 @@ class Opcodes() {
   }
 
   def RES7m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i &= 0x7F
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
@@ -3188,14 +3197,14 @@ class Opcodes() {
   }
 
   def SET7m(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     i |= 0x80
-    cpu.memory.writeByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l, i)
+    cpu.memory.writeByte8((cpu.registers.h << 8) + cpu.registers.l, i)
     cpu.registers.lastInstrClockm = 4
   }
 
   def JPnn(opcode: Int, cpu: Cpu) = {
-    cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+    cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
     cpu.registers.lastInstrClockm = 3;
   }
 
@@ -3208,7 +3217,7 @@ class Opcodes() {
     cpu.registers.lastInstrClockm = 3
 
     if ((cpu.registers.f & 0x80) == 0x00) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 1
     } else cpu.registers.pc += 2
   }
@@ -3216,7 +3225,7 @@ class Opcodes() {
   def JPZnn(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x80) == 0x80) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 1
     } else cpu.registers.pc += 2
   }
@@ -3224,7 +3233,7 @@ class Opcodes() {
   def JPNCnn(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x10) == 0x00) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 1
     } else cpu.registers.pc += 2
   }
@@ -3232,7 +3241,7 @@ class Opcodes() {
   def JPCnn(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x10) == 0x10) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 1
     } else cpu.registers.pc += 2
   }
@@ -3369,13 +3378,13 @@ class Opcodes() {
   def RLHL(opcode: Int, cpu: Cpu) = {
     var ci = 0
     var co = 0
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     if ((cpu.registers.f & 0x10) != 0) ci = 1 else ci = 0
     if ((i & 0x80) != 0) co = 0x10 else co = 0
     i = (i << 1) + ci
     i &= 255
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
-    cpu.memory.writeByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l), i)
+    cpu.memory.writeByte8(((cpu.registers.h << 8) + cpu.registers.l), i)
     cpu.registers.f = (cpu.registers.f & 0xEF) + co
     cpu.registers.lastInstrClockm = 4
   }
@@ -3468,13 +3477,13 @@ class Opcodes() {
   def RLCHL(opcode: Int, cpu: Cpu) = {
     var ci = 0
     var co = 0
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     if ((i & 0x80) != 0) ci = 1 else ci = 0
     if ((i & 0x80) != 0) co = 0x10 else co = 0
     i = (i << 1) + ci
     i &= 255
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
-    cpu.memory.writeByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l), i)
+    cpu.memory.writeByte8(((cpu.registers.h << 8) + cpu.registers.l), i)
     cpu.registers.f = (cpu.registers.f & 0xEF) + co
     cpu.registers.lastInstrClockm = 4
   }
@@ -3567,12 +3576,12 @@ class Opcodes() {
   def RRHL(opcode: Int, cpu: Cpu) = {
     var ci = 0
     var co = 0
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     if ((cpu.registers.f & 0x10) != 0) ci = 0x80 else ci = 0
     if ((i & 1) != 0) co = 0x10 else co = 0
     i = (i >> 1) + ci
     i &= 255
-    cpu.memory.writeByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l), i)
+    cpu.memory.writeByte8(((cpu.registers.h << 8) + cpu.registers.l), i)
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.f = (cpu.registers.f & 0xEF) + co
     cpu.registers.lastInstrClockm = 4
@@ -3665,12 +3674,12 @@ class Opcodes() {
   def RRCHL(opcode: Int, cpu: Cpu) = {
     var ci = 0
     var co = 0
-    var i = cpu.memory.readByte8(cpu, (cpu.registers.h << 8) + cpu.registers.l)
+    var i = cpu.memory.readByte8((cpu.registers.h << 8) + cpu.registers.l)
     if ((i & 1) != 0) ci = 0x80 else ci = 0
     if ((i & 1) != 0) co = 0x10 else co = 0
     i = (i >> 1) + ci
     i &= 255
-    cpu.memory.writeByte8(cpu, ((cpu.registers.h << 8) + cpu.registers.l), i)
+    cpu.memory.writeByte8(((cpu.registers.h << 8) + cpu.registers.l), i)
     if (i != 0) cpu.registers.f = 0 else cpu.registers.f = 0x80
     cpu.registers.f = (cpu.registers.f & 0xEF) + co
     cpu.registers.lastInstrClockm = 4
@@ -3967,70 +3976,70 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
 
   def PUSHBC(opcode: Int, cpu: Cpu) = {
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.b)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.b)
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.c)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.c)
     cpu.registers.lastInstrClockm = 3
   }
 
   def PUSHDE(opcode: Int, cpu: Cpu) = {
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.d)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.d)
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.e)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.e)
     cpu.registers.lastInstrClockm = 3
   }
 
   def PUSHHL(opcode: Int, cpu: Cpu) = {
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.h)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.h)
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.l)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.l)
     cpu.registers.lastInstrClockm = 3
   }
 
   def PUSHAF(opcode: Int, cpu: Cpu) = {
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.a)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.a)
     cpu.registers.sp -= 1
-    cpu.memory.writeByte8(cpu, cpu.registers.sp, cpu.registers.f)
+    cpu.memory.writeByte8(cpu.registers.sp, cpu.registers.f)
     cpu.registers.lastInstrClockm = 3
   }
 
   def POPBC(opcode: Int, cpu: Cpu) = {
-    cpu.registers.c = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.c = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
-    cpu.registers.b = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.b = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def POPDE(opcode: Int, cpu: Cpu) = {
-    cpu.registers.e = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.e = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
-    cpu.registers.d = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.d = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def POPHL(opcode: Int, cpu: Cpu) = {
-    cpu.registers.l = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.l = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
-    cpu.registers.h = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.h = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def POPAF(opcode: Int, cpu: Cpu) = {
-    cpu.registers.f = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.f = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
-    cpu.registers.a = cpu.memory.readByte8(cpu, cpu.registers.sp)
+    cpu.registers.a = cpu.memory.readByte8(cpu.registers.sp)
     cpu.registers.sp += 1
     cpu.registers.lastInstrClockm = 3
   }
 
   def JRn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4039,7 +4048,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
 
   def JRNZn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4048,7 +4057,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
 
   def JRZn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4059,7 +4068,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
 
   def JRNCn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4070,7 +4079,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
 
   def JRCn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4081,7 +4090,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
 
   def DJNZn(opcode: Int, cpu: Cpu) = {
-    var i = cpu.memory.readByte8(cpu, cpu.registers.pc)
+    var i = cpu.memory.readByte8(cpu.registers.pc)
     if (i > 127) i = -((~i + 1) & 255)
     cpu.registers.pc += 1
     cpu.registers.lastInstrClockm = 2
@@ -4094,8 +4103,8 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
 
   def CALLnn(opcode: Int, cpu: Cpu) = {
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc + 2)
-    cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc + 2)
+    cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
     cpu.registers.lastInstrClockm = 5
   }
 
@@ -4103,8 +4112,8 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x80) == 0x00) {
       cpu.registers.sp -= 2
-      cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc + 2)
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc + 2)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 2
     } else cpu.registers.pc += 2
   }
@@ -4113,8 +4122,8 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x80) == 0x80) {
       cpu.registers.sp -= 2
-      cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc + 2)
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc + 2)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 2
     } else cpu.registers.pc += 2
   }
@@ -4123,8 +4132,8 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x10) == 0x00) {
       cpu.registers.sp -= 2
-      cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc + 2)
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc + 2)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 2
     } else cpu.registers.pc += 2
   }
@@ -4133,14 +4142,14 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 3
     if ((cpu.registers.f & 0x10) == 0x10) {
       cpu.registers.sp -= 2
-      cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc + 2)
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.pc)
+      cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc + 2)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.pc)
       cpu.registers.lastInstrClockm += 2
     } else cpu.registers.pc += 2
   }
 
   def RET(opcode: Int, cpu: Cpu) = {
-    cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+    cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
     cpu.registers.sp += 2
     cpu.registers.lastInstrClockm = 3
   }
@@ -4148,7 +4157,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RETI(opcode: Int, cpu: Cpu) = {
     cpu.registers.ime = 1
     rrs(opcode, cpu)
-    cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+    cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
     cpu.registers.sp += 2
     cpu.registers.lastInstrClockm = 3
   }
@@ -4156,7 +4165,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RETNZ(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 1
     if ((cpu.registers.f & 0x80) == 0x00) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
       cpu.registers.sp += 2
       cpu.registers.lastInstrClockm += 2
     }
@@ -4165,7 +4174,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RETZ(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 1
     if ((cpu.registers.f & 0x80) == 0x80) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
       cpu.registers.sp += 2
       cpu.registers.lastInstrClockm += 2
     }
@@ -4174,7 +4183,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RETNC(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 1
     if ((cpu.registers.f & 0x10) == 0x00) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
       cpu.registers.sp += 2
       cpu.registers.lastInstrClockm += 2
     }
@@ -4183,7 +4192,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RETC(opcode: Int, cpu: Cpu) = {
     cpu.registers.lastInstrClockm = 1
     if ((cpu.registers.f & 0x10) == 0x10) {
-      cpu.registers.pc = cpu.memory.readByte16(cpu, cpu.registers.sp)
+      cpu.registers.pc = cpu.memory.readByte16(cpu.registers.sp)
       cpu.registers.sp += 2
       cpu.registers.lastInstrClockm += 2
     }
@@ -4192,7 +4201,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST00(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x00
     cpu.registers.lastInstrClockm = 3
   }
@@ -4200,7 +4209,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST08(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x08
     cpu.registers.lastInstrClockm = 3
   }
@@ -4208,7 +4217,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST10(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x10
     cpu.registers.lastInstrClockm = 3
   }
@@ -4216,7 +4225,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST18(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x18
     cpu.registers.lastInstrClockm = 3
   }
@@ -4224,7 +4233,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST20(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x20
     cpu.registers.lastInstrClockm = 3
   }
@@ -4232,7 +4241,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST28(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x28
     cpu.registers.lastInstrClockm = 3
   }
@@ -4240,7 +4249,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST30(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x30
     cpu.registers.lastInstrClockm = 3
   }
@@ -4248,7 +4257,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST38(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x38
     cpu.registers.lastInstrClockm = 3
   }
@@ -4256,7 +4265,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST40(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x40
     cpu.registers.lastInstrClockm = 3
   }
@@ -4264,7 +4273,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST48(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x48
     cpu.registers.lastInstrClockm = 3
   }
@@ -4272,7 +4281,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST50(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x50
     cpu.registers.lastInstrClockm = 3
   }
@@ -4280,7 +4289,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST58(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x58
     cpu.registers.lastInstrClockm = 3
   }
@@ -4288,7 +4297,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   def RST60(opcode: Int, cpu: Cpu) = {
     rsv(opcode, cpu)
     cpu.registers.sp -= 2
-    cpu.memory.writeByte16(cpu, cpu.registers.sp, cpu.registers.pc)
+    cpu.memory.writeByte16(cpu.registers.sp, cpu.registers.pc)
     cpu.registers.pc = 0x60
     cpu.registers.lastInstrClockm = 3
   }
@@ -4307,7 +4316,7 @@ def SLAr_b(opcode: Int, cpu: Cpu) = {
   }
   
   def MAPcb(opcode: Int, cpu: Cpu) = {
-      var i=cpu.memory.readByte8(cpu, (cpu.registers.pc))
+      var i=cpu.memory.readByte8((cpu.registers.pc))
       cpu.registers.pc += 1
       cpu.registers.pc &= 65535
       cb(i, cpu)

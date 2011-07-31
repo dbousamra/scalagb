@@ -2,10 +2,10 @@ package gb
 
 class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   
-  var registers : Registers = new Registers()
-  var opcodes : Opcodes = new Opcodes()
-  var gpu : Gpu = new Gpu()
-  var memory : Memory = new Memory(gpu, romFilename)
+  var registers : Registers = new Registers
+  var opcodes : Opcodes = new Opcodes
+  var gpu : Gpu = new Gpu(memory)
+  var memory : Memory = new Memory(gpu, this, romFilename)
   
   
   def reset() = {
@@ -13,28 +13,16 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   }
 
   def run() = {
-    val opcode = memory.readByte8(this, registers.pc)
-    registers.pc = (registers.pc + 1) & 0xFFFF //prevent overflow
+    val opcode = memory.readByte8(registers.pc)
+    registers.pc += 1
+    
     opcodes.execute(opcode, this)
+    registers.pc &= 0xFFFF //prevent overflow
     if (DEBUG_MODE) {
-      println(debugTraces(opcode))
+      println(debugTraces2(opcode))
     }
   }
 
-  
-//    def run(breakPoint : Int) = {
-//    var x = 0
-//    while (x < breakPoint) {
-//	    val opcode = memory.readByte8(this, registers.pc)
-//	    registers.pc = (registers.pc + 1) & 0xFFFF //prevent overflow
-//	    opcodes.execute(opcode, this)
-//	    if (DEBUG_MODE) {
-//	    	println(debugTraces(opcode))
-//	    }
-//	    x += 1
-//    }  
-//  }
-//  
   
   def debugTraces(opcode : Int) = {
     "PC = " + registers.pc.toHexString + " Just executed=" + opcode.toHexString + " \tSP=" + registers.sp.toHexString + 
@@ -44,7 +32,19 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
         " D=" + registers.d.toHexString + 
         " E=" + registers.e.toHexString +
         " H=" + registers.h.toHexString + 
-        " F=" + registers.f.toBinaryString
+        " F=" + registers.f.toBinaryString +
+        " F=" + registers.f.toHexString
   }	
+  
+  def debugTraces2(opcode : Int) = { 
+    "PC = " + registers.pc.toHexString + " Just executed=" + opcode.toHexString +
+    " AF: " + registers.a.toHexString + "" + registers.f.toHexString +
+    " BC: " + registers.b.toHexString + "" + registers.c.toHexString +
+    " HL: " + registers.h.toHexString + "" + registers.l.toHexString +
+    " DE: " + registers.d.toHexString + "" + registers.e.toHexString + 
+    " SP: " + registers.sp.toHexString + "" +
+    " PC: " + registers.pc.toHexString
+    
+  }
   
 }

@@ -1,7 +1,7 @@
 package gb
 import java.io._
 
-class Memory (gpu: Gpu, romFilename : String) {
+class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
   
   var inBios = false
   
@@ -19,7 +19,7 @@ class Memory (gpu: Gpu, romFilename : String) {
     Stream.continually(is.read).takeWhile(-1 !=).toArray
   }
   
-  def readByte8(cpu : Cpu, address : Int) : Int = address & 0xF000 match {
+  def readByte8(address : Int) : Int = address & 0xF000 match {
     case 0x0000 if inBios && address < 0x0100 => bios(address)
     case 0x0000 if inBios && cpu.registers.pc == 0x0100 => inBios = false; rom(address)
     case 0x0000 => rom(address)
@@ -48,20 +48,19 @@ class Memory (gpu: Gpu, romFilename : String) {
     	  case 0x10 | 0x20 | 0x30 => 1
     	  //TODO: GPU readByte stuff
     	  case 0x40 | 0x50 | 0x60 | 070 => 1
-    	  case _ => println("No match found"); 1
     	}
-    	case _ => 1
+    case _ => println("Error in" + this.getClass.getName + "with address: " + address); 1
     }
   }
   
    //Helper function that just reads next Int and concatenates them.
   //eg. Int 1 = 0x4f and Int 2 = 0x13 would give 0x134f
-  def readByte16(cpu : Cpu, address : Int) : Int = {
-    (readByte8(cpu, address) + (readByte8(cpu, address+1) << 8))
+  def readByte16(address : Int) : Int = {
+    (readByte8(address) + (readByte8(address+1) << 8))
   }
   
   
-  def writeByte8(cpu : Cpu, address : Int, value: Int) = address & 0xF000 match {
+  def writeByte8(address : Int, value: Int) = address & 0xF000 match {
     
     //TODO
     case 0x0000 | 0x1000 => 1 //turn exram on
@@ -95,18 +94,15 @@ class Memory (gpu: Gpu, romFilename : String) {
       case 0xF00 => (address & 0xF0) match {
         case 0x10 | 0x20 | 0x30 => 1
         case 0x40 | 0x50 | 0x60 | 0x70 => gpu.writeByte8(address, value)
-        
         case _ => println("No match found")
+      }
     }
-      case _ => 1
-      
-    }
-    case _ => 1
+    case _ => println("Error in" + this.getClass.getName + "with address: " + address)
   }
   
-  def writeByte16(cpu : Cpu, address : Int, value : Int) = {
-    writeByte8(cpu, address, value & 255)
-    writeByte8(cpu, address + 1, value >> 8)
+  def writeByte16(address : Int, value : Int) = {
+    writeByte8(address, value & 255)
+    writeByte8(address + 1, value >> 8)
   }
  
   def loadBios() : Array[Int] = {
