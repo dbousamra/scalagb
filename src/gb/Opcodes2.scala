@@ -98,6 +98,8 @@ class Opcodes2(cpu : Cpu) {
 	case 0x12 => LD_r1_r16write(cpu.e, cpu.d, cpu.a)
 	case 0x77 => LD_r1_r16write(cpu.l, cpu.h, cpu.a)
 	case 0xEA => LD_n_A16Write(cpu.a)
+	case 0xF2 => LD_A_C(cpu.a, cpu.c)
+	
 			
   }
   
@@ -125,5 +127,15 @@ class Opcodes2(cpu : Cpu) {
   
   def LD_n_A16Write(valueRegister : Register) = {
       cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc.value), valueRegister.value)
+  }
+  
+  //Non-Generic opcode functions here:
+  
+  def LD_A_C(toRegister : Register, fromRegister : Register) = {
+    toRegister.value = cpu.memory.readByte8(0xFF00 + fromRegister.value)
+  }
+  
+  def LD_C_A(fromRegister : Register, valueRegister : Register) = {
+    cpu.memory.writeByte8(0xFF00 + fromRegister.value, valueRegister.value)
   }
 }
