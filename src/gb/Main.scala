@@ -8,7 +8,7 @@ object Main {
     var x = 0
     while (x < 16) {
       cpu.run()
-      x+=1
+      x += 1
     }
   }
 }

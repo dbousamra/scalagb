@@ -21,7 +21,7 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
   
   def readByte8(address : Int) : Int = address & 0xF000 match {
     case 0x0000 if inBios && address < 0x0100 => bios(address)
-    case 0x0000 if inBios && cpu.registers.pc == 0x0100 => inBios = false; rom(address)
+    case 0x0000 if inBios && cpu.pc.value == 0x0100 => inBios = false; rom(address)
     case 0x0000 => rom(address)
     case 0x1000 | 0x2000 | 0x3000 => rom(address)  
     case 0x4000 | 0x5000 | 0x6000 | 0x7000 => rom(address)  
