@@ -100,6 +100,12 @@ class Opcodes2(cpu : Cpu) {
 	case 0xEA => LD_n_A16Write(cpu.a)
 	case 0xF2 => LD_A_C(cpu.a, cpu.c)
 	
+	case 0x3A => LDD_A_HLRead(cpu.a, cpu.h, cpu.l, "-")
+	case 0x32 => LDD_HL_A(cpu.h, cpu.l, cpu.a,"-")
+	case 0x2A => LDD_A_HLRead(cpu.a, cpu.h, cpu.l, "+")
+	case 0x22 => LDD_HL_A(cpu.h, cpu.l, cpu.a, "+")
+	
+	
 			
   }
   
@@ -129,6 +135,25 @@ class Opcodes2(cpu : Cpu) {
       cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc.value), valueRegister.value)
   }
   
+  def LDD_A_HLRead(toRegister : Register, fromRegister : Register, fromRegister2 : Register, op : String) = {
+    toRegister.value = cpu.memory.readByte8((fromRegister.value << 8) + fromRegister2.value)
+    op match {
+      case "+" => fromRegister2.value = (fromRegister2.value + 1) & 255
+      case "-" => fromRegister2.value = (fromRegister2.value + 1) & 255
+    }
+    if (fromRegister2.value == 255) fromRegister.value = (fromRegister.value - 1) & 255
+  }
+  
+  def LDD_HL_A(toRegister : Register, toRegister2 : Register, fromRegister : Register, op : String) = {
+    cpu.memory.writeByte8((toRegister.value << 8) + toRegister2.value, fromRegister.value)
+    op match {
+      case "+" => toRegister2.value = (toRegister2.value + 1) & 255
+      case "-" => toRegister2.value = (toRegister2.value - 1) & 255
+      
+    }
+    if (toRegister2 == 255) toRegister.value = (toRegister.value - 1) & 255
+  }
+  
   //Non-Generic opcode functions here:
   
   def LD_A_C(toRegister : Register, fromRegister : Register) = {
@@ -138,4 +163,5 @@ class Opcodes2(cpu : Cpu) {
   def LD_C_A(fromRegister : Register, valueRegister : Register) = {
     cpu.memory.writeByte8(0xFF00 + fromRegister.value, valueRegister.value)
   }
+  
 }
