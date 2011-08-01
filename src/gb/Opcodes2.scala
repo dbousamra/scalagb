@@ -107,12 +107,13 @@ class Opcodes2(cpu : Cpu) {
 	
 	case 0xE0 => LDH_n_A(cpu.pc, cpu.a)
 	case 0xF0 => LDH_A_n(cpu.a, cpu.pc)
-	case 0x01 => 1
-	case 0x11 => 1
-	case 0x21 => 1
-	case 0x31 => 1
 	
+	case 0x01 => LD_n_n(cpu.c, cpu.b, cpu.pc)
+	case 0x11 => LD_n_n(cpu.e, cpu.d, cpu.pc)
+	case 0x21 => LD_n_n(cpu.l, cpu.h, cpu.pc)
+	case 0x31 => LD_n_nSP(cpu.sp, cpu.pc)
 	
+	case 0xF9 => LD_SP_HL(cpu.h, cpu.l, cpu.sp) //TODO
 	
 			
   }
@@ -162,6 +163,19 @@ class Opcodes2(cpu : Cpu) {
     if (toRegister2 == 255) toRegister.value = (toRegister.value - 1) & 255
   }
   
+  def  LD_n_n(toRegister : Register, toRegister2 : Register, fromRegister : Register) = {
+    toRegister.value = cpu.memory.readByte8(fromRegister.value)
+    toRegister2.value = cpu.memory.readByte8(fromRegister.value + 1)
+    cpu.pc.value += 2
+  }
+  
+ 
+  
+  def LD_SP_HL(fromRegister : Register, fromRegister2 : Register, toRegister : Register) = {
+    //TODO - not sure how to concatenate H and L into one
+  }
+  
+  
   //Non-Generic opcode functions here:
   
   def LD_A_C(toRegister : Register, fromRegister : Register) = {
@@ -180,6 +194,11 @@ class Opcodes2(cpu : Cpu) {
   def LDH_A_n(toRegister : Register, fromRegister : Register) = {
     toRegister.value = cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(fromRegister.value))
     cpu.pc.value += 1
+  }
+  
+   def LD_n_nSP(toRegister : Register, fromRegister : Register) = {
+    toRegister.value = cpu.memory.readByte16(fromRegister.value)
+    cpu.pc.value += 2
   }
   
 }
