@@ -82,6 +82,23 @@ class Opcodes2(cpu : Cpu) {
 	case 0x74 => LD_r1_r16write(cpu.l, cpu.h, cpu.h)
 	case 0x75 => LD_r1_r16write(cpu.l, cpu.h, cpu.l)
 	case 0x36 => LDHLmn_write(cpu.h, cpu.l)
+	
+	case 0x0A => LD_r1_r16read(cpu.a, cpu.b, cpu.c)
+	case 0x1A => LD_r1_r16read(cpu.a, cpu.d, cpu.e)
+	case 0xFA => LD_r1_r16read(cpu.a, cpu.h, cpu.l)
+	case 0x3E => LD_nn_n(cpu.a)
+	
+	case 0x47 => LD_r1_r(cpu.b, cpu.a)
+	case 0x4F => LD_r1_r(cpu.c, cpu.a)
+	case 0x57 => LD_r1_r(cpu.d, cpu.a)
+	case 0x5F => LD_r1_r(cpu.e, cpu.a) 
+	case 0x67 => LD_r1_r(cpu.h, cpu.a) 
+	case 0x6F => LD_r1_r(cpu.l, cpu.a) 
+	case 0x02 => LD_r1_r16write(cpu.c, cpu.b, cpu.a)
+	case 0x12 => LD_r1_r16write(cpu.e, cpu.d, cpu.a)
+	case 0x77 => LD_r1_r16write(cpu.l, cpu.h, cpu.a)
+	case 0xEA => LD_n_A16Write(cpu.a)
+			
   }
   
   def LD_nn_n(register : Register) = {
@@ -98,11 +115,15 @@ class Opcodes2(cpu : Cpu) {
   }
   
   def LD_r1_r16write(fromRegister : Register, fromRegister2 : Register, valueRegister : Register) = {
-	  cpu.memory.writeByte8((fromRegister2.value << 8) + fromRegister.value, valueRegister.value)
+	cpu.memory.writeByte8((fromRegister2.value << 8) + fromRegister.value, valueRegister.value)
   }
   
   def LDHLmn_write(fromRegister : Register, fromRegister2 : Register) = {
     cpu.memory.writeByte8((fromRegister.value << 8) + fromRegister2.value, cpu.memory.readByte8(cpu.pc.value))
     cpu.pc.value += 1
+  }
+  
+  def LD_n_A16Write(valueRegister : Register) = {
+      cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc.value), valueRegister.value)
   }
 }
