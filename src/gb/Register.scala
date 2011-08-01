@@ -1,7 +1,6 @@
 package gb
 
-class Register() {
-  var value = 0
+class Register(var value:Int = 0) {
   
   def getFlag(flag : Int) = flag match {
     case 0x80 if (value & 0x80) != 0 => true
