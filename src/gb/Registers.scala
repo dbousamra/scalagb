@@ -30,11 +30,32 @@ class Registers {
   }
 
 
-  def setFlag(flag : Int) = flag match {
-    case 0x80 => f |= 0x80
-    case 0x40 => f |= 0x40
-    case 0x20 => f |= 0x20
-    case 0x10 => f |= 0x10
+  def setFlag(flag : String) = flag match {
+    case "ZERO"      => f |= 0x80
+    case "SUB"       => f |= 0x40
+    case "HALFCARRY" => f |= 0x20
+    case "CARRY"     => f |= 0x10
   }
   
+   def unsetFlag(flag : String) = flag match {
+    case "ZERO"	     => f &= ~0x80
+    case "SUB" 	 	 => f &= ~0x40
+    case "HALFCARRY" => f &= ~0x20
+    case "CARRY"     => f &= ~0x10
+  } 
+   
+  //if overflowed, we carry
+  def carryOccurred(register : Int) : Boolean = {
+    (register > 0xFF)  | (register < 0x00)
+  }
+  
+  //if the result of the operation is zero
+  def zeroOccurred(register : Int) : Boolean = {
+    (register & 0xFF) == 0 
+  }
+  
+   //if the result of the lower nibble was more then 15
+  def halfCarryOccurred(register1Prior : Int, register1 : Int, register2 : Int) : Boolean = {
+   ((register1 ^ register2 ^ register1Prior) & 0x10) == 0
+  }
 }
