@@ -105,6 +105,14 @@ class Opcodes2(cpu : Cpu) {
 	case 0x2A => LDD_A_HLRead(cpu.a, cpu.h, cpu.l, "+")
 	case 0x22 => LDD_HL_A(cpu.h, cpu.l, cpu.a, "+")
 	
+	case 0xE0 => LDH_n_A(cpu.pc, cpu.a)
+	case 0xF0 => LDH_A_n(cpu.a, cpu.pc)
+	case 0x01 => 1
+	case 0x11 => 1
+	case 0x21 => 1
+	case 0x31 => 1
+	
+	
 	
 			
   }
@@ -162,6 +170,16 @@ class Opcodes2(cpu : Cpu) {
   
   def LD_C_A(fromRegister : Register, valueRegister : Register) = {
     cpu.memory.writeByte8(0xFF00 + fromRegister.value, valueRegister.value)
+  }
+  
+  def LDH_n_A(fromRegister : Register, valueRegister : Register) = {
+    cpu.memory.writeByte8(0xFF00 + cpu.memory.readByte8(fromRegister.value), valueRegister.value)
+    cpu.pc.value += 1
+  }
+  
+  def LDH_A_n(toRegister : Register, fromRegister : Register) = {
+    toRegister.value = cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(fromRegister.value))
+    cpu.pc.value += 1
   }
   
 }
