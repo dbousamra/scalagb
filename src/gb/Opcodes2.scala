@@ -123,7 +123,7 @@ class Opcodes2(cpu : Cpu) {
   case object |+| extends Op { override val offset = 1 }
   
   def LD_nn_n(register : Register) = {
-    register.value = cpu.memory.readByte8(cpu.pc.value)
+    register.value = cpu.memory.readByte8(cpu.pc)
     cpu.pc.value += 1
   }
   
@@ -132,37 +132,37 @@ class Opcodes2(cpu : Cpu) {
   }
   
   def LD_r1_r16read(toRegister : Register, fromRegister : Register, fromRegister2 : Register) = {
-    toRegister.value = cpu.memory.readByte8((fromRegister.value << 8) + fromRegister2.value)
+    toRegister.value = cpu.memory.readByte8((fromRegister << 8) + fromRegister2)
   }
   
   def LD_r1_r16write(fromRegister : Register, fromRegister2 : Register, valueRegister : Register) = {
-	cpu.memory.writeByte8((fromRegister2.value << 8) + fromRegister.value, valueRegister.value)
+	cpu.memory.writeByte8((fromRegister2 << 8) + fromRegister, valueRegister)
   }
   
   def LDHLmn_write(fromRegister : Register, fromRegister2 : Register) = {
-    cpu.memory.writeByte8((fromRegister.value << 8) + fromRegister2.value, cpu.memory.readByte8(cpu.pc.value))
+    cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, cpu.memory.readByte8(cpu.pc))
     cpu.pc.value += 1
   }
   
   def LD_n_A16Write(valueRegister : Register) = {
-      cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc.value), valueRegister.value)
+      cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc), valueRegister)
   }
   
   def LDD_A_HLRead(toRegister : Register, fromRegister : Register, fromRegister2 : Register, op : Int) = {
-    toRegister.value = cpu.memory.readByte8((fromRegister.value << 8) + fromRegister2.value)
-    fromRegister2.value = (fromRegister2.value + op) & 255
-    if (fromRegister2.value == 255) fromRegister.value = (fromRegister.value - 1) & 255
+    toRegister.value = cpu.memory.readByte8((fromRegister << 8) + fromRegister2)
+    fromRegister2.value = (fromRegister2 + op) & 255
+    if (fromRegister2.value == 255) fromRegister.value = (fromRegister - 1) & 255
   }
   
   def LDD_HL_A(toRegister : Register, toRegister2 : Register, fromRegister : Register, op : Op) = {
-    cpu.memory.writeByte8((toRegister.value << 8) + toRegister2.value, fromRegister.value)
-    toRegister2.value = (toRegister2.value + op.offset) & 255
-    if (toRegister2 == 255) toRegister.value = (toRegister.value - 1) & 255
+    cpu.memory.writeByte8((toRegister << 8) + toRegister2, fromRegister)
+    toRegister2.value = (toRegister2 + op.offset) & 255
+    if (toRegister2 == 255) toRegister.value = (toRegister - 1) & 255
   }
   
   def  LD_n_n(toRegister : Register, toRegister2 : Register, fromRegister : Register) = {
-    toRegister.value = cpu.memory.readByte8(fromRegister.value)
-    toRegister2.value = cpu.memory.readByte8(fromRegister.value + 1)
+    toRegister.value = cpu.memory.readByte8(fromRegister)
+    toRegister2.value = cpu.memory.readByte8(fromRegister + 1)
     cpu.pc.value += 2
   }
   
@@ -176,25 +176,25 @@ class Opcodes2(cpu : Cpu) {
   //Non-Generic opcode functions here:
   
   def LD_A_C(toRegister : Register, fromRegister : Register) = {
-    toRegister.value = cpu.memory.readByte8(0xFF00 + fromRegister.value)
+    toRegister.value = cpu.memory.readByte8(fromRegister + 0xFF00)
   }
   
   def LD_C_A(fromRegister : Register, valueRegister : Register) = {
-    cpu.memory.writeByte8(0xFF00 + fromRegister.value, valueRegister.value)
+    cpu.memory.writeByte8(fromRegister + 0xFF00, valueRegister)
   }
   
   def LDH_n_A(fromRegister : Register, valueRegister : Register) = {
-    cpu.memory.writeByte8(0xFF00 + cpu.memory.readByte8(fromRegister.value), valueRegister.value)
+    cpu.memory.writeByte8(0xFF00 + cpu.memory.readByte8(fromRegister), valueRegister)
     cpu.pc.value += 1
   }
   
   def LDH_A_n(toRegister : Register, fromRegister : Register) = {
-    toRegister.value = cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(fromRegister.value))
+    toRegister.value = cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(fromRegister))
     cpu.pc.value += 1
   }
   
    def LD_n_nSP(toRegister : Register, fromRegister : Register) = {
-    toRegister.value = cpu.memory.readByte16(fromRegister.value)
+    toRegister.value = cpu.memory.readByte16(fromRegister)
     cpu.pc.value += 2
   }
   

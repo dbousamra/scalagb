@@ -16,4 +16,9 @@ class Register(var value:Int = 0) {
   def setHalfCarryFlag(x: Boolean) = setFlag(x, 0x20)
   def setCarryFlag(x: Boolean) = setFlag(x, 0x10)  
 
+  def +(i:Int) = new Register(value + i)
+}
+
+object Register {
+	implicit def reg2int(r:Register):Int = r.value
 }
