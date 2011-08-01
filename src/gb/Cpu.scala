@@ -3,7 +3,7 @@ package gb
 class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   
   var registers : Registers = new Registers
-  var opcodes : Opcodes = new Opcodes
+  var opcodes : Opcodes = new Opcodes(this)
   var gpu : Gpu = new Gpu(memory)
   var memory : Memory = new Memory(gpu, this, romFilename)
   
@@ -16,7 +16,7 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
     val opcode = memory.readByte8(registers.pc)
     registers.pc += 1
     
-    opcodes.execute(opcode, this)
+    opcodes.execute(opcode)
     registers.pc &= 0xFFFF //prevent overflow
     if (DEBUG_MODE) {
       println(debugTraces2(opcode))
