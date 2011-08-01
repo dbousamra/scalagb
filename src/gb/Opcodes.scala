@@ -1113,8 +1113,6 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
-//    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-//    if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1125,8 +1123,6 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.c)) cpu.registers.setFlag("HALFCARRY")
-    //val x = (cpu.registers.a ^ cpu.registers.c ^ a) & 0x10
-    //if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1137,8 +1133,6 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.d)) cpu.registers.setFlag("HALFCARRY")
-    //val x = (cpu.registers.a ^ cpu.registers.d ^ a) & 0x10
-    //if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1149,8 +1143,6 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.e)) cpu.registers.setFlag("HALFCARRY")
-    //val x = (cpu.registers.a ^ cpu.registers.e ^ a) & 0x10
-    //if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1161,8 +1153,6 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.h)) cpu.registers.setFlag("HALFCARRY")
-    //val x = (cpu.registers.a ^ cpu.registers.h ^ a) & 0x10
-    //if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1172,9 +1162,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    //val x = (cpu.registers.a ^ cpu.registers.l ^ a) & 0x10
     if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.l)) cpu.registers.setFlag("HALFCARRY")
-    //if (x != 0) cpu.registers.f |= 0x20
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1184,8 +1172,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-    if (x != 0) cpu.registers.a |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1196,8 +1183,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ a ^ m) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1209,8 +1195,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ a ^ m) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1256,10 +1241,16 @@ class Opcodes(cpu: Cpu) {
 
   def ADDSPn() = {
     var i = cpu.memory.readByte8((cpu.registers.pc))
-    if (i > 0x7F) i -= 0x100
+    
+    if (i > 0x7F) i -= 0x100 
     cpu.registers.pc += 1
     cpu.registers.sp += i
-    cpu.registers.lastInstrClockm = 4
+    
+//    cpu.registers.unsetFlag("ZERO")
+//    cpu.registers.unsetFlag("SUB")
+//    if (cpu.registers.carryOccurred(cpu.registers.sp)) cpu.registers.setFlag("CARRY")
+//    if(())
+//    cpu.registers.lastInstrClockm = 4
   }
 
   def ADCr_b() = {
@@ -1270,8 +1261,7 @@ class Opcodes(cpu: Cpu) {
     //cpu.registers.f=(cpu.registers.a>255)?0x10:0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1282,8 +1272,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.c ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1294,8 +1283,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.d ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.d)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1306,8 +1294,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.e ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.e)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1318,8 +1305,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-    if (x != 0) cpu.registers.h |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.h)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1330,8 +1316,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.l ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.l)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1342,8 +1327,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.a ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1355,8 +1339,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1369,8 +1352,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a > 255) cpu.registers.f = 0x10 else cpu.registers.f = 0
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1378,12 +1360,9 @@ class Opcodes(cpu: Cpu) {
     var a = cpu.registers.a
     cpu.registers.a -= cpu.registers.b
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
-    //if (cpu.registers.a<0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
-
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1393,8 +1372,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.c ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.c)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1404,8 +1382,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.d ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.d)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1415,8 +1392,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.e ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.e)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1426,8 +1402,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.h ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.h)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1437,31 +1412,21 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.l ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.l)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
  
   def SUBr_a() = {
-    var a = cpu.registers.a	
+    var a = cpu.registers.a
     cpu.registers.a -= cpu.registers.a
-    if (cpu.registers.a < 0) {
-      cpu.registers.f = 0x50
-    }
-      else {
-        cpu.registers.f = 0x40
-      }
+    if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
-    if (cpu.registers.a == 0) { 
-      cpu.registers.f |= 0x80 
-      }
-    val x = (cpu.registers.a ^ cpu.registers.a ^ a) & 0x10
-    if (x != 0) { 
-      cpu.registers.f |= 0x20 
-    }
+    if (cpu.registers.zeroOccurred(cpu.registers.a)) cpu.registers.setFlag("ZERO")
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
+    
     cpu.registers.lastInstrClockm = 1
   }
-
+  
   def SUBHL() = {
     var a = cpu.registers.a
     var m = cpu.memory.readByte8(((cpu.registers.h << 8) + cpu.registers.l))
@@ -1469,8 +1434,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1482,8 +1446,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1494,8 +1457,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1506,8 +1468,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.c ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.c)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1518,8 +1479,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.d ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.d)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1530,8 +1490,7 @@ class Opcodes(cpu: Cpu) {
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.e ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.e)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1540,11 +1499,9 @@ class Opcodes(cpu: Cpu) {
     cpu.registers.a -= cpu.registers.h
     if ((cpu.registers.f & 0x10) != 0) cpu.registers.a -= 1 else cpu.registers.a -= 0
     if (cpu.registers.a < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
-
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.h ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.h)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1556,8 +1513,7 @@ class Opcodes(cpu: Cpu) {
 
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.l ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.l)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1569,8 +1525,7 @@ class Opcodes(cpu: Cpu) {
 
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.a ^ a) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, cpu.registers.a, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1583,8 +1538,7 @@ class Opcodes(cpu: Cpu) {
 
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1598,8 +1552,7 @@ class Opcodes(cpu: Cpu) {
 
     cpu.registers.a &= 255
     if (cpu.registers.a != 0) cpu.registers.f |= 0x80
-    val c = (cpu.registers.a ^ m ^ a) & 0x10
-    if (c != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(a, m, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1610,8 +1563,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.b ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.b)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1620,8 +1572,8 @@ class Opcodes(cpu: Cpu) {
     i -= cpu.registers.c
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
-    val x = (cpu.registers.a ^ cpu.registers.c ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if (i != 0) cpu.registers.f |= 0x80
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.c)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1631,8 +1583,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.d ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.d)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1642,8 +1593,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.e ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.e)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1653,8 +1603,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.h ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.h)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1664,8 +1613,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.l ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.l)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1675,8 +1623,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ cpu.registers.a ^ i) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, cpu.registers.a)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 1
   }
 
@@ -1687,8 +1634,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ i ^ m) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, m)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 
@@ -1700,8 +1646,7 @@ class Opcodes(cpu: Cpu) {
     if (i < 0) cpu.registers.f = 0x50 else cpu.registers.f = 0x40
     i &= 255
     if (i != 0) cpu.registers.f |= 0x80
-    val x = (cpu.registers.a ^ i ^ m) & 0x10
-    if (x != 0) cpu.registers.f |= 0x20
+    if(cpu.registers.halfCarryOccurred(i, cpu.registers.a, m)) cpu.registers.setFlag("HALFCARRY")
     cpu.registers.lastInstrClockm = 2
   }
 

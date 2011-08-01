@@ -56,6 +56,29 @@ class Registers {
   
    //if the result of the lower nibble was more then 15
   def halfCarryOccurred(register1Prior : Int, register1 : Int, register2 : Int) : Boolean = {
-   ((register1 ^ register2 ^ register1Prior) & 0x10) == 0
+   ((register1 ^ register2 ^ register1Prior) & 0x10) != 0
   }
+  
+  def setZeroFlag(x : Boolean) = x match {
+    case true  => f |= 0x80
+    case false => f &= ~0x80
+  }
+  
+  def setSubFlag(x : Boolean) = x match {
+    case true  => f |= 0x40
+    case false => f &= ~0x40
+  }
+  
+  def setHalfCarryFlag(x : Boolean) = x match {
+    case true  => f |= 0x20
+    case false => f &= ~0x20
+  }
+  
+  def setCarryFlag(x : Boolean) = x match {
+    case true  => f |= 0x10
+    case false => f &= ~0x10
+  }
+  
+  
+  
 }
