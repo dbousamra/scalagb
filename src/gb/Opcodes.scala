@@ -201,6 +201,17 @@ class Opcodes(cpu: Cpu) {
       case 0xAD => XOR_n(l, a)
       case 0xAE => XOR_n16(a, h, l)
       case 0xEE => XOR_n8(a, pc)
+
+      case 0xBF => CP_n(a, a)
+      case 0xB8 => CP_n(b, a)
+      case 0xB9 => CP_n(c, a)
+      case 0xBA => CP_n(d, a)
+      case 0xBB => CP_n(e, a)
+      case 0xBC => CP_n(h, a)
+      case 0xBD => CP_n(l, a)
+      case 0xBE => CP_n16(a, h, l)
+      case 0xFE => CP_n8(a, pc)
+
     }
   }
 
@@ -473,6 +484,31 @@ class Opcodes(cpu: Cpu) {
     f.setHalfCarryFlag(false)
     f.setCarryFlag(false)
     f.setSubFlag(false)
+  }
+
+  def CP_n(register2: Register, register1: Register) = {
+    val sum = register1 - register2;
+    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
+    f.setCarryFlag(sum < 0)
+    f.setZeroFlag(sum == 0)
+    f.setSubFlag(true)
+  }
+
+  def CP_n16(fromRegister: Register, fromRegister2: Register, register1: Register) = {
+    val sum = register1 - memory.readByte8((fromRegister << 8) + fromRegister2)
+    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
+    f.setCarryFlag(sum < 0)
+    f.setZeroFlag(sum == 0)
+    f.setSubFlag(true)
+  }
+
+  def CP_n8(register2: Register, register1: Register) = {
+    val sum = register1 - memory.readByte8(register2)
+    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
+    f.setCarryFlag(sum < 0)
+    f.setZeroFlag(sum == 0)
+    pc += 1
+    f.setSubFlag(true)
   }
 
   //Non-Generic opcode functions here:
