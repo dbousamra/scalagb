@@ -8,6 +8,8 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   var reserve_d, reserve_e, reserve_h, reserve_l, reserve_f : Register = new Register
   var pc : Register = new Register
   var sp : Register = new Register
+  var halt : Register = new Register
+  var interruptable = true
   
   var opcodes : Opcodes = new Opcodes(this)
   var gpu : Gpu = new Gpu(memory)
@@ -22,7 +24,7 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
     a := 0x01; b := 0x00 ; c := 0x13
     d := 0x00; e := 0xD8 ; h := 0x01
     f := 0xB0; l := 0x4d ; pc := 0x0100
-    sp := 0xFFFE
+    sp := 0xFFFE; halt := 0
   }
   
   def carryOccurred(register : Register) : Boolean = {
