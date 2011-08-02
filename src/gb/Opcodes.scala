@@ -1,6 +1,6 @@
 package gb
 
-class Opcodes2(cpu : Cpu) {
+class Opcodes(cpu : Cpu) {
 
   def execute(opcode : Int) = opcode match {
     
@@ -97,7 +97,7 @@ class Opcodes2(cpu : Cpu) {
 	case 0x02 => LD_r1_r16write(cpu.c, cpu.b, cpu.a)
 	case 0x12 => LD_r1_r16write(cpu.e, cpu.d, cpu.a)
 	case 0x77 => LD_r1_r16write(cpu.l, cpu.h, cpu.a)
-	case 0xEA => LD_n_A16Write(cpu.a)
+	case 0xEA => LD_n_A16Write(cpu.pc, cpu.a)
 	case 0xF2 => LD_A_C(cpu.a, cpu.c)
 	
 	case 0x3A => LDD_A_HLRead(cpu.a, cpu.h, cpu.l, "-")
@@ -113,8 +113,13 @@ class Opcodes2(cpu : Cpu) {
 	case 0x21 => LD_n_n(cpu.l, cpu.h, cpu.pc)
 	case 0x31 => LD_n_nSP(cpu.sp, cpu.pc)
 	
-	case 0xF9 => LD_SP_HL(cpu.h, cpu.l, cpu.sp) //TODO
+	case 0xF9 => LD_SP_HL(cpu.h, cpu.l, cpu.sp) //TODO: No implemented
+	case 0x08 => LD_n_A16Write(cpu.pc, cpu.sp) //TODO: Possibly incorrect.
 	
+	case 0xF5 => PUSH_nn(cpu.sp, cpu.a, cpu.f)
+	case 0xC5 => 1
+	case 0xD5 => 1
+	case 0xE5 => 1
 			
   }
   
@@ -140,8 +145,9 @@ class Opcodes2(cpu : Cpu) {
     cpu.pc.value += 1
   }
   
-  def LD_n_A16Write(valueRegister : Register) = {
-      cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc.value), valueRegister.value)
+  def LD_n_A16Write(fromRegister : Register, valueRegister : Register) = {
+      cpu.memory.writeByte8(cpu.memory.readByte16(fromRegister.value), valueRegister.value)
+      cpu.pc.value += 2
   }
   
   def LDD_A_HLRead(toRegister : Register, fromRegister : Register, fromRegister2 : Register, op : String) = {
@@ -169,10 +175,15 @@ class Opcodes2(cpu : Cpu) {
     cpu.pc.value += 2
   }
   
- 
-  
   def LD_SP_HL(fromRegister : Register, fromRegister2 : Register, toRegister : Register) = {
     //TODO - not sure how to concatenate H and L into one
+  }
+  
+  def  PUSH_nn(fromRegister : Register, toRegister : Register, toRegister2 : Register) = {
+    fromRegister.value -= 1
+    cpu.memory.writeByte8(fromRegister.value, toRegister.value)
+    fromRegister.value -= 1
+    cpu.memory.writeByte8(fromRegister.value, toRegister.value)
   }
   
   

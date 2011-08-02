@@ -9,7 +9,7 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   var pc : Register = new Register
   var sp : Register = new Register
   
-  var opcodes : Opcodes2 = new Opcodes2(this)
+  var opcodes : Opcodes = new Opcodes(this)
   var gpu : Gpu = new Gpu(memory)
   var memory : Memory = new Memory(gpu, this, romFilename)
   
