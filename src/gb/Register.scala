@@ -1,13 +1,6 @@
 package gb
 
 class Register(var value:Int = 0) {
-  
-  def getFlag(flag : Int) = flag match {
-    case 0x80 if (value & 0x80) != 0 => true
-    case 0x40 if (value & 0x40) != 0 => true
-    case 0x20 if (value & 0x20) != 0 => true
-    case 0x10 if (value & 0x10) != 0 => true
-  }
 
   def setFlag(x: Boolean, f: Int) = if (x) value |= f else value &= ~f
 
@@ -15,6 +8,11 @@ class Register(var value:Int = 0) {
   def setSubFlag(x: Boolean) = setFlag(x, 0x40)
   def setHalfCarryFlag(x: Boolean) = setFlag(x, 0x20)
   def setCarryFlag(x: Boolean) = setFlag(x, 0x10)  
+  
+  def getZeroFlag() : Boolean = (value & 0x80) != 0
+  def getSubFlag() : Boolean = (value & 0x40) != 0
+  def getHalfCarryFlag() : Boolean = (value & 0x40) != 0 
+  def getCarryFlag() : Boolean = (value & 0x40) != 0 
 
   def +(i:Int) = new Register(value + i)
   def :=(i:Int) = value = i
@@ -22,9 +20,13 @@ class Register(var value:Int = 0) {
   def -=(i:Int) = value -= i
   def ==(i:Int) = value == i
   def <<(i:Int) = value << i
+  def &=(i:Int) = value &= i
+  def |=(i:Int) = value |= i
   
 }
 
 object Register {
 	implicit def reg2int(r:Register):Int = r.value
+	implicit def bool2int(b:Boolean):Int = if (b) 1 else 0
+	
 }
