@@ -135,6 +135,18 @@ class Opcodes(cpu : Cpu) {
 	case 0x85 => ADD_A_n(cpu.l, cpu.a)
 	case 0x86 => ADD_A_n16Read(cpu.h, cpu.l, cpu.a)
 	case 0xC6 => ADD_A_n16ReadN(cpu.pc, cpu.a)
+	
+	case 0x8F => 1
+	case 0x88 => 1
+	case 0x89 => 1
+	case 0x8A => 1
+	case 0x8B => 1
+	case 0x8C => 1
+	case 0x8D => 1
+	case 0x8E => 1
+	case 0xCE => 1
+	
+	
 		
 			
   }
@@ -145,7 +157,7 @@ class Opcodes(cpu : Cpu) {
   
   def LD_nn_n(register : Register) = {
     register := cpu.memory.readByte8(cpu.pc)
-    cpu.pc.value += 1
+    cpu.pc += 1
   }
   
   def LD_r1_r(toRegister : Register, fromRegister : Register) = {
@@ -162,19 +174,19 @@ class Opcodes(cpu : Cpu) {
   
   def LDHLmn_write(fromRegister : Register, fromRegister2 : Register) = {
     cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, cpu.memory.readByte8(cpu.pc))
-    cpu.pc.value += 1
+    cpu.pc += 1
   }
   
 
   def LD_n_A16Write(fromRegister : Register, valueRegister : Register) = {
       cpu.memory.writeByte8(cpu.memory.readByte16(cpu.pc), valueRegister)
-      cpu.pc.value += 2
+      cpu.pc += 2
   }
   
   def LDD_A_HLRead(toRegister : Register, fromRegister : Register, fromRegister2 : Register, op : Int) = {
     toRegister := cpu.memory.readByte8((fromRegister << 8) + fromRegister2)
     fromRegister2 := (fromRegister2 + op) & 255
-    if (fromRegister2.value == 255) fromRegister := (fromRegister - 1) & 255
+    if (fromRegister2 == 255) fromRegister := (fromRegister - 1) & 255
   }
   
   def LDD_HL_A(toRegister : Register, toRegister2 : Register, fromRegister : Register, op : Op) = {
@@ -186,7 +198,7 @@ class Opcodes(cpu : Cpu) {
   def  LD_n_n(toRegister : Register, toRegister2 : Register, fromRegister : Register) = {
     toRegister := cpu.memory.readByte8(fromRegister)
     toRegister2 := cpu.memory.readByte8(fromRegister + 1)
-    cpu.pc.value += 2
+    cpu.pc += 2
   }
   
   def LD_SP_HL(fromRegister : Register, fromRegister2 : Register, toRegister : Register) = {
@@ -194,35 +206,35 @@ class Opcodes(cpu : Cpu) {
   }
   
   def  PUSH_nn(fromRegister : Register, toRegister : Register, toRegister2 : Register) = {
-    fromRegister.value -= 1
-    cpu.memory.writeByte8(fromRegister.value, toRegister.value)
-    fromRegister.value -= 1
-    cpu.memory.writeByte8(fromRegister.value, toRegister2.value)
+    fromRegister -= 1
+    cpu.memory.writeByte8(fromRegister, toRegister)
+    fromRegister -= 1
+    cpu.memory.writeByte8(fromRegister, toRegister2)
   }
   
   def POP_nn(fromRegister : Register, toRegister : Register, toRegister2 : Register) = {
-    toRegister.value = cpu.memory.readByte8(fromRegister.value)
-    fromRegister.value += 1
-    toRegister2.value = cpu.memory.readByte8(fromRegister.value)
-    fromRegister.value += 1
+    toRegister := cpu.memory.readByte8(fromRegister)
+    fromRegister += 1
+    toRegister2 := cpu.memory.readByte8(fromRegister)
+    fromRegister += 1
   }
   
   def ADD_A_n(fromRegister : Register, toRegister : Register) = {
-    var sum = toRegister.value + fromRegister.value
-    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    var sum = toRegister + fromRegister
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
-    toRegister.value = sum & 0xFF
-    cpu.f.setZeroFlag(toRegister.value == 0)
+    toRegister := sum & 0xFF
+    cpu.f.setZeroFlag(toRegister == 0)
     cpu.f.setSubFlag(false)
 
   }
   
   def ADD_A_n16Read(fromRegister : Register, fromRegister2 : Register, toRegister : Register) = {
-    var sum = toRegister.value + cpu.memory.readByte8(((fromRegister.value << 8) + fromRegister2.value))
+    var sum = toRegister + cpu.memory.readByte8(((fromRegister << 8) + fromRegister2))
     cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
-    toRegister.value = sum & 0xFF
-    cpu.f.setZeroFlag(toRegister.value == 0)
+    toRegister := sum & 0xFF
+    cpu.f.setZeroFlag(toRegister == 0)
     cpu.f.setSubFlag(false)
   }
   
@@ -230,10 +242,10 @@ class Opcodes(cpu : Cpu) {
     var sum = toRegister.value + cpu.memory.readByte8(fromRegister.value)
     cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
-    toRegister.value = sum & 0xFF
-    cpu.f.setZeroFlag(toRegister.value == 0)
+    toRegister := sum & 0xFF
+    cpu.f.setZeroFlag(toRegister == 0)
     cpu.f.setSubFlag(false)
-    cpu.pc.value += 1
+    cpu.pc += 1
   }
   
   def  ADC_A_n(fromRegister : Register, toRegister : Register) = {
@@ -254,17 +266,17 @@ class Opcodes(cpu : Cpu) {
   
   def LDH_n_A(fromRegister : Register, valueRegister : Register) = {
     cpu.memory.writeByte8(0xFF00 + cpu.memory.readByte8(fromRegister), valueRegister)
-    cpu.pc.value += 1
+    cpu.pc += 1
   }
   
   def LDH_A_n(toRegister : Register, fromRegister : Register) = {
     toRegister := cpu.memory.readByte8(0xFF00 + cpu.memory.readByte8(fromRegister))
-    cpu.pc.value += 1
+    cpu.pc += 1
   }
   
    def LD_n_nSP(toRegister : Register, fromRegister : Register) = {
     toRegister := cpu.memory.readByte16(fromRegister)
-    cpu.pc.value += 2
+    cpu.pc += 2
   }
   
 }

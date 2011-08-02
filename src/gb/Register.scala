@@ -18,6 +18,11 @@ class Register(var value:Int = 0) {
 
   def +(i:Int) = new Register(value + i)
   def :=(i:Int) = value = i
+  def +=(i:Int) = value += i
+  def -=(i:Int) = value -= i
+  def ==(i:Int) = value == i
+  def <<(i:Int) = value << i
+  
 }
 
 object Register {
