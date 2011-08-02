@@ -17,6 +17,7 @@ class Register(var value:Int = 0) {
   def setCarryFlag(x: Boolean) = setFlag(x, 0x10)  
 
   def +(i:Int) = new Register(value + i)
+  def :=(i:Int) = value = i
 }
 
 object Register {
