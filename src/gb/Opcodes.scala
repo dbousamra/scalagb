@@ -221,6 +221,15 @@ class Opcodes(cpu: Cpu) {
       case 0x2C => INC_n(l)
       case 0x34 => INC_n16(h, l)
       
+      case 0x3D => DEC_n(a)
+      case 0x05 => DEC_n(b)
+      case 0x0D => DEC_n(c)
+      case 0x15 => DEC_n(d)
+      case 0x1D => DEC_n(e)
+      case 0x25 => DEC_n(h)
+      case 0x2D => DEC_n(l)
+      case 0x35 => DEC_n16(h, l)
+      
 
     }
   }
@@ -535,6 +544,24 @@ class Opcodes(cpu: Cpu) {
     f.setHalfCarryFlag((i & 0xF) == 0)
     f.setSubFlag(false) 
   }
+  
+  
+  def DEC_n(toRegister : Register) = {
+    toRegister -= 1
+    f.setZeroFlag(toRegister == 0)
+    f.setHalfCarryFlag((toRegister & 0xF) == 0xF)
+    f.setSubFlag(true)
+  }
+  
+  def DEC_n16(fromRegister : Register, fromRegister2 : Register) = {
+    var i = cpu.memory.readByte8((fromRegister << 8) + fromRegister2) - 1
+    cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
+    f.setZeroFlag(i == 0)
+    f.setHalfCarryFlag((i & 0xF) == 0xF)
+    f.setSubFlag(true) 
+  }
+  
+  
 
   //Non-Generic opcode functions here:
 
