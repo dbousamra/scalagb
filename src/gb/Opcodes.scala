@@ -211,6 +211,16 @@ class Opcodes(cpu: Cpu) {
       case 0xBD => CP_n(l, a)
       case 0xBE => CP_n16(a, h, l)
       case 0xFE => CP_n8(a, pc)
+      
+      case 0x3C => INC_n(a)
+      case 0x04 => INC_n(b)
+      case 0x0C => INC_n(c)
+      case 0x14 => INC_n(d)
+      case 0x1C => INC_n(e)
+      case 0x24 => INC_n(h)
+      case 0x2C => INC_n(l)
+      case 0x34 => INC_n16(h, l)
+      
 
     }
   }
@@ -509,6 +519,21 @@ class Opcodes(cpu: Cpu) {
     f.setZeroFlag(sum == 0)
     pc += 1
     f.setSubFlag(true)
+  }
+  
+  def INC_n(toRegister : Register) = {
+    toRegister += 1
+    f.setZeroFlag(toRegister == 0)
+    f.setHalfCarryFlag((toRegister & 0xF) == 0)
+    f.setSubFlag(false)
+  }
+  
+  def INC_n16(fromRegister : Register, fromRegister2 : Register) = {
+    val i = memory.readByte8((fromRegister << 8) + fromRegister2)
+    cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
+    f.setZeroFlag(i == 0)
+    f.setHalfCarryFlag((i & 0xF) == 0)
+    f.setSubFlag(false) 
   }
 
   //Non-Generic opcode functions here:
