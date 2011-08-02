@@ -211,7 +211,7 @@ class Opcodes(cpu: Cpu) {
       case 0xBD => CP_n(l, a)
       case 0xBE => CP_n16(a, h, l)
       case 0xFE => CP_n8(a, pc)
-      
+
       case 0x3C => INC_n(a)
       case 0x04 => INC_n(b)
       case 0x0C => INC_n(c)
@@ -220,7 +220,7 @@ class Opcodes(cpu: Cpu) {
       case 0x24 => INC_n(h)
       case 0x2C => INC_n(l)
       case 0x34 => INC_n16(h, l)
-      
+
       case 0x3D => DEC_n(a)
       case 0x05 => DEC_n(b)
       case 0x0D => DEC_n(c)
@@ -229,12 +229,13 @@ class Opcodes(cpu: Cpu) {
       case 0x25 => DEC_n(h)
       case 0x2D => DEC_n(l)
       case 0x35 => DEC_n16(h, l)
-      
+
       case 0x09 => ADD_HL_n(h, l, b, c)
       case 0x19 => ADD_HL_n(h, l, d, e)
       case 0x29 => ADD_HL_n(h, l, h, l)
-      
-      
+      case 0x39 => ADD_HL_nSP(h, l, sp)
+
+      case 0xE8 => ADDSP_n(sp)
 
     }
   }
@@ -534,41 +535,40 @@ class Opcodes(cpu: Cpu) {
     pc += 1
     f.setSubFlag(true)
   }
-  
-  def INC_n(toRegister : Register) = {
+
+  def INC_n(toRegister: Register) = {
     toRegister += 1
     f.setZeroFlag(toRegister == 0)
     f.setHalfCarryFlag((toRegister & 0xF) == 0)
     f.setSubFlag(false)
   }
-  
-  def INC_n16(fromRegister : Register, fromRegister2 : Register) = {
+
+  def INC_n16(fromRegister: Register, fromRegister2: Register) = {
     val i = memory.readByte8((fromRegister << 8) + fromRegister2)
     cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
     f.setZeroFlag(i == 0)
     f.setHalfCarryFlag((i & 0xF) == 0)
-    f.setSubFlag(false) 
+    f.setSubFlag(false)
   }
-  
-  
-  def DEC_n(toRegister : Register) = {
+
+  def DEC_n(toRegister: Register) = {
     toRegister -= 1
     f.setZeroFlag(toRegister == 0)
     f.setHalfCarryFlag((toRegister & 0xF) == 0xF)
     f.setSubFlag(true)
   }
-  
-  def DEC_n16(fromRegister : Register, fromRegister2 : Register) = {
+
+  def DEC_n16(fromRegister: Register, fromRegister2: Register) = {
     var i = cpu.memory.readByte8((fromRegister << 8) + fromRegister2) - 1
     cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
     f.setZeroFlag(i == 0)
     f.setHalfCarryFlag((i & 0xF) == 0xF)
-    f.setSubFlag(true) 
+    f.setSubFlag(true)
   }
-  
+
   //TODO: HL, BC, DE are referred to as 16 bit registers occasionally. 
   //Maybe some accessors/mutators that auto combine them so we can perform instructions on them as 16 bit registers as well as 8 bit
-  
+
   def ADD_HL_n(fromRegister: Register, fromRegister2: Register, toRegister: Register, toRegister2: Register) = {
     var hl = (fromRegister << 8) + fromRegister2
     val bc = (toRegister << 8) + toRegister2
@@ -576,21 +576,30 @@ class Opcodes(cpu: Cpu) {
     fromRegister := (hl >> 8) & 255 //unshift bits
     fromRegister2 := hl & 255
     f.setCarryFlag(hl > 0xFFFF)
-    f.setHalfCarryFlag((( (fromRegister << 8) + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
-    f.setSubFlag(false) 
+    f.setHalfCarryFlag((((fromRegister << 8) + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
+    f.setSubFlag(false)
   }
-  
-   def ADD_HL_nSP(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
+
+  def ADD_HL_nSP(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var hl = (fromRegister << 8) + fromRegister2
     hl += sp
     fromRegister := (hl >> 8) & 255 //unshift bits
     fromRegister2 := hl & 255
     f.setCarryFlag(hl > 0xFFFF)
-    f.setHalfCarryFlag((( (fromRegister << 8) + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
-    f.setSubFlag(false) 
+    f.setHalfCarryFlag((((fromRegister << 8) + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
+    f.setSubFlag(false)
   }
-  
-  
+
+  def ADDSP_n(toRegister: Register, fromRegister: Register) = {
+    val i = memory.readByte8(fromRegister)
+    var j = (toRegister + i) & 0xFFFF
+    f.setCarryFlag(((toRegister ^ i ^ j) & 0x100) == 0x100)
+    f.setHalfCarryFlag(((toRegister ^ i ^ j) & 0x10) == 0x10)
+    f.setZeroFlag(false)
+    f.setSubFlag(false)
+    sp := j;
+    pc += 1
+  }
 
   //Non-Generic opcode functions here:
 
