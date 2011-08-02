@@ -1,6 +1,6 @@
 package gb
 
-class Register(var value:Int = 0) {
+class Register(private var value:Int = 0) {
 
   def setFlag(x: Boolean, f: Int) = if (x) value |= f else value &= ~f
 
