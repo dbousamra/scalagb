@@ -230,6 +230,11 @@ class Opcodes(cpu: Cpu) {
       case 0x2D => DEC_n(l)
       case 0x35 => DEC_n16(h, l)
       
+      case 0x09 => ADD_HL_n(h, l, b, c)
+      case 0x19 => ADD_HL_n(h, l, d, e)
+      case 0x29 => ADD_HL_n(h, l, h, l)
+      
+      
 
     }
   }
@@ -559,6 +564,30 @@ class Opcodes(cpu: Cpu) {
     f.setZeroFlag(i == 0)
     f.setHalfCarryFlag((i & 0xF) == 0xF)
     f.setSubFlag(true) 
+  }
+  
+  //TODO: HL, BC, DE are referred to as 16 bit registers occasionally. 
+  //Maybe some accessors/mutators that auto combine them so we can perform instructions on them as 16 bit registers as well as 8 bit
+  
+  def ADD_HL_n(fromRegister: Register, fromRegister2: Register, toRegister: Register, toRegister2: Register) = {
+    var hl = (fromRegister << 8) + fromRegister2
+    val bc = (toRegister << 8) + toRegister2
+    hl += bc
+    fromRegister := (hl >> 8) & 255 //unshift bits
+    fromRegister2 := hl & 255
+    f.setCarryFlag(hl > 0xFFFF)
+    f.setHalfCarryFlag((( (fromRegister << 8) + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
+    f.setSubFlag(false) 
+  }
+  
+   def ADD_HL_nSP(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
+    var hl = (fromRegister << 8) + fromRegister2
+    hl += sp
+    fromRegister := (hl >> 8) & 255 //unshift bits
+    fromRegister2 := hl & 255
+    f.setCarryFlag(hl > 0xFFFF)
+    f.setHalfCarryFlag((( (fromRegister << 8) + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
+    f.setSubFlag(false) 
   }
   
   
