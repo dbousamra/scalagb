@@ -32,59 +32,59 @@ class Opcodes(cpu: Cpu) {
       case 0x7B => LD_r1_r(a, e)
       case 0x7C => LD_r1_r(a, h)
       case 0x7D => LD_r1_r(a, l)
-      case 0x7E => LD_r1_r16read(a, h, l)
+      case 0x7E => LD_r1_r16read(a, h ++ l)
       case 0x40 => LD_r1_r(b, b)
       case 0x41 => LD_r1_r(b, c)
       case 0x42 => LD_r1_r(b, d)
       case 0x43 => LD_r1_r(b, e)
       case 0x44 => LD_r1_r(b, h)
       case 0x45 => LD_r1_r(b, l)
-      case 0x46 => LD_r1_r16read(b, h, l)
+      case 0x46 => LD_r1_r16read(b, h ++ l)
       case 0x48 => LD_r1_r(c, b)
       case 0x49 => LD_r1_r(c, c)
       case 0x4A => LD_r1_r(c, d)
       case 0x4B => LD_r1_r(c, e)
       case 0x4C => LD_r1_r(c, h)
       case 0x4D => LD_r1_r(c, l)
-      case 0x4E => LD_r1_r16read(c, h, l)
+      case 0x4E => LD_r1_r16read(c, h ++ l)
       case 0x50 => LD_r1_r(d, b)
       case 0x51 => LD_r1_r(d, c)
       case 0x52 => LD_r1_r(d, d)
       case 0x53 => LD_r1_r(d, e)
       case 0x54 => LD_r1_r(d, h)
       case 0x55 => LD_r1_r(d, l)
-      case 0x56 => LD_r1_r16read(d, h, l)
+      case 0x56 => LD_r1_r16read(d, h ++ l)
       case 0x58 => LD_r1_r(e, b)
       case 0x59 => LD_r1_r(e, c)
       case 0x5A => LD_r1_r(e, d)
       case 0x5B => LD_r1_r(e, e)
       case 0x5C => LD_r1_r(e, h)
       case 0x5D => LD_r1_r(e, l)
-      case 0x5E => LD_r1_r16read(e, h, l)
+      case 0x5E => LD_r1_r16read(e, h ++ l)
       case 0x60 => LD_r1_r(h, b)
       case 0x61 => LD_r1_r(h, c)
       case 0x62 => LD_r1_r(h, d)
       case 0x63 => LD_r1_r(h, e)
       case 0x64 => LD_r1_r(h, h)
       case 0x65 => LD_r1_r(h, l)
-      case 0x66 => LD_r1_r16read(h, h, l)
+      case 0x66 => LD_r1_r16read(h, h ++ l)
       case 0x68 => LD_r1_r(l, b)
       case 0x69 => LD_r1_r(l, c)
       case 0x6A => LD_r1_r(l, d)
       case 0x6B => LD_r1_r(l, e)
       case 0x6C => LD_r1_r(l, h)
       case 0x6D => LD_r1_r(l, l)
-      case 0x6E => LD_r1_r16read(l, h, l)
-      case 0x70 => LD_r1_r16write(l, h, b)
-      case 0x71 => LD_r1_r16write(l, h, c)
-      case 0x72 => LD_r1_r16write(l, h, d)
-      case 0x73 => LD_r1_r16write(l, h, e)
-      case 0x74 => LD_r1_r16write(l, h, h)
-      case 0x75 => LD_r1_r16write(l, h, l)
-      case 0x36 => LDHLmn_write(h, l)
-      case 0x0A => LD_r1_r16read(a, b, c)
-      case 0x1A => LD_r1_r16read(a, d, e)
-      case 0xFA => LD_r1_r16read(a, h, l)
+      case 0x6E => LD_r1_r16read(l, h ++ l)
+      case 0x70 => LD_r1_r16write(h ++ l, b)
+      case 0x71 => LD_r1_r16write(h ++ l, c)
+      case 0x72 => LD_r1_r16write(h ++ l, d)
+      case 0x73 => LD_r1_r16write(h ++ l, e)
+      case 0x74 => LD_r1_r16write(h ++ l, h)
+      case 0x75 => LD_r1_r16write(h ++ l, l)
+      case 0x36 => LDHLmn_write(h ++ l)
+      case 0x0A => LD_r1_r16read(a, b ++ c)
+      case 0x1A => LD_r1_r16read(a, d ++ e)
+      case 0xFA => LD_r1_r16read(a, h ++ l)
       case 0x3E => LD_nn_n(a)
       case 0x47 => LD_r1_r(b, a)
       case 0x4F => LD_r1_r(c, a)
@@ -92,9 +92,9 @@ class Opcodes(cpu: Cpu) {
       case 0x5F => LD_r1_r(e, a)
       case 0x67 => LD_r1_r(h, a)
       case 0x6F => LD_r1_r(l, a)
-      case 0x02 => LD_r1_r16write(c, b, a)
-      case 0x12 => LD_r1_r16write(e, d, a)
-      case 0x77 => LD_r1_r16write(l, h, a)
+      case 0x02 => LD_r1_r16write(b ++ c, a)
+      case 0x12 => LD_r1_r16write(d ++ e, a)
+      case 0x77 => LD_r1_r16write(h ++ l, a)
       case 0xEA => LD_n_A16Write(pc, a)
       case 0xF2 => LD_A_C(a, c)
       case 0x3A => LDD_A_HLRead(a, h, l, -1)
@@ -107,7 +107,7 @@ class Opcodes(cpu: Cpu) {
       case 0x11 => LD_n_n(e, d, pc)
       case 0x21 => LD_n_n(l, h, pc)
       case 0x31 => LD_n_nSP(sp, pc)
-      case 0xF9 => LD_SP_HL(h, l, sp) //TODO: No implemented
+      case 0xF9 => LD_SP_HL(h ++ l, sp) //TODO: No implemented
       case 0x08 => LD_n_A16Write(pc, sp) //TODO: Possibly incorrect.
       case 0xF5 => PUSH_nn(sp, a, f)
       case 0xC5 => PUSH_nn(sp, b, c)
@@ -124,7 +124,7 @@ class Opcodes(cpu: Cpu) {
       case 0x83 => ADD_A_n(e, a)
       case 0x84 => ADD_A_n(h, a)
       case 0x85 => ADD_A_n(l, a)
-      case 0x86 => ADD_A_n16Read(h, l, a)
+      case 0x86 => ADD_A_n16Read(h ++ l, a)
       case 0xC6 => ADD_A_n16ReadN(pc, a)
       case 0x8F => ADC_A_nA(a, a)
       case 0x88 => ADC_A_n(a, b)
@@ -133,7 +133,7 @@ class Opcodes(cpu: Cpu) {
       case 0x8B => ADC_A_n(a, e)
       case 0x8C => ADC_A_n(a, h)
       case 0x8D => ADC_A_n(a, l)
-      case 0x8E => ADC_A_n16(a, h, l)
+      case 0x8E => ADC_A_n16(a ++ h, l)
       case 0xCE => ADC_A_n16PC(pc, a)
       case 0x97 => SUB_n(a, a)
       case 0x90 => SUB_n(b, a)
@@ -142,7 +142,7 @@ class Opcodes(cpu: Cpu) {
       case 0x93 => SUB_n(e, a)
       case 0x94 => SUB_n(h, a)
       case 0x95 => SUB_n(l, a)
-      case 0x96 => SUB_n16(h, l, a)
+      case 0x96 => SUB_n16(h ++ l, a)
       case 0xD6 => SUB_n16PC(pc, a)
       case 0x9F => SBC_A_n_a(a) //TODO: May not work
       case 0x98 => SBC_A_n(b, a)
@@ -151,7 +151,7 @@ class Opcodes(cpu: Cpu) {
       case 0x9B => SBC_A_n(e, a)
       case 0x9C => SBC_A_n(h, a)
       case 0x9D => SBC_A_n(l, a)
-      case 0x9E => SBC_A_n16(h, l, a)
+      case 0x9E => SBC_A_n16(h ++ l, a)
       case 0xA7 => 1
       case 0xA0 => AND_n(a, b)
       case 0xA1 => AND_n(a, c)
@@ -159,7 +159,7 @@ class Opcodes(cpu: Cpu) {
       case 0xA3 => AND_n(a, e)
       case 0xA4 => AND_n(a, h)
       case 0xA5 => AND_n(a, l)
-      case 0xA6 => AND_n16(a, h, l)
+      case 0xA6 => AND_n16(a, h ++ l)
       case 0xE6 => AND_n8(a, pc)
       case 0xB7 => OR_n(a, a)
       case 0xB0 => OR_n(a, b)
@@ -168,7 +168,7 @@ class Opcodes(cpu: Cpu) {
       case 0xB3 => OR_n(a, e)
       case 0xB4 => OR_n(a, h)
       case 0xB5 => OR_n(a, l)
-      case 0xB6 => OR_n16(a, h, l)
+      case 0xB6 => OR_n16(a, h ++ l)
       case 0xF6 => OR_n8(a, pc)
       case 0xAF => XOR_n(a, a)
       case 0xA8 => XOR_n(b, a)
@@ -177,7 +177,7 @@ class Opcodes(cpu: Cpu) {
       case 0xAB => XOR_n(e, a)
       case 0xAC => XOR_n(h, a)
       case 0xAD => XOR_n(l, a)
-      case 0xAE => XOR_n16(a, h, l)
+      case 0xAE => XOR_n16(a, h ++ l)
       case 0xEE => XOR_n8(a, pc)
       case 0xBF => CP_n(a, a)
       case 0xB8 => CP_n(b, a)
@@ -186,7 +186,7 @@ class Opcodes(cpu: Cpu) {
       case 0xBB => CP_n(e, a)
       case 0xBC => CP_n(h, a)
       case 0xBD => CP_n(l, a)
-      case 0xBE => CP_n16(a, h, l)
+      case 0xBE => CP_n16(h ++ l, a)
       case 0xFE => CP_n8(a, pc)
       case 0x3C => INC_n(a)
       case 0x04 => INC_n(b)
@@ -195,7 +195,7 @@ class Opcodes(cpu: Cpu) {
       case 0x1C => INC_n(e)
       case 0x24 => INC_n(h)
       case 0x2C => INC_n(l)
-      case 0x34 => INC_n16(h, l)
+      case 0x34 => INC_n16(h ++ l)
       case 0x3D => DEC_n(a)
       case 0x05 => DEC_n(b)
       case 0x0D => DEC_n(c)
@@ -203,11 +203,11 @@ class Opcodes(cpu: Cpu) {
       case 0x1D => DEC_n(e)
       case 0x25 => DEC_n(h)
       case 0x2D => DEC_n(l)
-      case 0x35 => DEC_n16(h, l)
-      case 0x09 => ADD_HL_n(h, l, b, c)
-      case 0x19 => ADD_HL_n(h, l, d, e)
-      case 0x29 => ADD_HL_n(h, l, h, l)
-      case 0x39 => ADD_HL_nSP(h, l, sp)
+      case 0x35 => DEC_n16(h ++ l)
+      case 0x09 => ADD_HL_n(h ++ l, b ++ c)
+      case 0x19 => ADD_HL_n(h ++ l, d ++ e)
+      case 0x29 => ADD_HL_n(h ++ l, h ++ l)
+      case 0x39 => ADD_HL_nSP(h ++ l, sp)
       case 0xE8 => ADDSP_n(sp, pc)     
       case 0x03 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
       case 0x13 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
@@ -498,16 +498,16 @@ class Opcodes(cpu: Cpu) {
     toRegister := fromRegister
   }
 
-  def LD_r1_r16read(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
-    toRegister := memory.readByte8((fromRegister << 8) + fromRegister2)
+  def LD_r1_r16read(toRegister: Register, fromRegister: Register) = {
+    toRegister := memory.readByte8(fromRegister)
   }
 
-  def LD_r1_r16write(fromRegister: Register, fromRegister2: Register, valueRegister: Register) = {
-    memory.writeByte8((fromRegister2 << 8) + fromRegister, valueRegister)
+  def LD_r1_r16write(fromRegister: Register, valueRegister: Register) = {
+    memory.writeByte8(fromRegister, valueRegister)
   }
 
-  def LDHLmn_write(fromRegister: Register, fromRegister2: Register) = {
-    memory.writeByte8((fromRegister << 8) + fromRegister2, memory.readByte8(pc))
+  def LDHLmn_write(fromRegister: Register) = {
+    memory.writeByte8(fromRegister, memory.readByte8(pc))
     pc += 1
   }
 
@@ -517,13 +517,13 @@ class Opcodes(cpu: Cpu) {
   }
 
   def LDD_A_HLRead(toRegister: Register, fromRegister: Register, fromRegister2: Register, op: Int) = {
-    toRegister := memory.readByte8((fromRegister << 8) + fromRegister2)
+    toRegister := memory.readByte8(fromRegister ++ fromRegister2)
     fromRegister2 := (fromRegister2 + op) & 255
     if (fromRegister2 == 255) fromRegister := (fromRegister - 1) & 255
   }
 
   def LDD_HL_A(toRegister: Register, toRegister2: Register, fromRegister: Register, op: Op) = {
-    memory.writeByte8((toRegister << 8) + toRegister2, fromRegister)
+    memory.writeByte8(toRegister ++ toRegister2, fromRegister)
     toRegister2 := (toRegister2 + op.offset) & 255
     if (toRegister2 == 255) toRegister := (toRegister - 1) & 255
   }
@@ -534,7 +534,7 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
 
-  def LD_SP_HL(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
+  def LD_SP_HL(fromRegister: Register, toRegister: Register) = {
     //TODO - not sure how to concatenate H and L into one
   }
 
@@ -562,8 +562,8 @@ class Opcodes(cpu: Cpu) {
 
   }
 
-  def ADD_A_n16Read(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
-    var sum = toRegister + memory.readByte8(((fromRegister << 8) + fromRegister2))
+  def ADD_A_n16Read(fromRegister: Register, toRegister: Register) = {
+    var sum = toRegister + memory.readByte8((fromRegister))
     f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
     f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
@@ -599,8 +599,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
   }
 
-  def ADC_A_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
-    var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
+  def ADC_A_n16(fromRegister: Register, toRegister: Register) = {
+    var temp = memory.readByte8(fromRegister)
     var sum = toRegister + temp + fromRegister.carryFlag
     f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
     f.carryFlag = sum > 0xFF
@@ -629,8 +629,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
   }
 
-  def SUB_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
-    var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
+  def SUB_n16(fromRegister: Register, toRegister: Register) = {
+    var temp = memory.readByte8((fromRegister))
     var sum = toRegister - temp;
     f.halfCarryFlag = (toRegister & 0xF) < (temp & 0xF)
     f.carryFlag = sum < 0x00
@@ -659,8 +659,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
   }
 
-  def SBC_A_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
-    var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
+  def SBC_A_n16(fromRegister: Register, toRegister: Register) = {
+    var temp = memory.readByte8((fromRegister))
     var sum = toRegister - temp - f.carryFlag
     f.halfCarryFlag = ((toRegister & 0xF - (temp & 0xF) - f.carryFlag) < 0)
     f.carryFlag = sum < 0x00
@@ -692,8 +692,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
   }
 
-  def AND_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
-    toRegister &= memory.readByte8((fromRegister << 8) + fromRegister2)
+  def AND_n16(toRegister: Register, fromRegister: Register) = {
+    toRegister &= memory.readByte8(fromRegister)
     f.zeroFlag = toRegister == 0
     f.halfCarryFlag = true
     f.carryFlag = false
@@ -718,8 +718,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
   }
 
-  def OR_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
-    toRegister |= memory.readByte8((fromRegister << 8) + fromRegister2)
+  def OR_n16(toRegister: Register, fromRegister: Register) = {
+    toRegister |= memory.readByte8(fromRegister)
     f.zeroFlag = toRegister == 0
     f.halfCarryFlag = false
     f.carryFlag = false
@@ -743,8 +743,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
   }
 
-  def XOR_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
-    toRegister ^= memory.readByte8((fromRegister << 8) + fromRegister2)
+  def XOR_n16(toRegister: Register, fromRegister: Register) = {
+    toRegister ^= memory.readByte8(fromRegister)
     f.zeroFlag = toRegister == 0
     f.halfCarryFlag = false
     f.carryFlag = false
@@ -768,8 +768,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
   }
 
-  def CP_n16(fromRegister: Register, fromRegister2: Register, register1: Register) = {
-    val sum = register1 - memory.readByte8((fromRegister << 8) + fromRegister2)
+  def CP_n16(fromRegister: Register, register1: Register) = {
+    val sum = register1 - memory.readByte8(fromRegister)
     f.halfCarryFlag = (sum & 0xF) > (register1 & 0xF)
     f.carryFlag = sum < 0
     f.zeroFlag = sum == 0
@@ -792,9 +792,9 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
   }
 
-  def INC_n16(fromRegister: Register, fromRegister2: Register) = {
-    val i = memory.readByte8((fromRegister << 8) + fromRegister2)
-    cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
+  def INC_n16(fromRegister: Register) = {
+    val i = memory.readByte8(fromRegister)
+    cpu.memory.writeByte8(fromRegister, i)
     f.zeroFlag = i == 0
     f.halfCarryFlag = (i & 0xF) == 0
     f.subFlag = false
@@ -807,9 +807,9 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
   }
 
-  def DEC_n16(fromRegister: Register, fromRegister2: Register) = {
-    var i = cpu.memory.readByte8((fromRegister << 8) + fromRegister2) - 1
-    cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
+  def DEC_n16(fromRegister: Register) = {
+    var i = cpu.memory.readByte8(fromRegister) - 1
+    cpu.memory.writeByte8(fromRegister, i)
     f.zeroFlag = i == 0
     f.halfCarryFlag = (i & 0xF) == 0xF
     f.subFlag = true
@@ -818,24 +818,22 @@ class Opcodes(cpu: Cpu) {
   //TODO: HL, BC, DE are referred to as 16 bit registers occasionally. 
   //Maybe some accessors/mutators that auto combine them so we can perform instructions on them as 16 bit registers as well as 8 bit
 
-  def ADD_HL_n(fromRegister: Register, fromRegister2: Register, toRegister: Register, toRegister2: Register) = {
-    var hl = (fromRegister << 8) + fromRegister2
-    val bc = (toRegister << 8) + toRegister2
+  def ADD_HL_n(fromRegister: Register, toRegister: Register) = {
+    var hl = fromRegister << 8
+    val bc = toRegister
     hl += bc
-    fromRegister := (hl >> 8) & 255 //unshift bits
-    fromRegister2 := hl & 255
+    fromRegister := hl
     f.carryFlag = hl > 0xFFFF
-    f.halfCarryFlag = (((fromRegister << 8 + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
+    f.halfCarryFlag = (fromRegister & 0xFFF) + (bc & 0xFFF) > 0xFFF
     f.subFlag = false
   }
 
-  def ADD_HL_nSP(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
-    var hl = (fromRegister << 8) + fromRegister2
+  def ADD_HL_nSP(fromRegister: Register, toRegister: Register) = {
+    var hl = fromRegister
     hl += sp
-    fromRegister := (hl >> 8) & 255 //unshift bits
-    fromRegister2 := hl & 255
+    fromRegister := hl
     f.carryFlag = hl > 0xFFFF
-    f.halfCarryFlag = (((fromRegister << 8 + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
+    f.halfCarryFlag = ((fromRegister & 0xFFF) + (sp & 0xFFF) > 0xFFF)
     f.subFlag = false
 
   }

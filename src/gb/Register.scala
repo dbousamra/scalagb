@@ -1,6 +1,9 @@
 package gb
 
-class Register(private var value:Int = 0) {
+class Register(private var _value:Int = 0) {
+
+  def value = _value
+  def value_=(i: Int) = _value = i
 
   def setFlag(x: Boolean, f: Int) = if (x) value |= f else value &= ~f
 
@@ -26,7 +29,16 @@ class Register(private var value:Int = 0) {
   def &=(i:Int) = value &= i
   def |=(i:Int) = value |= i
   def ^=(i:Int) = value ^= i
+  def ++(r:Register) = new Register16(this, r)
   
+}
+
+class Register16(r1: Register, r2: Register) extends Register {
+  override def value = (r1 << 8) + r2
+  override def value_=(i: Int) = {
+    r1 := (i >> 8) & 255 //unshift bits
+    r2 := i & 255
+  }
 }
 
 object Register {
