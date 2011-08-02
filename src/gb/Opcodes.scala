@@ -198,7 +198,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def LD_r1_r(toRegister: Register, fromRegister: Register) = {
-    toRegister := fromRegister.value
+    toRegister := fromRegister
   }
 
   def LD_r1_r16read(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
@@ -267,7 +267,7 @@ class Opcodes(cpu: Cpu) {
 
   def ADD_A_n16Read(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var sum = toRegister + cpu.memory.readByte8(((fromRegister << 8) + fromRegister2))
-    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -276,7 +276,7 @@ class Opcodes(cpu: Cpu) {
 
   def ADD_A_n16ReadN(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + cpu.memory.readByte8(fromRegister)
-    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -286,7 +286,7 @@ class Opcodes(cpu: Cpu) {
 
   def ADC_A_n(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + fromRegister + cpu.f.getCarryFlag()
-    cpu.f.setHalfCarryFlag(((toRegister.value & 0xF) + (fromRegister.value & 0xF) + cpu.f.getCarryFlag)	> 0xF)
+    cpu.f.setHalfCarryFlag(((toRegister & 0xF) + (fromRegister & 0xF) + cpu.f.getCarryFlag)	> 0xF)
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -295,7 +295,7 @@ class Opcodes(cpu: Cpu) {
   
   def ADC_A_nA(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + fromRegister + cpu.f.getCarryFlag()
-    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -305,7 +305,7 @@ class Opcodes(cpu: Cpu) {
   def ADC_A_n16(fromRegister: Register, fromRegister2 : Register, toRegister: Register) = {
     var temp = cpu.memory.readByte8(((fromRegister << 8) + fromRegister2))
     var sum = toRegister + temp + fromRegister.getCarryFlag()
-    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -315,7 +315,7 @@ class Opcodes(cpu: Cpu) {
   def ADC_A_n16PC(fromRegister: Register, toRegister: Register) = {
     var temp = cpu.memory.readByte8(fromRegister)
     var sum = toRegister + fromRegister + cpu.f.getCarryFlag()
-    cpu.f.setHalfCarryFlag(((toRegister.value & 0xF) + (fromRegister.value & 0xF) + cpu.f.getCarryFlag)	> 0xF)
+    cpu.f.setHalfCarryFlag(((toRegister & 0xF) + (fromRegister & 0xF) + cpu.f.getCarryFlag)	> 0xF)
     cpu.f.setCarryFlag(sum > 0xFF)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -325,7 +325,7 @@ class Opcodes(cpu: Cpu) {
   
   def SUB_n(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister - fromRegister;
-	cpu.f.setHalfCarryFlag((toRegister.value & 0xF) < (fromRegister.value & 0xF))
+	cpu.f.setHalfCarryFlag((toRegister & 0xF) < (fromRegister & 0xF))
     cpu.f.setCarryFlag(sum < 0x00)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -335,7 +335,7 @@ class Opcodes(cpu: Cpu) {
   def SUB_n16(fromRegister: Register, fromRegister2 : Register, toRegister: Register) = {
     var temp = cpu.memory.readByte8(((fromRegister << 8) + fromRegister2))
     var sum = toRegister - temp;
-	cpu.f.setHalfCarryFlag((toRegister.value & 0xF) < (temp & 0xF))
+	cpu.f.setHalfCarryFlag((toRegister & 0xF) < (temp & 0xF))
     cpu.f.setCarryFlag(sum < 0x00)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -345,7 +345,7 @@ class Opcodes(cpu: Cpu) {
   def SUB_n16PC(fromRegister: Register, toRegister: Register) = {
     var temp = cpu.memory.readByte8(fromRegister)
     var sum = toRegister - temp;
-	cpu.f.setHalfCarryFlag((toRegister.value & 0xF) < (temp & 0xF))
+	cpu.f.setHalfCarryFlag((toRegister & 0xF) < (temp & 0xF))
     cpu.f.setCarryFlag(sum < 0x00)
     toRegister := sum & 0xFF
     cpu.pc += 1
@@ -356,7 +356,7 @@ class Opcodes(cpu: Cpu) {
   
   def SBC_A_n(fromRegister: Register, toRegister: Register) = {
 	var sum = toRegister - fromRegister - cpu.f.getCarryFlag()
-    cpu.f.setHalfCarryFlag(((toRegister.value & 0xF) - (fromRegister.value & 0xF) - cpu.f.getCarryFlag)	< 0)
+    cpu.f.setHalfCarryFlag(((toRegister & 0xF) - (fromRegister & 0xF) - cpu.f.getCarryFlag)	< 0)
     cpu.f.setCarryFlag(sum < 0x00)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -366,7 +366,7 @@ class Opcodes(cpu: Cpu) {
   def SBC_A_n16(fromRegister: Register, fromRegister2 : Register, toRegister: Register) = {
 	var temp = cpu.memory.readByte8(((fromRegister << 8) + fromRegister2))
     var sum = toRegister - temp - cpu.f.getCarryFlag
-    cpu.f.setHalfCarryFlag(((toRegister.value & 0xF) - (temp & 0xF) - cpu.f.getCarryFlag) < 0)
+    cpu.f.setHalfCarryFlag(((toRegister & 0xF) - (temp & 0xF) - cpu.f.getCarryFlag) < 0)
     cpu.f.setCarryFlag(sum < 0x00)
     toRegister := sum & 0xFF
     cpu.f.setZeroFlag(toRegister == 0)
@@ -391,7 +391,7 @@ class Opcodes(cpu: Cpu) {
   
 
   def AND_n(toRegister: Register, fromRegister: Register) = {
-    toRegister &= fromRegister.value;
+    toRegister &= fromRegister;
     cpu.f.setZeroFlag(toRegister == 0)
     cpu.f.setHalfCarryFlag(true)
     cpu.f.setCarryFlag(false)
@@ -417,7 +417,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def OR_n(toRegister: Register, fromRegister: Register) = {
-    toRegister |= fromRegister.value
+    toRegister |= fromRegister
     cpu.f.setZeroFlag(toRegister == 0)
     cpu.f.setHalfCarryFlag(false)
     cpu.f.setCarryFlag(false)

@@ -19,33 +19,33 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   }
   
   def resetRegisters() = {
-    a.value = 0x01; b.value = 0x00 ; c.value = 0x13
-    d.value = 0x00; e.value = 0xD8 ; h.value = 0x01
-    f.value = 0xB0; l.value = 0x4d ; pc.value = 0x0100
-    sp.value = 0xFFFE
+    a := 0x01; b := 0x00 ; c := 0x13
+    d := 0x00; e := 0xD8 ; h := 0x01
+    f := 0xB0; l := 0x4d ; pc := 0x0100
+    sp := 0xFFFE
   }
   
   def carryOccurred(register : Register) : Boolean = {
-    (register.value > 0xFF)  | (register.value < 0x00)
+    (register > 0xFF)  | (register < 0x00)
   }
   
   //if the result of the operation is zero
   def zeroOccurred(register : Register) : Boolean = {
-    (register.value & 0xFF) == 0 
+    (register & 0xFF) == 0 
   }
   
    //if the result of the lower nibble was more then 15
   def halfCarryOccurred(register1Prior : Register, register1 : Register, register2 : Register) : Boolean = {
-   ((register1.value ^ register2.value ^ register1Prior.value) & 0x10) != 0
+   ((register1 ^ register2 ^ register1Prior) & 0x10) != 0
   }
   
 
   def run() = {
-    val opcode = memory.readByte8(pc.value)
-    pc.value += 1
+    val opcode = memory.readByte8(pc)
+    pc += 1
     
     opcodes.execute(opcode)
-    pc.value &= 0xFFFF //prevent overflow
+    pc &= 0xFFFF //prevent overflow
     if (DEBUG_MODE) {
       //println(debugTraces2(opcode))
     }
