@@ -4,15 +4,15 @@ class Register(private var value:Int = 0) {
 
   def setFlag(x: Boolean, f: Int) = if (x) value |= f else value &= ~f
 
-  def setZeroFlag(x: Boolean) = setFlag(x, 0x80)
-  def setSubFlag(x: Boolean) = setFlag(x, 0x40)
-  def setHalfCarryFlag(x: Boolean) = setFlag(x, 0x20)
-  def setCarryFlag(x: Boolean) = setFlag(x, 0x10)  
+  def zeroFlag_=(x: Boolean) = setFlag(x, 0x80)
+  def subFlag_=(x: Boolean) = setFlag(x, 0x40)
+  def halfCarryFlag_=(x: Boolean) = setFlag(x, 0x20)
+  def carryFlag_=(x: Boolean) = setFlag(x, 0x10)  
   
-  def getZeroFlag() : Boolean = (value & 0x80) != 0
-  def getSubFlag() : Boolean = (value & 0x40) != 0
-  def getHalfCarryFlag() : Boolean = (value & 0x40) != 0 
-  def getCarryFlag() : Boolean = (value & 0x40) != 0 
+  def zeroFlag : Boolean = (value & 0x80) != 0
+  def subFlag : Boolean = (value & 0x40) != 0
+  def halfCarryFlag : Boolean = (value & 0x40) != 0 
+  def carryFlag : Boolean = (value & 0x40) != 0 
 
   def getHexString() : String = value.toHexString
   

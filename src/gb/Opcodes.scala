@@ -554,265 +554,265 @@ class Opcodes(cpu: Cpu) {
 
   def ADD_A_n(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + fromRegister
-    f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
-    f.setCarryFlag(sum > 0xFF)
+    f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
 
   }
 
   def ADD_A_n16Read(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var sum = toRegister + memory.readByte8(((fromRegister << 8) + fromRegister2))
-    f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
-    f.setCarryFlag(sum > 0xFF)
+    f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
   }
 
   def ADD_A_n16ReadN(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + memory.readByte8(fromRegister)
-    f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
-    f.setCarryFlag(sum > 0xFF)
+    f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
     pc += 1
   }
 
   def ADC_A_n(fromRegister: Register, toRegister: Register) = {
-    var sum = toRegister + fromRegister + f.getCarryFlag()
-    f.setHalfCarryFlag(((toRegister & 0xF) + (fromRegister & 0xF) + f.getCarryFlag) > 0xF)
-    f.setCarryFlag(sum > 0xFF)
+    var sum = toRegister + fromRegister + f.carryFlag
+    f.halfCarryFlag = ((toRegister & 0xF + (fromRegister & 0xF) + f.carryFlag) > 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
   }
 
   def ADC_A_nA(fromRegister: Register, toRegister: Register) = {
-    var sum = toRegister + fromRegister + f.getCarryFlag()
-    f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
-    f.setCarryFlag(sum > 0xFF)
+    var sum = toRegister + fromRegister + f.carryFlag
+    f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
   }
 
   def ADC_A_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
-    var sum = toRegister + temp + fromRegister.getCarryFlag()
-    f.setHalfCarryFlag((sum & 0xF) < (toRegister & 0xF))
-    f.setCarryFlag(sum > 0xFF)
+    var sum = toRegister + temp + fromRegister.carryFlag
+    f.halfCarryFlag = (sum & 0xF) < (toRegister & 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
   }
 
   def ADC_A_n16PC(fromRegister: Register, toRegister: Register) = {
     var temp = memory.readByte8(fromRegister)
-    var sum = toRegister + fromRegister + f.getCarryFlag()
-    f.setHalfCarryFlag(((toRegister & 0xF) + (fromRegister & 0xF) + f.getCarryFlag) > 0xF)
-    f.setCarryFlag(sum > 0xFF)
+    var sum = toRegister + fromRegister + f.carryFlag
+    f.halfCarryFlag = ((toRegister & 0xF + (fromRegister & 0xF) + f.carryFlag) > 0xF)
+    f.carryFlag = sum > 0xFF
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = false
     pc += 1
   }
 
   def SUB_n(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister - fromRegister;
-    f.setHalfCarryFlag((toRegister & 0xF) < (fromRegister & 0xF))
-    f.setCarryFlag(sum < 0x00)
+    f.halfCarryFlag = (toRegister & 0xF) < (fromRegister & 0xF)
+    f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = true
   }
 
   def SUB_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
     var sum = toRegister - temp;
-    f.setHalfCarryFlag((toRegister & 0xF) < (temp & 0xF))
-    f.setCarryFlag(sum < 0x00)
+    f.halfCarryFlag = (toRegister & 0xF) < (temp & 0xF)
+    f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = true
   }
 
   def SUB_n16PC(fromRegister: Register, toRegister: Register) = {
     var temp = memory.readByte8(fromRegister)
     var sum = toRegister - temp;
-    f.setHalfCarryFlag((toRegister & 0xF) < (temp & 0xF))
-    f.setCarryFlag(sum < 0x00)
+    f.halfCarryFlag = (toRegister & 0xF) < (temp & 0xF)
+    f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
     pc += 1
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = true
   }
 
   def SBC_A_n(fromRegister: Register, toRegister: Register) = {
-    var sum = toRegister - fromRegister - f.getCarryFlag()
-    f.setHalfCarryFlag(((toRegister & 0xF) - (fromRegister & 0xF) - f.getCarryFlag) < 0)
-    f.setCarryFlag(sum < 0x00)
+    var sum = toRegister - fromRegister - f.carryFlag
+    f.halfCarryFlag = ((toRegister & 0xF - (fromRegister & 0xF) - f.carryFlag) < 0)
+    f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = true
   }
 
   def SBC_A_n16(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
     var temp = memory.readByte8(((fromRegister << 8) + fromRegister2))
-    var sum = toRegister - temp - f.getCarryFlag
-    f.setHalfCarryFlag(((toRegister & 0xF) - (temp & 0xF) - f.getCarryFlag) < 0)
-    f.setCarryFlag(sum < 0x00)
+    var sum = toRegister - temp - f.carryFlag
+    f.halfCarryFlag = ((toRegister & 0xF - (temp & 0xF) - f.carryFlag) < 0)
+    f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
-    f.setZeroFlag(toRegister == 0)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.subFlag = true
   }
 
   def SBC_A_n_a(toRegister: Register) = {
-    if (f.getCarryFlag) {
-      f.setZeroFlag(false)
-      f.setSubFlag(true)
-      f.setHalfCarryFlag(true)
-      f.setCarryFlag(true)
+    if (f.carryFlag) {
+      f.zeroFlag = false
+      f.subFlag = true
+      f.halfCarryFlag = true
+      f.carryFlag = true
     } else {
-      f.setZeroFlag(true)
-      f.setSubFlag(true)
-      f.setHalfCarryFlag(false)
-      f.setCarryFlag(false)
+      f.zeroFlag = true
+      f.subFlag = true
+      f.halfCarryFlag = false
+      f.carryFlag = false
       toRegister := 0
     }
   }
 
   def AND_n(toRegister: Register, fromRegister: Register) = {
     toRegister &= fromRegister;
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(true)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = true
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def AND_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
     toRegister &= memory.readByte8((fromRegister << 8) + fromRegister2)
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(true)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = true
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   //TODO COMBINE ANDS AND ORS HERE BY PASSING IN OPERATOR
   def AND_n8(toRegister: Register, fromRegister: Register) = {
     toRegister &= memory.readByte8(fromRegister)
     pc += 1
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(true)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = true
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def OR_n(toRegister: Register, fromRegister: Register) = {
     toRegister |= fromRegister
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def OR_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
     toRegister |= memory.readByte8((fromRegister << 8) + fromRegister2)
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def OR_n8(toRegister: Register, fromRegister: Register) = {
     toRegister |= memory.readByte8(fromRegister)
     pc += 1
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def XOR_n(toRegister: Register, fromRegister: Register) = {
     toRegister ^= fromRegister
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def XOR_n16(toRegister: Register, fromRegister: Register, fromRegister2: Register) = {
     toRegister ^= memory.readByte8((fromRegister << 8) + fromRegister2)
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def XOR_n8(toRegister: Register, fromRegister: Register) = {
     toRegister ^= memory.readByte8(fromRegister)
     pc += 1
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag(false)
-    f.setCarryFlag(false)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = false
+    f.carryFlag = false
+    f.subFlag = false
   }
 
   def CP_n(register2: Register, register1: Register) = {
     val sum = register1 - register2;
-    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
-    f.setCarryFlag(sum < 0)
-    f.setZeroFlag(sum == 0)
-    f.setSubFlag(true)
+    f.halfCarryFlag = (sum & 0xF) > (register1 & 0xF)
+    f.carryFlag = sum < 0
+    f.zeroFlag = sum == 0
+    f.subFlag = true
   }
 
   def CP_n16(fromRegister: Register, fromRegister2: Register, register1: Register) = {
     val sum = register1 - memory.readByte8((fromRegister << 8) + fromRegister2)
-    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
-    f.setCarryFlag(sum < 0)
-    f.setZeroFlag(sum == 0)
-    f.setSubFlag(true)
+    f.halfCarryFlag = (sum & 0xF) > (register1 & 0xF)
+    f.carryFlag = sum < 0
+    f.zeroFlag = sum == 0
+    f.subFlag = true
   }
 
   def CP_n8(register2: Register, register1: Register) = {
     val sum = register1 - memory.readByte8(register2)
-    f.setHalfCarryFlag((sum & 0xF) > (register1 & 0xF))
-    f.setCarryFlag(sum < 0)
-    f.setZeroFlag(sum == 0)
+    f.halfCarryFlag = (sum & 0xF) > (register1 & 0xF)
+    f.carryFlag = sum < 0
+    f.zeroFlag = sum == 0
     pc += 1
-    f.setSubFlag(true)
+    f.subFlag = true
   }
 
   def INC_n(toRegister: Register) = {
     toRegister += 1
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag((toRegister & 0xF) == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = (toRegister & 0xF) == 0
+    f.subFlag = false
   }
 
   def INC_n16(fromRegister: Register, fromRegister2: Register) = {
     val i = memory.readByte8((fromRegister << 8) + fromRegister2)
     cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
-    f.setZeroFlag(i == 0)
-    f.setHalfCarryFlag((i & 0xF) == 0)
-    f.setSubFlag(false)
+    f.zeroFlag = i == 0
+    f.halfCarryFlag = (i & 0xF) == 0
+    f.subFlag = false
   }
 
   def DEC_n(toRegister: Register) = {
     toRegister -= 1
-    f.setZeroFlag(toRegister == 0)
-    f.setHalfCarryFlag((toRegister & 0xF) == 0xF)
-    f.setSubFlag(true)
+    f.zeroFlag = toRegister == 0
+    f.halfCarryFlag = (toRegister & 0xF) == 0xF
+    f.subFlag = true
   }
 
   def DEC_n16(fromRegister: Register, fromRegister2: Register) = {
     var i = cpu.memory.readByte8((fromRegister << 8) + fromRegister2) - 1
     cpu.memory.writeByte8((fromRegister << 8) + fromRegister2, i)
-    f.setZeroFlag(i == 0)
-    f.setHalfCarryFlag((i & 0xF) == 0xF)
-    f.setSubFlag(true)
+    f.zeroFlag = i == 0
+    f.halfCarryFlag = (i & 0xF) == 0xF
+    f.subFlag = true
   }
 
   //TODO: HL, BC, DE are referred to as 16 bit registers occasionally. 
@@ -824,9 +824,9 @@ class Opcodes(cpu: Cpu) {
     hl += bc
     fromRegister := (hl >> 8) & 255 //unshift bits
     fromRegister2 := hl & 255
-    f.setCarryFlag(hl > 0xFFFF)
-    f.setHalfCarryFlag((((fromRegister << 8) + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
-    f.setSubFlag(false)
+    f.carryFlag = hl > 0xFFFF
+    f.halfCarryFlag = (((fromRegister << 8 + fromRegister2) & 0xFFF) + (bc & 0xFFF) > 0xFFF)
+    f.subFlag = false
   }
 
   def ADD_HL_nSP(fromRegister: Register, fromRegister2: Register, toRegister: Register) = {
@@ -834,19 +834,19 @@ class Opcodes(cpu: Cpu) {
     hl += sp
     fromRegister := (hl >> 8) & 255 //unshift bits
     fromRegister2 := hl & 255
-    f.setCarryFlag(hl > 0xFFFF)
-    f.setHalfCarryFlag((((fromRegister << 8) + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
-    f.setSubFlag(false)
+    f.carryFlag = hl > 0xFFFF
+    f.halfCarryFlag = (((fromRegister << 8 + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
+    f.subFlag = false
 
   }
 
   def ADDSP_n(toRegister: Register, fromRegister: Register) = {
     val i = memory.readByte8(fromRegister)
     var j = (toRegister + i) & 0xFFFF
-    f.setCarryFlag(((toRegister ^ i ^ j) & 0x100) == 0x100)
-    f.setHalfCarryFlag(((toRegister ^ i ^ j) & 0x10) == 0x10)
-    f.setZeroFlag(false)
-    f.setSubFlag(false)
+    f.carryFlag = ((toRegister ^ i ^ j & 0x100) == 0x100)
+    f.halfCarryFlag = ((toRegister ^ i ^ j & 0x10) == 0x10)
+    f.zeroFlag = false
+    f.subFlag = false
     sp := j;
     pc += 1
   }
