@@ -117,9 +117,25 @@ class Opcodes(cpu : Cpu) {
 	case 0x08 => LD_n_A16Write(cpu.pc, cpu.sp) //TODO: Possibly incorrect.
 	
 	case 0xF5 => PUSH_nn(cpu.sp, cpu.a, cpu.f)
-	case 0xC5 => 1
-	case 0xD5 => 1
-	case 0xE5 => 1
+	case 0xC5 => PUSH_nn(cpu.sp, cpu.b, cpu.c)
+	case 0xD5 => PUSH_nn(cpu.sp, cpu.d, cpu.e)
+	case 0xE5 => PUSH_nn(cpu.sp, cpu.h, cpu.l)
+	
+	case 0xF1 => POP_nn(cpu.sp, cpu.f, cpu.a)
+	case 0xC1 => POP_nn(cpu.sp, cpu.c, cpu.b)
+	case 0xD1 => POP_nn(cpu.sp, cpu.e, cpu.d)
+	case 0xE1 => POP_nn(cpu.sp, cpu.l, cpu.h)
+	
+	case 0x87 => ADD_A_n(cpu.a, cpu.a)
+	case 0x80 => ADD_A_n(cpu.b, cpu.a)
+	case 0x81 => ADD_A_n(cpu.c, cpu.a)
+	case 0x82 => ADD_A_n(cpu.d, cpu.a)
+	case 0x83 => ADD_A_n(cpu.e, cpu.a)
+	case 0x84 => ADD_A_n(cpu.h, cpu.a)
+	case 0x85 => ADD_A_n(cpu.l, cpu.a)
+	case 0x86 => ADD_A_n16Read(cpu.h, cpu.l, cpu.a)
+	case 0xC6 => ADD_A_n16ReadN(cpu.pc, cpu.a)
+		
 			
   }
   
@@ -183,8 +199,49 @@ class Opcodes(cpu : Cpu) {
     fromRegister.value -= 1
     cpu.memory.writeByte8(fromRegister.value, toRegister.value)
     fromRegister.value -= 1
-    cpu.memory.writeByte8(fromRegister.value, toRegister.value)
+    cpu.memory.writeByte8(fromRegister.value, toRegister2.value)
   }
+  
+  def POP_nn(fromRegister : Register, toRegister : Register, toRegister2 : Register) = {
+    toRegister.value = cpu.memory.readByte8(fromRegister.value)
+    fromRegister.value += 1
+    toRegister2.value = cpu.memory.readByte8(fromRegister.value)
+    fromRegister.value += 1
+  }
+  
+  def ADD_A_n(fromRegister : Register, toRegister : Register) = {
+    var sum = toRegister.value + fromRegister.value
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setCarryFlag(sum > 0xFF)
+    toRegister.value = sum & 0xFF
+    cpu.f.setZeroFlag(toRegister.value == 0)
+    cpu.f.setSubFlag(false)
+
+  }
+  
+  def ADD_A_n16Read(fromRegister : Register, fromRegister2 : Register, toRegister : Register) = {
+    var sum = toRegister.value + cpu.memory.readByte8(((fromRegister.value << 8) + fromRegister2.value))
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setCarryFlag(sum > 0xFF)
+    toRegister.value = sum & 0xFF
+    cpu.f.setZeroFlag(toRegister.value == 0)
+    cpu.f.setSubFlag(false)
+  }
+  
+  def ADD_A_n16ReadN(fromRegister : Register, toRegister : Register) = {
+    var sum = toRegister.value + cpu.memory.readByte8(fromRegister.value)
+    cpu.f.setHalfCarryFlag((sum & 0xF) < (toRegister.value & 0xF))
+    cpu.f.setCarryFlag(sum > 0xFF)
+    toRegister.value = sum & 0xFF
+    cpu.f.setZeroFlag(toRegister.value == 0)
+    cpu.f.setSubFlag(false)
+    cpu.pc.value += 1
+  }
+  
+  def  ADC_A_n(fromRegister : Register, toRegister : Register) = {
+    
+  }
+  
   
   
   //Non-Generic opcode functions here:
