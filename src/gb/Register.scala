@@ -22,6 +22,7 @@ class Register(private var value:Int = 0) {
   def <<(i:Int) = value << i
   def &=(i:Int) = value &= i
   def |=(i:Int) = value |= i
+  def ^=(i:Int) = value ^= i
   
 }
 
