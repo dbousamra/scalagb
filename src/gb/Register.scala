@@ -14,6 +14,8 @@ class Register(private var value:Int = 0) {
   def getHalfCarryFlag() : Boolean = (value & 0x40) != 0 
   def getCarryFlag() : Boolean = (value & 0x40) != 0 
 
+  def getHexString() : String = value.toHexString
+  
   def +(i:Int) = new Register(value + i)
   def :=(i:Int) = value = i
   def +=(i:Int) = value += i
@@ -30,5 +32,6 @@ class Register(private var value:Int = 0) {
 object Register {
 	implicit def reg2int(r:Register):Int = r.value
 	implicit def bool2int(b:Boolean):Int = if (b) 1 else 0
+	
 	
 }

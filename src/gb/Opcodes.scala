@@ -210,13 +210,13 @@ class Opcodes(cpu: Cpu) {
       case 0x39 => ADD_HL_nSP(h, l, sp)
       case 0xE8 => ADDSP_n(sp, pc)     
       case 0x03 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x13 => 1
-      case 0x23 => 1
-      case 0x33 => 1      
+      case 0x13 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
+      case 0x23 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
+      case 0x33 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
       case 0x0B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x1B => 1
-      case 0x2B => 1
-      case 0x3B => 1    
+      case 0x1B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
+      case 0x2B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
+      case 0x3B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
       case 0x27 => 1 //DAA a: page 95     
       case 0x2F => 1 //CPL a: page 95
       case 0x3F => 1 //CCD carryflag: page 96
@@ -224,6 +224,7 @@ class Opcodes(cpu: Cpu) {
       case 0x00 => NOP      
       case 0xF3 => DI
       case 0xFB => EI
+      case 0xC3 => JP_nn(pc, pc)
 
     }
   }
@@ -836,6 +837,7 @@ class Opcodes(cpu: Cpu) {
     f.setCarryFlag(hl > 0xFFFF)
     f.setHalfCarryFlag((((fromRegister << 8) + fromRegister2) & 0xFFF) + (sp & 0xFFF) > 0xFFF)
     f.setSubFlag(false)
+
   }
 
   def ADDSP_n(toRegister: Register, fromRegister: Register) = {
@@ -849,6 +851,13 @@ class Opcodes(cpu: Cpu) {
     pc += 1
   }
 
+  
+  def JP_nn(fromRegister : Register, toRegister : Register) = {
+    toRegister := memory.readByte16(toRegister)
+  }
+  
+  
+  
   //Non-Generic opcode functions here:
 
   def LD_A_C(toRegister: Register, fromRegister: Register) = {
