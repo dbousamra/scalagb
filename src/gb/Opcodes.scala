@@ -242,7 +242,24 @@ class Opcodes(cpu: Cpu) {
       case 0x28 => JR_cc_n(pc, pc, f.zeroFlag)
       case 0x30 => JR_cc_n(pc, pc, !f.carryFlag)
       case 0x38 => JR_cc_n(pc, pc, f.carryFlag)
-
+      
+      case 0xCD => CALL_nn(pc, sp)
+      case 0xC4 => CALL_cc_nn(pc, sp, !f.zeroFlag)
+      case 0xCC => CALL_cc_nn(pc, sp, f.zeroFlag)
+      case 0xD4 => CALL_cc_nn(pc, sp, !f.carryFlag)
+      case 0xDC => CALL_cc_nn(pc, sp, f.carryFlag)
+      
+      case 0xC7 => RST_n(sp, pc, 0x00)
+      case 0xCF => RST_n(sp, pc, 0x08)
+      case 0xD7 => RST_n(sp, pc, 0x10)
+      case 0xDF => RST_n(sp, pc, 0x18)
+      case 0xE7 => RST_n(sp, pc, 0x20)
+      case 0xEF => RST_n(sp, pc, 0x28)
+      case 0xF7 => RST_n(sp, pc, 0x30)
+      case 0xFF => RST_n(sp, pc, 0x38)
+      
+      case 0xC9 => RET(sp, pc)
+      
     }
   }
 
@@ -998,7 +1015,36 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
     f.halfCarryFlag = false;
   }
-
+  
+  def CALL_nn(toRegister : Register, toRegister2 : Register) = {
+    toRegister2 -= 2	
+    cpu.memory.writeByte16(toRegister2, toRegister + 2)	
+    toRegister := cpu.memory.readByte16(toRegister)
+  }
+  
+  def CALL_cc_nn(fromRegister : Register, toRegister : Register, flagStatus : Boolean) = {
+    
+    if (flagStatus) {
+      fromRegister -= 2
+      memory.writeByte16(fromRegister, toRegister + 2)
+      toRegister := cpu.memory.readByte16(toRegister)
+    }
+     else toRegister := (toRegister + 2) & 0xFFFF
+  }
+  
+  def RST_n(toRegister : Register, fromRegister : Register, offsetAddress : Int) = {
+    toRegister := (toRegister - 1) & 0xFFFF;
+		memory.writeByte16(toRegister, pc >> 8);
+		toRegister := (toRegister - 1) & 0xFFFF;
+		memory.writeByte16(toRegister, pc & 0xFF);
+		pc := offsetAddress;
+  }
+  
+  def RET(fromRegister : Register, toRegister : Register) = {
+    toRegister := memory.readByte16(fromRegister)
+    fromRegister += 2
+  }
+  
   def NOP() = {}
 
   def HALT() = halt := 1
