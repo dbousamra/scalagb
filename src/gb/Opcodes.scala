@@ -217,9 +217,9 @@ class Opcodes(cpu: Cpu) {
       case 0x1B => INC_nn(d ++ e)
       case 0x2B => INC_nn(h ++ l)
       case 0x3B => INC_nn(sp)
-      case 0x27 => 1 //DAA a: page 95     
-      case 0x2F => 1 //CPL a: page 95
-      case 0x3F => 1 //CCD carryflag: page 96
+      case 0x27 => DAA(a) //DAA a: page 95     
+      case 0x2F => CPL(a) //CPL a: page 95
+      case 0x3F => CCF() 
       case 0x37 => 1 //SCF set carry flag: page 96
       case 0x00 => NOP      
       case 0xF3 => DI
@@ -888,30 +888,30 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
   
-  def DAA() = {
+  def DAA(toRegister : Register) = {
     
     if (!f.subFlag) {
-      if (f.carryFlag || a > 0x99) { //might need to be 0x9A
-        a := (a + 0x60) & 0xFF;
+      if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
+        toRegister := (toRegister + 0x60) & 0xFF;
         f.carryFlag = true
       }
-      if (f.halfCarryFlag || (a & 0xF) > 0x9) {
-        a := (a + 0x06) & 0xFF;
+      if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
+        toRegister := (toRegister + 0x06) & 0xFF;
 		f.halfCarryFlag = false
       }
     }
     else if (f.carryFlag && f.halfCarryFlag) {
-			a := ((a + 0x9A) & 0xFF);
+			toRegister := ((toRegister + 0x9A) & 0xFF);
 			f.halfCarryFlag = false;
 		}
 	else if (f.carryFlag) {
-		a := ((a + 0xA0) & 0xFF);
+		toRegister := ((toRegister + 0xA0) & 0xFF);
 	}
 	else if (f.halfCarryFlag) {
-		a := ((a + 0xFA) & 0xFF);
+		toRegister := ((toRegister + 0xFA) & 0xFF);
 		f.halfCarryFlag = false;
 	}
-	f.zeroFlag = (a == 0);
+	f.zeroFlag = (toRegister == 0);
   }
   
   def CPL(toRegister : Register) = {
@@ -919,7 +919,12 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
     f.halfCarryFlag = true
   }
-  `
+  
+  def CCF () = {
+    f.carryFlag = !f.carryFlag; //Love this. "Flipping" bits
+    f.subFlag = false
+    f.halfCarryFlag = false
+  }
   def NOP() = Nil
   
   def HALT() = halt := 1
