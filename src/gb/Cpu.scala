@@ -40,7 +40,6 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   def halfCarryOccurred(register1Prior : Register, register1 : Register, register2 : Register) : Boolean = {
    ((register1 ^ register2 ^ register1Prior) & 0x10) != 0
   }
-  
 
   def run() = {
     val opcode = memory.readByte8(pc)
