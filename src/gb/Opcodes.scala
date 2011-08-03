@@ -888,6 +888,7 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
   
+<<<<<<< HEAD
   def DAA(toRegister : Register) = {
     
     if (!f.subFlag) {
