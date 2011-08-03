@@ -907,7 +907,6 @@ class Opcodes(cpu: Cpu) {
   }
   
   def DAA(toRegister : Register) = {
-    
     if (!f.subFlag) {
       if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
         toRegister := (toRegister + 0x60) & 0xFF;
@@ -915,20 +914,17 @@ class Opcodes(cpu: Cpu) {
       }
       if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
         toRegister := (toRegister + 0x06) & 0xFF;
-		f.halfCarryFlag = false
+        f.halfCarryFlag = false
       }
+    } else if (f.carryFlag && f.halfCarryFlag) {
+      toRegister := ((toRegister + 0x9A) & 0xFF);
+      f.halfCarryFlag = false;
+    } else if (f.carryFlag) {
+      toRegister := ((toRegister + 0xA0) & 0xFF);
+    } else if (f.halfCarryFlag) {
+      toRegister := ((toRegister + 0xFA) & 0xFF);
+      f.halfCarryFlag = false;
     }
-    else if (f.carryFlag && f.halfCarryFlag) {
-			toRegister := ((toRegister + 0x9A) & 0xFF);
-			f.halfCarryFlag = false;
-		}
-	else if (f.carryFlag) {
-		toRegister := ((toRegister + 0xA0) & 0xFF);
-	}
-	else if (f.halfCarryFlag) {
-		toRegister := ((toRegister + 0xFA) & 0xFF);
-		f.halfCarryFlag = false;
-	}
 	f.zeroFlag = (toRegister == 0);
   }
   
