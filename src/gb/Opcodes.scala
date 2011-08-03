@@ -888,7 +888,31 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
   
- 
+  def DAA() = {
+    
+    if (!f.subFlag) {
+      if (f.carryFlag || a > 0x99) { //might need to be 0x9A
+        a := (a + 0x60) & 0xFF;
+        f.carryFlag = true
+      }
+      if (f.halfCarryFlag || (a & 0xF) > 0x9) {
+        a := (a + 0x06) & 0xFF;
+		f.halfCarryFlag = false
+      }
+    }
+    else if (f.carryFlag && f.halfCarryFlag) {
+			a := ((a + 0x9A) & 0xFF);
+			f.halfCarryFlag = false;
+		}
+	else if (f.carryFlag) {
+		a := ((a + 0xA0) & 0xFF);
+	}
+	else if (f.halfCarryFlag) {
+		a := ((a + 0xFA) & 0xFF);
+		f.halfCarryFlag = false;
+	}
+	f.zeroFlag = (a == 0);
+  }
   
   def NOP() = Nil
   
