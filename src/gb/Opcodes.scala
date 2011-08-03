@@ -10,12 +10,12 @@ class Opcodes(cpu: Cpu) {
   def execute(opcode: Int) = {
 
     def HandleCB(opcode: Int) = {
-      var i=memory.readByte8(pc)
+      var i = memory.readByte8(pc)
       pc += 1
       pc &= 65535
       cb(i)
     }
-    
+
     opcode match {
 
       case 0xCB => HandleCB(opcode)
@@ -208,7 +208,7 @@ class Opcodes(cpu: Cpu) {
       case 0x19 => ADD_HL_n(h ++ l, d ++ e)
       case 0x29 => ADD_HL_n(h ++ l, h ++ l)
       case 0x39 => ADD_HL_nSP(h ++ l, sp)
-      case 0xE8 => ADDSP_n(sp, pc)     
+      case 0xE8 => ADDSP_n(sp, pc)
       case 0x03 => INC_nn(b ++ c)
       case 0x13 => INC_nn(d ++ e)
       case 0x23 => INC_nn(h ++ l)
@@ -219,293 +219,292 @@ class Opcodes(cpu: Cpu) {
       case 0x3B => INC_nn(sp)
       case 0x27 => DAA(a) //DAA a: page 95     
       case 0x2F => CPL(a) //CPL a: page 95
-      case 0x3F => CCF 
+      case 0x3F => CCF
       case 0x37 => SCF //SCF set carry flag: page 96
-      case 0x00 => NOP      
+      case 0x00 => NOP
       case 0xF3 => DI
       case 0xFB => EI
       case 0xC3 => JP_nn(pc, pc)
-      case 0x07 => 1 //RLCA
-      case 0x17 => 1 //RLA
-      case 0x0F => 1 //RRCA
-      case 0x1F => 1 //RRA
-      
-      case 0xC2 => 1 //JP_cc_nn
-      case 0xCA => 1 //JP_cc_nn
-      case 0xD2 => 1 //JP_cc_nn
-      case 0xDA => 1 //JP_cc_nn
-      
-      case 0xE9 => 1 //JP_HL
-      case 0x18 => 1 //JR_n
-      
+      case 0x07 => RLCA(a)
+      case 0x17 => RLA(a) //RLA
+      case 0x0F => RRCA(a) //RRCA
+      case 0x1F => RRA(a)
+
+      case 0xC2 => JP_cc_nn(pc, sp, !f.zeroFlag)
+      case 0xCA => JP_cc_nn(pc, sp, f.zeroFlag)
+      case 0xD2 => JP_cc_nn(pc, sp, !f.carryFlag)
+      case 0xDA => JP_cc_nn(pc, sp, f.carryFlag)
+
+      case 0xE9 => JP_HL(h ++ l, pc)
+      case 0x18 => JR_n(pc)
+
       case 0x20 => 1 //JR_n
       case 0x28 => 1 //JR_n
       case 0x30 => 1 //JR_n
       case 0x38 => 1 //JR_n
-      
 
     }
   }
-  
-  def cb(opcode : Int) = opcode match {
-//    case 0x0 => RLCr_b(opcode, cpu)
-//	case 0x1 => RLCr_c(opcode, cpu)
-//	case 0x2 => RLCr_d(opcode, cpu)
-//	case 0x3 => RLCr_e(opcode, cpu)
-//	case 0x4 => RLCr_h(opcode, cpu)
-//	case 0x5 => RLCr_l(opcode, cpu)
-//	case 0x6 => RLCHL(opcode, cpu)
-//	case 0x7 => RLCr_a(opcode, cpu)
-//	case 0x8 => RRCr_b(opcode, cpu)
-//	case 0x9 => RRCr_c(opcode, cpu)
-//	case 0xa => RRCr_d(opcode, cpu)
-//	case 0xb => RRCr_e(opcode, cpu)
-//	case 0xc => RRCr_h(opcode, cpu)
-//	case 0xd => RRCr_l(opcode, cpu)
-//	case 0xe => RRCHL(opcode, cpu)
-//	case 0xf => RRCr_a(opcode, cpu)
-//	case 0x10 => RLr_b(opcode, cpu)
-//	case 0x11 => RLr_c(opcode, cpu)
-//	case 0x12 => RLr_d(opcode, cpu)
-//	case 0x13 => RLr_e(opcode, cpu)
-//	case 0x14 => RLr_h(opcode, cpu)
-//	case 0x15 => RLr_l(opcode, cpu)
-//	case 0x16 => RLHL(opcode, cpu)
-//	case 0x17 => RLr_a(opcode, cpu)
-//	case 0x18 => RRr_b(opcode, cpu)
-//	case 0x19 => RRr_c(opcode, cpu)
-//	case 0x1a => RRr_d(opcode, cpu)
-//	case 0x1b => RRr_e(opcode, cpu)
-//	case 0x1c => RRr_h(opcode, cpu)
-//	case 0x1d => RRr_l(opcode, cpu)
-//	case 0x1e => RRHL(opcode, cpu)
-//	case 0x1f => RRr_a(opcode, cpu)
-//	case 0x20 => SLAr_b(opcode, cpu)
-//	case 0x21 => SLAr_c(opcode, cpu)
-//	case 0x22 => SLAr_d(opcode, cpu)
-//	case 0x23 => SLAr_e(opcode, cpu)
-//	case 0x24 => SLAr_h(opcode, cpu)
-//	case 0x25 => SLAr_l(opcode, cpu)
-//	case 0x26 => XX(opcode, cpu)
-//	case 0x27 => SLAr_a(opcode, cpu)
-//	case 0x28 => SRAr_b(opcode, cpu)
-//	case 0x29 => SRAr_c(opcode, cpu)
-//	case 0x2a => SRAr_d(opcode, cpu)
-//	case 0x2b => SRAr_e(opcode, cpu)
-//	case 0x2c => SRAr_h(opcode, cpu)
-//	case 0x2d => SRAr_l(opcode, cpu)
-//	case 0x2e => XX(opcode, cpu)
-//	case 0x2f => SRAr_a(opcode, cpu)
-//	case 0x30 => SWAPr_b(opcode, cpu)
-//	case 0x31 => SWAPr_c(opcode, cpu)
-//	case 0x32 => SWAPr_d(opcode, cpu)
-//	case 0x33 => SWAPr_e(opcode, cpu)
-//	case 0x34 => SWAPr_h(opcode, cpu)
-//	case 0x35 => SWAPr_l(opcode, cpu)
-//	case 0x36 => XX(opcode, cpu)
-//	case 0x37 => SWAPr_a(opcode, cpu)
-//	case 0x38 => SRLr_b(opcode, cpu)
-//	case 0x39 => SRLr_c(opcode, cpu)
-//	case 0x3a => SRLr_d(opcode, cpu)
-//	case 0x3b => SRLr_e(opcode, cpu)
-//	case 0x3c => SRLr_h(opcode, cpu)
-//	case 0x3d => SRLr_l(opcode, cpu)
-//	case 0x3e => XX(opcode, cpu)
-//	case 0x3f => SRLr_a(opcode, cpu)
-//	case 0x40 => BIT0b(opcode, cpu)
-//	case 0x41 => BIT0c(opcode, cpu)
-//	case 0x42 => BIT0d(opcode, cpu)
-//	case 0x43 => BIT0e(opcode, cpu)
-//	case 0x44 => BIT0h(opcode, cpu)
-//	case 0x45 => BIT0l(opcode, cpu)
-//	case 0x46 => BIT0m(opcode, cpu)
-//	case 0x47 => BIT0a(opcode, cpu)
-//	case 0x48 => BIT1b(opcode, cpu)
-//	case 0x49 => BIT1c(opcode, cpu)
-//	case 0x4a => BIT1d(opcode, cpu)
-//	case 0x4b => BIT1e(opcode, cpu)
-//	case 0x4c => BIT1h(opcode, cpu)
-//	case 0x4d => BIT1l(opcode, cpu)
-//	case 0x4e => BIT1m(opcode, cpu)
-//	case 0x4f => BIT1a(opcode, cpu)
-//	case 0x50 => BIT2b(opcode, cpu)
-//	case 0x51 => BIT2c(opcode, cpu)
-//	case 0x52 => BIT2d(opcode, cpu)
-//	case 0x53 => BIT2e(opcode, cpu)
-//	case 0x54 => BIT2h(opcode, cpu)
-//	case 0x55 => BIT2l(opcode, cpu)
-//	case 0x56 => BIT2m(opcode, cpu)
-//	case 0x57 => BIT2a(opcode, cpu)
-//	case 0x58 => BIT3b(opcode, cpu)
-//	case 0x59 => BIT3c(opcode, cpu)
-//	case 0x5a => BIT3d(opcode, cpu)
-//	case 0x5b => BIT3e(opcode, cpu)
-//	case 0x5c => BIT3h(opcode, cpu)
-//	case 0x5d => BIT3l(opcode, cpu)
-//	case 0x5e => BIT3m(opcode, cpu)
-//	case 0x5f => BIT3a(opcode, cpu)
-//	case 0x60 => BIT4b(opcode, cpu)
-//	case 0x61 => BIT4c(opcode, cpu)
-//	case 0x62 => BIT4d(opcode, cpu)
-//	case 0x63 => BIT4e(opcode, cpu)
-//	case 0x64 => BIT4h(opcode, cpu)
-//	case 0x65 => BIT4l(opcode, cpu)
-//	case 0x66 => BIT4m(opcode, cpu)
-//	case 0x67 => BIT4a(opcode, cpu)
-//	case 0x68 => BIT5b(opcode, cpu)
-//	case 0x69 => BIT5c(opcode, cpu)
-//	case 0x6a => BIT5d(opcode, cpu)
-//	case 0x6b => BIT5e(opcode, cpu)
-//	case 0x6c => BIT5h(opcode, cpu)
-//	case 0x6d => BIT5l(opcode, cpu)
-//	case 0x6e => BIT5m(opcode, cpu)
-//	case 0x6f => BIT5a(opcode, cpu)
-//	case 0x70 => BIT6b(opcode, cpu)
-//	case 0x71 => BIT6c(opcode, cpu)
-//	case 0x72 => BIT6d(opcode, cpu)
-//	case 0x73 => BIT6e(opcode, cpu)
-//	case 0x74 => BIT6h(opcode, cpu)
-//	case 0x75 => BIT6l(opcode, cpu)
-//	case 0x76 => BIT6m(opcode, cpu)
-//	case 0x77 => BIT6a(opcode, cpu)
-//	case 0x78 => BIT7b(opcode, cpu)
-//	case 0x79 => BIT7c(opcode, cpu)
-//	case 0x7a => BIT7d(opcode, cpu)
-//	case 0x7b => BIT7e(opcode, cpu)
-//	case 0x7c => BIT7h(opcode, cpu)
-//	case 0x7d => BIT7l(opcode, cpu)
-//	case 0x7e => BIT7m(opcode, cpu)
-//	case 0x7f => BIT7a(opcode, cpu)
-//	case 0x80 => RES0b(opcode, cpu)
-//	case 0x81 => RES0c(opcode, cpu)
-//	case 0x82 => RES0d(opcode, cpu)
-//	case 0x83 => RES0e(opcode, cpu)
-//	case 0x84 => RES0h(opcode, cpu)
-//	case 0x85 => RES0l(opcode, cpu)
-//	case 0x86 => RES0m(opcode, cpu)
-//	case 0x87 => RES0a(opcode, cpu)
-//	case 0x88 => RES1b(opcode, cpu)
-//	case 0x89 => RES1c(opcode, cpu)
-//	case 0x8a => RES1d(opcode, cpu)
-//	case 0x8b => RES1e(opcode, cpu)
-//	case 0x8c => RES1h(opcode, cpu)
-//	case 0x8d => RES1l(opcode, cpu)
-//	case 0x8e => RES1m(opcode, cpu)
-//	case 0x8f => RES1a(opcode, cpu)
-//	case 0x90 => RES2b(opcode, cpu)
-//	case 0x91 => RES2c(opcode, cpu)
-//	case 0x92 => RES2d(opcode, cpu)
-//	case 0x93 => RES2e(opcode, cpu)
-//	case 0x94 => RES2h(opcode, cpu)
-//	case 0x95 => RES2l(opcode, cpu)
-//	case 0x96 => RES2m(opcode, cpu)
-//	case 0x97 => RES2a(opcode, cpu)
-//	case 0x98 => RES3b(opcode, cpu)
-//	case 0x99 => RES3c(opcode, cpu)
-//	case 0x9a => RES3d(opcode, cpu)
-//	case 0x9b => RES3e(opcode, cpu)
-//	case 0x9c => RES3h(opcode, cpu)
-//	case 0x9d => RES3l(opcode, cpu)
-//	case 0x9e => RES3m(opcode, cpu)
-//	case 0x9f => RES3a(opcode, cpu)
-//	case 0xa0 => RES4b(opcode, cpu)
-//	case 0xa1 => RES4c(opcode, cpu)
-//	case 0xa2 => RES4d(opcode, cpu)
-//	case 0xa3 => RES4e(opcode, cpu)
-//	case 0xa4 => RES4h(opcode, cpu)
-//	case 0xa5 => RES4l(opcode, cpu)
-//	case 0xa6 => RES4m(opcode, cpu)
-//	case 0xa7 => RES4a(opcode, cpu)
-//	case 0xa8 => RES5b(opcode, cpu)
-//	case 0xa9 => RES5c(opcode, cpu)
-//	case 0xaa => RES5d(opcode, cpu)
-//	case 0xab => RES5e(opcode, cpu)
-//	case 0xac => RES5h(opcode, cpu)
-//	case 0xad => RES5l(opcode, cpu)
-//	case 0xae => RES5m(opcode, cpu)
-//	case 0xaf => RES5a(opcode, cpu)
-//	case 0xb0 => RES6b(opcode, cpu)
-//	case 0xb1 => RES6c(opcode, cpu)
-//	case 0xb2 => RES6d(opcode, cpu)
-//	case 0xb3 => RES6e(opcode, cpu)
-//	case 0xb4 => RES6h(opcode, cpu)
-//	case 0xb5 => RES6l(opcode, cpu)
-//	case 0xb6 => RES6m(opcode, cpu)
-//	case 0xb7 => RES6a(opcode, cpu)
-//	case 0xb8 => RES7b(opcode, cpu)
-//	case 0xb9 => RES7c(opcode, cpu)
-//	case 0xba => RES7d(opcode, cpu)
-//	case 0xbb => RES7e(opcode, cpu)
-//	case 0xbc => RES7h(opcode, cpu)
-//	case 0xbd => RES7l(opcode, cpu)
-//	case 0xbe => RES7m(opcode, cpu)
-//	case 0xbf => RES7a(opcode, cpu)
-//	case 0xc0 => SET0b(opcode, cpu)
-//	case 0xc1 => SET0c(opcode, cpu)
-//	case 0xc2 => SET0d(opcode, cpu)
-//	case 0xc3 => SET0e(opcode, cpu)
-//	case 0xc4 => SET0h(opcode, cpu)
-//	case 0xc5 => SET0l(opcode, cpu)
-//	case 0xc6 => SET0m(opcode, cpu)
-//	case 0xc7 => SET0a(opcode, cpu)
-//	case 0xc8 => SET1b(opcode, cpu)
-//	case 0xc9 => SET1c(opcode, cpu)
-//	case 0xca => SET1d(opcode, cpu)
-//	case 0xcb => SET1e(opcode, cpu)
-//	case 0xcc => SET1h(opcode, cpu)
-//	case 0xcd => SET1l(opcode, cpu)
-//	case 0xce => SET1m(opcode, cpu)
-//	case 0xcf => SET1a(opcode, cpu)
-//	case 0xd0 => SET2b(opcode, cpu)
-//	case 0xd1 => SET2c(opcode, cpu)
-//	case 0xd2 => SET2d(opcode, cpu)
-//	case 0xd3 => SET2e(opcode, cpu)
-//	case 0xd4 => SET2h(opcode, cpu)
-//	case 0xd5 => SET2l(opcode, cpu)
-//	case 0xd6 => SET2m(opcode, cpu)
-//	case 0xd7 => SET2a(opcode, cpu)
-//	case 0xd8 => SET3b(opcode, cpu)
-//	case 0xd9 => SET3c(opcode, cpu)
-//	case 0xda => SET3d(opcode, cpu)
-//	case 0xdb => SET3e(opcode, cpu)
-//	case 0xdc => SET3h(opcode, cpu)
-//	case 0xdd => SET3l(opcode, cpu)
-//	case 0xde => SET3m(opcode, cpu)
-//	case 0xdf => SET3a(opcode, cpu)
-//	case 0xe0 => SET4b(opcode, cpu)
-//	case 0xe1 => SET4c(opcode, cpu)
-//	case 0xe2 => SET4d(opcode, cpu)
-//	case 0xe3 => SET4e(opcode, cpu)
-//	case 0xe4 => SET4h(opcode, cpu)
-//	case 0xe5 => SET4l(opcode, cpu)
-//	case 0xe6 => SET4m(opcode, cpu)
-//	case 0xe7 => SET4a(opcode, cpu)
-//	case 0xe8 => SET5b(opcode, cpu)
-//	case 0xe9 => SET5c(opcode, cpu)
-//	case 0xea => SET5d(opcode, cpu)
-//	case 0xeb => SET5e(opcode, cpu)
-//	case 0xec => SET5h(opcode, cpu)
-//	case 0xed => SET5l(opcode, cpu)
-//	case 0xee => SET5m(opcode, cpu)
-//	case 0xef => SET5a(opcode, cpu)
-//	case 0xf0 => SET6b(opcode, cpu)
-//	case 0xf1 => SET6c(opcode, cpu)
-//	case 0xf2 => SET6d(opcode, cpu)
-//	case 0xf3 => SET6e(opcode, cpu)
-//	case 0xf4 => SET6h(opcode, cpu)
-//	case 0xf5 => SET6l(opcode, cpu)
-//	case 0xf6 => SET6m(opcode, cpu)
-//	case 0xf7 => SET6a(opcode, cpu)
-//	case 0xf8 => SET7b(opcode, cpu)
-//	case 0xf9 => SET7c(opcode, cpu)
-//	case 0xfa => SET7d(opcode, cpu)
-//	case 0xfb => SET7e(opcode, cpu)
-//	case 0xfc => SET7h(opcode, cpu)
-//	case 0xfd => SET7l(opcode, cpu)
-//	case 0xfe => SET7m(opcode, cpu)
-//	case 0xff => SET7a(opcode, cpu)
+
+  def cb(opcode: Int) = opcode match {
+    //    case 0x0 => RLCr_b(opcode, cpu)
+    //	case 0x1 => RLCr_c(opcode, cpu)
+    //	case 0x2 => RLCr_d(opcode, cpu)
+    //	case 0x3 => RLCr_e(opcode, cpu)
+    //	case 0x4 => RLCr_h(opcode, cpu)
+    //	case 0x5 => RLCr_l(opcode, cpu)
+    //	case 0x6 => RLCHL(opcode, cpu)
+    //	case 0x7 => RLCr_a(opcode, cpu)
+    //	case 0x8 => RRCr_b(opcode, cpu)
+    //	case 0x9 => RRCr_c(opcode, cpu)
+    //	case 0xa => RRCr_d(opcode, cpu)
+    //	case 0xb => RRCr_e(opcode, cpu)
+    //	case 0xc => RRCr_h(opcode, cpu)
+    //	case 0xd => RRCr_l(opcode, cpu)
+    //	case 0xe => RRCHL(opcode, cpu)
+    //	case 0xf => RRCr_a(opcode, cpu)
+    //	case 0x10 => RLr_b(opcode, cpu)
+    //	case 0x11 => RLr_c(opcode, cpu)
+    //	case 0x12 => RLr_d(opcode, cpu)
+    //	case 0x13 => RLr_e(opcode, cpu)
+    //	case 0x14 => RLr_h(opcode, cpu)
+    //	case 0x15 => RLr_l(opcode, cpu)
+    //	case 0x16 => RLHL(opcode, cpu)
+    //	case 0x17 => RLr_a(opcode, cpu)
+    //	case 0x18 => RRr_b(opcode, cpu)
+    //	case 0x19 => RRr_c(opcode, cpu)
+    //	case 0x1a => RRr_d(opcode, cpu)
+    //	case 0x1b => RRr_e(opcode, cpu)
+    //	case 0x1c => RRr_h(opcode, cpu)
+    //	case 0x1d => RRr_l(opcode, cpu)
+    //	case 0x1e => RRHL(opcode, cpu)
+    //	case 0x1f => RRr_a(opcode, cpu)
+    //	case 0x20 => SLAr_b(opcode, cpu)
+    //	case 0x21 => SLAr_c(opcode, cpu)
+    //	case 0x22 => SLAr_d(opcode, cpu)
+    //	case 0x23 => SLAr_e(opcode, cpu)
+    //	case 0x24 => SLAr_h(opcode, cpu)
+    //	case 0x25 => SLAr_l(opcode, cpu)
+    //	case 0x26 => XX(opcode, cpu)
+    //	case 0x27 => SLAr_a(opcode, cpu)
+    //	case 0x28 => SRAr_b(opcode, cpu)
+    //	case 0x29 => SRAr_c(opcode, cpu)
+    //	case 0x2a => SRAr_d(opcode, cpu)
+    //	case 0x2b => SRAr_e(opcode, cpu)
+    //	case 0x2c => SRAr_h(opcode, cpu)
+    //	case 0x2d => SRAr_l(opcode, cpu)
+    //	case 0x2e => XX(opcode, cpu)
+    //	case 0x2f => SRAr_a(opcode, cpu)
+    //	case 0x30 => SWAPr_b(opcode, cpu)
+    //	case 0x31 => SWAPr_c(opcode, cpu)
+    //	case 0x32 => SWAPr_d(opcode, cpu)
+    //	case 0x33 => SWAPr_e(opcode, cpu)
+    //	case 0x34 => SWAPr_h(opcode, cpu)
+    //	case 0x35 => SWAPr_l(opcode, cpu)
+    //	case 0x36 => XX(opcode, cpu)
+    //	case 0x37 => SWAPr_a(opcode, cpu)
+    //	case 0x38 => SRLr_b(opcode, cpu)
+    //	case 0x39 => SRLr_c(opcode, cpu)
+    //	case 0x3a => SRLr_d(opcode, cpu)
+    //	case 0x3b => SRLr_e(opcode, cpu)
+    //	case 0x3c => SRLr_h(opcode, cpu)
+    //	case 0x3d => SRLr_l(opcode, cpu)
+    //	case 0x3e => XX(opcode, cpu)
+    //	case 0x3f => SRLr_a(opcode, cpu)
+    //	case 0x40 => BIT0b(opcode, cpu)
+    //	case 0x41 => BIT0c(opcode, cpu)
+    //	case 0x42 => BIT0d(opcode, cpu)
+    //	case 0x43 => BIT0e(opcode, cpu)
+    //	case 0x44 => BIT0h(opcode, cpu)
+    //	case 0x45 => BIT0l(opcode, cpu)
+    //	case 0x46 => BIT0m(opcode, cpu)
+    //	case 0x47 => BIT0a(opcode, cpu)
+    //	case 0x48 => BIT1b(opcode, cpu)
+    //	case 0x49 => BIT1c(opcode, cpu)
+    //	case 0x4a => BIT1d(opcode, cpu)
+    //	case 0x4b => BIT1e(opcode, cpu)
+    //	case 0x4c => BIT1h(opcode, cpu)
+    //	case 0x4d => BIT1l(opcode, cpu)
+    //	case 0x4e => BIT1m(opcode, cpu)
+    //	case 0x4f => BIT1a(opcode, cpu)
+    //	case 0x50 => BIT2b(opcode, cpu)
+    //	case 0x51 => BIT2c(opcode, cpu)
+    //	case 0x52 => BIT2d(opcode, cpu)
+    //	case 0x53 => BIT2e(opcode, cpu)
+    //	case 0x54 => BIT2h(opcode, cpu)
+    //	case 0x55 => BIT2l(opcode, cpu)
+    //	case 0x56 => BIT2m(opcode, cpu)
+    //	case 0x57 => BIT2a(opcode, cpu)
+    //	case 0x58 => BIT3b(opcode, cpu)
+    //	case 0x59 => BIT3c(opcode, cpu)
+    //	case 0x5a => BIT3d(opcode, cpu)
+    //	case 0x5b => BIT3e(opcode, cpu)
+    //	case 0x5c => BIT3h(opcode, cpu)
+    //	case 0x5d => BIT3l(opcode, cpu)
+    //	case 0x5e => BIT3m(opcode, cpu)
+    //	case 0x5f => BIT3a(opcode, cpu)
+    //	case 0x60 => BIT4b(opcode, cpu)
+    //	case 0x61 => BIT4c(opcode, cpu)
+    //	case 0x62 => BIT4d(opcode, cpu)
+    //	case 0x63 => BIT4e(opcode, cpu)
+    //	case 0x64 => BIT4h(opcode, cpu)
+    //	case 0x65 => BIT4l(opcode, cpu)
+    //	case 0x66 => BIT4m(opcode, cpu)
+    //	case 0x67 => BIT4a(opcode, cpu)
+    //	case 0x68 => BIT5b(opcode, cpu)
+    //	case 0x69 => BIT5c(opcode, cpu)
+    //	case 0x6a => BIT5d(opcode, cpu)
+    //	case 0x6b => BIT5e(opcode, cpu)
+    //	case 0x6c => BIT5h(opcode, cpu)
+    //	case 0x6d => BIT5l(opcode, cpu)
+    //	case 0x6e => BIT5m(opcode, cpu)
+    //	case 0x6f => BIT5a(opcode, cpu)
+    //	case 0x70 => BIT6b(opcode, cpu)
+    //	case 0x71 => BIT6c(opcode, cpu)
+    //	case 0x72 => BIT6d(opcode, cpu)
+    //	case 0x73 => BIT6e(opcode, cpu)
+    //	case 0x74 => BIT6h(opcode, cpu)
+    //	case 0x75 => BIT6l(opcode, cpu)
+    //	case 0x76 => BIT6m(opcode, cpu)
+    //	case 0x77 => BIT6a(opcode, cpu)
+    //	case 0x78 => BIT7b(opcode, cpu)
+    //	case 0x79 => BIT7c(opcode, cpu)
+    //	case 0x7a => BIT7d(opcode, cpu)
+    //	case 0x7b => BIT7e(opcode, cpu)
+    //	case 0x7c => BIT7h(opcode, cpu)
+    //	case 0x7d => BIT7l(opcode, cpu)
+    //	case 0x7e => BIT7m(opcode, cpu)
+    //	case 0x7f => BIT7a(opcode, cpu)
+    //	case 0x80 => RES0b(opcode, cpu)
+    //	case 0x81 => RES0c(opcode, cpu)
+    //	case 0x82 => RES0d(opcode, cpu)
+    //	case 0x83 => RES0e(opcode, cpu)
+    //	case 0x84 => RES0h(opcode, cpu)
+    //	case 0x85 => RES0l(opcode, cpu)
+    //	case 0x86 => RES0m(opcode, cpu)
+    //	case 0x87 => RES0a(opcode, cpu)
+    //	case 0x88 => RES1b(opcode, cpu)
+    //	case 0x89 => RES1c(opcode, cpu)
+    //	case 0x8a => RES1d(opcode, cpu)
+    //	case 0x8b => RES1e(opcode, cpu)
+    //	case 0x8c => RES1h(opcode, cpu)
+    //	case 0x8d => RES1l(opcode, cpu)
+    //	case 0x8e => RES1m(opcode, cpu)
+    //	case 0x8f => RES1a(opcode, cpu)
+    //	case 0x90 => RES2b(opcode, cpu)
+    //	case 0x91 => RES2c(opcode, cpu)
+    //	case 0x92 => RES2d(opcode, cpu)
+    //	case 0x93 => RES2e(opcode, cpu)
+    //	case 0x94 => RES2h(opcode, cpu)
+    //	case 0x95 => RES2l(opcode, cpu)
+    //	case 0x96 => RES2m(opcode, cpu)
+    //	case 0x97 => RES2a(opcode, cpu)
+    //	case 0x98 => RES3b(opcode, cpu)
+    //	case 0x99 => RES3c(opcode, cpu)
+    //	case 0x9a => RES3d(opcode, cpu)
+    //	case 0x9b => RES3e(opcode, cpu)
+    //	case 0x9c => RES3h(opcode, cpu)
+    //	case 0x9d => RES3l(opcode, cpu)
+    //	case 0x9e => RES3m(opcode, cpu)
+    //	case 0x9f => RES3a(opcode, cpu)
+    //	case 0xa0 => RES4b(opcode, cpu)
+    //	case 0xa1 => RES4c(opcode, cpu)
+    //	case 0xa2 => RES4d(opcode, cpu)
+    //	case 0xa3 => RES4e(opcode, cpu)
+    //	case 0xa4 => RES4h(opcode, cpu)
+    //	case 0xa5 => RES4l(opcode, cpu)
+    //	case 0xa6 => RES4m(opcode, cpu)
+    //	case 0xa7 => RES4a(opcode, cpu)
+    //	case 0xa8 => RES5b(opcode, cpu)
+    //	case 0xa9 => RES5c(opcode, cpu)
+    //	case 0xaa => RES5d(opcode, cpu)
+    //	case 0xab => RES5e(opcode, cpu)
+    //	case 0xac => RES5h(opcode, cpu)
+    //	case 0xad => RES5l(opcode, cpu)
+    //	case 0xae => RES5m(opcode, cpu)
+    //	case 0xaf => RES5a(opcode, cpu)
+    //	case 0xb0 => RES6b(opcode, cpu)
+    //	case 0xb1 => RES6c(opcode, cpu)
+    //	case 0xb2 => RES6d(opcode, cpu)
+    //	case 0xb3 => RES6e(opcode, cpu)
+    //	case 0xb4 => RES6h(opcode, cpu)
+    //	case 0xb5 => RES6l(opcode, cpu)
+    //	case 0xb6 => RES6m(opcode, cpu)
+    //	case 0xb7 => RES6a(opcode, cpu)
+    //	case 0xb8 => RES7b(opcode, cpu)
+    //	case 0xb9 => RES7c(opcode, cpu)
+    //	case 0xba => RES7d(opcode, cpu)
+    //	case 0xbb => RES7e(opcode, cpu)
+    //	case 0xbc => RES7h(opcode, cpu)
+    //	case 0xbd => RES7l(opcode, cpu)
+    //	case 0xbe => RES7m(opcode, cpu)
+    //	case 0xbf => RES7a(opcode, cpu)
+    //	case 0xc0 => SET0b(opcode, cpu)
+    //	case 0xc1 => SET0c(opcode, cpu)
+    //	case 0xc2 => SET0d(opcode, cpu)
+    //	case 0xc3 => SET0e(opcode, cpu)
+    //	case 0xc4 => SET0h(opcode, cpu)
+    //	case 0xc5 => SET0l(opcode, cpu)
+    //	case 0xc6 => SET0m(opcode, cpu)
+    //	case 0xc7 => SET0a(opcode, cpu)
+    //	case 0xc8 => SET1b(opcode, cpu)
+    //	case 0xc9 => SET1c(opcode, cpu)
+    //	case 0xca => SET1d(opcode, cpu)
+    //	case 0xcb => SET1e(opcode, cpu)
+    //	case 0xcc => SET1h(opcode, cpu)
+    //	case 0xcd => SET1l(opcode, cpu)
+    //	case 0xce => SET1m(opcode, cpu)
+    //	case 0xcf => SET1a(opcode, cpu)
+    //	case 0xd0 => SET2b(opcode, cpu)
+    //	case 0xd1 => SET2c(opcode, cpu)
+    //	case 0xd2 => SET2d(opcode, cpu)
+    //	case 0xd3 => SET2e(opcode, cpu)
+    //	case 0xd4 => SET2h(opcode, cpu)
+    //	case 0xd5 => SET2l(opcode, cpu)
+    //	case 0xd6 => SET2m(opcode, cpu)
+    //	case 0xd7 => SET2a(opcode, cpu)
+    //	case 0xd8 => SET3b(opcode, cpu)
+    //	case 0xd9 => SET3c(opcode, cpu)
+    //	case 0xda => SET3d(opcode, cpu)
+    //	case 0xdb => SET3e(opcode, cpu)
+    //	case 0xdc => SET3h(opcode, cpu)
+    //	case 0xdd => SET3l(opcode, cpu)
+    //	case 0xde => SET3m(opcode, cpu)
+    //	case 0xdf => SET3a(opcode, cpu)
+    //	case 0xe0 => SET4b(opcode, cpu)
+    //	case 0xe1 => SET4c(opcode, cpu)
+    //	case 0xe2 => SET4d(opcode, cpu)
+    //	case 0xe3 => SET4e(opcode, cpu)
+    //	case 0xe4 => SET4h(opcode, cpu)
+    //	case 0xe5 => SET4l(opcode, cpu)
+    //	case 0xe6 => SET4m(opcode, cpu)
+    //	case 0xe7 => SET4a(opcode, cpu)
+    //	case 0xe8 => SET5b(opcode, cpu)
+    //	case 0xe9 => SET5c(opcode, cpu)
+    //	case 0xea => SET5d(opcode, cpu)
+    //	case 0xeb => SET5e(opcode, cpu)
+    //	case 0xec => SET5h(opcode, cpu)
+    //	case 0xed => SET5l(opcode, cpu)
+    //	case 0xee => SET5m(opcode, cpu)
+    //	case 0xef => SET5a(opcode, cpu)
+    //	case 0xf0 => SET6b(opcode, cpu)
+    //	case 0xf1 => SET6c(opcode, cpu)
+    //	case 0xf2 => SET6d(opcode, cpu)
+    //	case 0xf3 => SET6e(opcode, cpu)
+    //	case 0xf4 => SET6h(opcode, cpu)
+    //	case 0xf5 => SET6l(opcode, cpu)
+    //	case 0xf6 => SET6m(opcode, cpu)
+    //	case 0xf7 => SET6a(opcode, cpu)
+    //	case 0xf8 => SET7b(opcode, cpu)
+    //	case 0xf9 => SET7c(opcode, cpu)
+    //	case 0xfa => SET7d(opcode, cpu)
+    //	case 0xfb => SET7e(opcode, cpu)
+    //	case 0xfc => SET7h(opcode, cpu)
+    //	case 0xfd => SET7l(opcode, cpu)
+    //	case 0xfe => SET7m(opcode, cpu)
+    //	case 0xff => SET7a(opcode, cpu)
     case _ => println("No CP opcode found")
-	  }
+  }
 
   def LD_nn_n(register: Register) = {
     register := memory.readByte8(pc)
@@ -866,22 +865,34 @@ class Opcodes(cpu: Cpu) {
     sp := j;
     pc += 1
   }
-  
-  def INC_nn(toRegister : Register) = {
+
+  def INC_nn(toRegister: Register) = {
     toRegister += 1
   }
-  def DEC_nn(toRegister : Register) = {
+  def DEC_nn(toRegister: Register) = {
     toRegister -= 1
   }
 
-  
-  def JP_nn(fromRegister : Register, toRegister : Register) = {
+  def JP_nn(fromRegister: Register, toRegister: Register) = {
     toRegister := memory.readByte16(toRegister)
   }
-  
-  
-  
-  //Non-Generic opcode functions here:
+
+  def JP_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
+    if (flagStatus) {
+      fromRegister := ((memory.readByte8(fromRegister + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister)
+      toRegister := (toRegister + 2) & 0xFFFF;
+    }
+  }
+
+  def JP_HL(fromRegister: Register, toRegister: Register) = {
+    toRegister := fromRegister
+  }
+
+  def JR_n(fromRegister: Register) = {
+	var i = memory.readByte8(pc)
+	if (i > 0x7F) i = -((~i + 1) & 0xFF)
+	pc += 1 + i	
+  }
 
   def LD_A_C(toRegister: Register, fromRegister: Register) = {
     toRegister := memory.readByte8(fromRegister + 0xFF00)
@@ -905,9 +916,9 @@ class Opcodes(cpu: Cpu) {
     toRegister := memory.readByte16(fromRegister)
     pc += 2
   }
-  
-  def DAA(toRegister : Register) = {
-    
+
+  def DAA(toRegister: Register) = {
+
     if (!f.subFlag) {
       if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
         toRegister := (toRegister + 0x60) & 0xFF;
@@ -915,47 +926,79 @@ class Opcodes(cpu: Cpu) {
       }
       if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
         toRegister := (toRegister + 0x06) & 0xFF;
-		f.halfCarryFlag = false
+        f.halfCarryFlag = false
       }
+    } else if (f.carryFlag && f.halfCarryFlag) {
+      toRegister := ((toRegister + 0x9A) & 0xFF);
+      f.halfCarryFlag = false;
+    } else if (f.carryFlag) {
+      toRegister := ((toRegister + 0xA0) & 0xFF);
+    } else if (f.halfCarryFlag) {
+      toRegister := ((toRegister + 0xFA) & 0xFF);
+      f.halfCarryFlag = false;
     }
-    else if (f.carryFlag && f.halfCarryFlag) {
-			toRegister := ((toRegister + 0x9A) & 0xFF);
-			f.halfCarryFlag = false;
-		}
-	else if (f.carryFlag) {
-		toRegister := ((toRegister + 0xA0) & 0xFF);
-	}
-	else if (f.halfCarryFlag) {
-		toRegister := ((toRegister + 0xFA) & 0xFF);
-		f.halfCarryFlag = false;
-	}
-	f.zeroFlag = (toRegister == 0);
+    f.zeroFlag = (toRegister == 0);
   }
-  
-  def CPL(toRegister : Register) = {
+
+  def CPL(toRegister: Register) = {
     toRegister ^= 0xFF
     f.subFlag = true
     f.halfCarryFlag = true
   }
-  
-  def CCF () = {
+
+  def CCF() = {
     f.carryFlag = !f.carryFlag; //Love this. "Flipping" bits
     f.subFlag = false
     f.halfCarryFlag = false
   }
-  
-  def SCF() = {  
+
+  def SCF() = {
     f.carryFlag = true
     f.subFlag = false
     f.halfCarryFlag = false
   }
-  
+
+  def RLCA(toRegister: Register) = {
+    f.carryFlag = ((toRegister & 0x80) == 0x80)
+    toRegister := ((toRegister << 1) & 0xFF) | (toRegister >> 7)
+    f.zeroFlag = false
+    f.subFlag = false
+    f.halfCarryFlag = false
+  }
+
+  def RLA(toRegister: Register) = {
+    val x: Int = f.carryFlag
+    f.carryFlag = ((toRegister & 0x80) == 0x80)
+    toRegister := ((toRegister << 1) & 0xFF) | x
+    f.zeroFlag = false
+    f.subFlag = false
+    f.halfCarryFlag = false
+  }
+
+  def RRCA(toRegister: Register) = {
+    f.carryFlag = ((toRegister & 0x01) == 0x01)
+    a := ((f.carryFlag) * 0x80) | (a >> 1) // pretty cool
+    f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = (a == 0x00);
+  }
+
+  //Similar to RLA 
+  def RRA(toRegister: Register) = {
+    val x: Int = f.carryFlag * 0x80
+    f.carryFlag = ((toRegister & 1) == 1)
+    toRegister := (toRegister >> 1) + x
+    f.zeroFlag = false
+    f.subFlag = false
+    f.halfCarryFlag = false;
+  }
+
   def NOP() = {}
-  
+
   def HALT() = halt := 1
-  
+
   def DI() = interruptable = false
-  
+
   def EI() = interruptable = true
 
 }
