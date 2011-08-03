@@ -209,14 +209,14 @@ class Opcodes(cpu: Cpu) {
       case 0x29 => ADD_HL_n(h ++ l, h ++ l)
       case 0x39 => ADD_HL_nSP(h ++ l, sp)
       case 0xE8 => ADDSP_n(sp, pc)     
-      case 0x03 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x13 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x23 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x33 => 1 //INC nn: page 92 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x0B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x1B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x2B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
-      case 0x3B => 1 //DEC nn: page 93 of http://meatfighter.com/gameboy/GBCPUman.pdf
+      case 0x03 => INC_nn(b ++ c)
+      case 0x13 => INC_nn(d ++ e)
+      case 0x23 => INC_nn(h ++ l)
+      case 0x33 => INC_nn(sp)
+      case 0x0B => INC_nn(b ++ c)
+      case 0x1B => INC_nn(d ++ e)
+      case 0x2B => INC_nn(h ++ l)
+      case 0x3B => INC_nn(sp)
       case 0x27 => 1 //DAA a: page 95     
       case 0x2F => 1 //CPL a: page 95
       case 0x3F => 1 //CCD carryflag: page 96
@@ -848,6 +848,13 @@ class Opcodes(cpu: Cpu) {
     sp := j;
     pc += 1
   }
+  
+  def INC_nn(toRegister : Register) = {
+    toRegister += 1
+  }
+  def DEC_nn(toRegister : Register) = {
+    toRegister -= 1
+  }
 
   
   def JP_nn(fromRegister : Register, toRegister : Register) = {
@@ -881,20 +888,14 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
   
-  def NOP() = {
-    //do sfa
-  }
+ 
   
-  def HALT() = {
-    halt := 1
-  }
+  def NOP() = Nil
   
-  def DI() = {
-    interruptable = false
-  }
+  def HALT() = halt := 1
   
-  def EI() = {
-    interruptable = true
-  }
+  def DI() = interruptable = false
+  
+  def EI() = interruptable = true
 
 }
