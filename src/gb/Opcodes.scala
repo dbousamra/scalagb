@@ -230,18 +230,18 @@ class Opcodes(cpu: Cpu) {
       case 0x0F => RRCA(a) //RRCA
       case 0x1F => RRA(a)
 
-      case 0xC2 => JP_cc_nn(pc, sp, !f.zeroFlag)
-      case 0xCA => JP_cc_nn(pc, sp, f.zeroFlag)
-      case 0xD2 => JP_cc_nn(pc, sp, !f.carryFlag)
-      case 0xDA => JP_cc_nn(pc, sp, f.carryFlag)
+      case 0xC2 => JP_cc_nn(pc, pc, !f.zeroFlag)
+      case 0xCA => JP_cc_nn(pc, pc, f.zeroFlag)
+      case 0xD2 => JP_cc_nn(pc, pc, !f.carryFlag)
+      case 0xDA => JP_cc_nn(pc, pc, f.carryFlag)
 
       case 0xE9 => JP_HL(h ++ l, pc)
       case 0x18 => JR_n(pc)
 
-      case 0x20 => 1 //JR_n
-      case 0x28 => 1 //JR_n
-      case 0x30 => 1 //JR_n
-      case 0x38 => 1 //JR_n
+      case 0x20 => JR_cc_n(pc, pc, !f.zeroFlag)
+      case 0x28 => JR_cc_n(pc, pc, f.zeroFlag)
+      case 0x30 => JR_cc_n(pc, pc, !f.carryFlag)
+      case 0x38 => JR_cc_n(pc, pc, f.carryFlag)
 
     }
   }
@@ -878,10 +878,14 @@ class Opcodes(cpu: Cpu) {
   }
 
   def JP_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
-    if (flagStatus) {
-      fromRegister := ((memory.readByte8(fromRegister + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister)
-      toRegister := (toRegister + 2) & 0xFFFF;
-    }
+    if (flagStatus) fromRegister := ((memory.readByte8(fromRegister + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister)
+    else toRegister := (toRegister + 2) & 0xFFFF;
+  }
+  
+  def JR_cc_n(fromRegister : Register, toRegister : Register, flagStatus : Boolean) = {
+     if (flagStatus) fromRegister := (fromRegister + memory.readByte8(fromRegister) + 1) & 0xFFFF
+     else toRegister := (toRegister + 1) & 0xFFFF
+   
   }
 
   def JP_HL(fromRegister: Register, toRegister: Register) = {
