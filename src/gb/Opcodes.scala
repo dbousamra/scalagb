@@ -907,24 +907,27 @@ class Opcodes(cpu: Cpu) {
   }
   
   def DAA(toRegister : Register) = {
+    def update(set:(Int) => Unit) = {
     if (!f.subFlag) {
       if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
-        toRegister := (toRegister + 0x60) & 0xFF
+        set(0x60)
         f.carryFlag = true
       }
       if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
-        toRegister := (toRegister + 0x06) & 0xFF
+        set(0x06)
         f.halfCarryFlag = false
       }
     } else if (f.carryFlag && f.halfCarryFlag) {
-      toRegister := ((toRegister + 0x9A) & 0xFF)
+      set(0x9A)
       f.halfCarryFlag = false
     } else if (f.carryFlag) {
-      toRegister := ((toRegister + 0xA0) & 0xFF)
+      set(0xA0)
     } else if (f.halfCarryFlag) {
-      toRegister := ((toRegister + 0xFA) & 0xFF)
+      set(0xFA)
       f.halfCarryFlag = false
     }
+    }
+    update(i => toRegister := (toRegister + i) & 0xFF)
 	f.zeroFlag = (toRegister == 0)
   }
   
