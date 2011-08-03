@@ -219,12 +219,30 @@ class Opcodes(cpu: Cpu) {
       case 0x3B => INC_nn(sp)
       case 0x27 => DAA(a) //DAA a: page 95     
       case 0x2F => CPL(a) //CPL a: page 95
-      case 0x3F => CCF() 
-      case 0x37 => 1 //SCF set carry flag: page 96
+      case 0x3F => CCF 
+      case 0x37 => SCF //SCF set carry flag: page 96
       case 0x00 => NOP      
       case 0xF3 => DI
       case 0xFB => EI
       case 0xC3 => JP_nn(pc, pc)
+      case 0x07 => 1 //RLCA
+      case 0x17 => 1 //RLA
+      case 0x0F => 1 //RRCA
+      case 0x1F => 1 //RRA
+      
+      case 0xC2 => 1 //JP_cc_nn
+      case 0xCA => 1 //JP_cc_nn
+      case 0xD2 => 1 //JP_cc_nn
+      case 0xDA => 1 //JP_cc_nn
+      
+      case 0xE9 => 1 //JP_HL
+      case 0x18 => 1 //JR_n
+      
+      case 0x20 => 1 //JR_n
+      case 0x28 => 1 //JR_n
+      case 0x30 => 1 //JR_n
+      case 0x38 => 1 //JR_n
+      
 
     }
   }
@@ -888,7 +906,6 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
   
-<<<<<<< HEAD
   def DAA(toRegister : Register) = {
     
     if (!f.subFlag) {
@@ -926,7 +943,14 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
     f.halfCarryFlag = false
   }
-  def NOP() = Nil
+  
+  def SCF() = {  
+    f.carryFlag = true
+    f.subFlag = false
+    f.halfCarryFlag = false
+  }
+  
+  def NOP() = {}
   
   def HALT() = halt := 1
   
