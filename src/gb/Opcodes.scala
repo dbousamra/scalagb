@@ -639,7 +639,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def SUB_n(fromRegister: Register, toRegister: Register) = {
-    var sum = toRegister - fromRegister;
+    var sum = toRegister - fromRegister
     f.halfCarryFlag = (toRegister & 0xF) < (fromRegister & 0xF)
     f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
@@ -649,7 +649,7 @@ class Opcodes(cpu: Cpu) {
 
   def SUB_n16(fromRegister: Register, toRegister: Register) = {
     var temp = memory.readByte8((fromRegister))
-    var sum = toRegister - temp;
+    var sum = toRegister - temp
     f.halfCarryFlag = (toRegister & 0xF) < (temp & 0xF)
     f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
@@ -659,7 +659,7 @@ class Opcodes(cpu: Cpu) {
 
   def SUB_n16PC(fromRegister: Register, toRegister: Register) = {
     var temp = memory.readByte8(fromRegister)
-    var sum = toRegister - temp;
+    var sum = toRegister - temp
     f.halfCarryFlag = (toRegister & 0xF) < (temp & 0xF)
     f.carryFlag = sum < 0x00
     toRegister := sum & 0xFF
@@ -703,7 +703,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def AND_n(toRegister: Register, fromRegister: Register) = {
-    toRegister &= fromRegister;
+    toRegister &= fromRegister
     f.zeroFlag = toRegister == 0
     f.halfCarryFlag = true
     f.carryFlag = false
@@ -779,7 +779,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def CP_n(register2: Register, register1: Register) = {
-    val sum = register1 - register2;
+    val sum = register1 - register2
     f.halfCarryFlag = (sum & 0xF) > (register1 & 0xF)
     f.carryFlag = sum < 0
     f.zeroFlag = sum == 0
@@ -863,7 +863,7 @@ class Opcodes(cpu: Cpu) {
     f.halfCarryFlag = ((toRegister ^ i ^ j & 0x10) == 0x10)
     f.zeroFlag = false
     f.subFlag = false
-    sp := j;
+    sp := j
     pc += 1
   }
   
@@ -909,23 +909,23 @@ class Opcodes(cpu: Cpu) {
   def DAA(toRegister : Register) = {
     if (!f.subFlag) {
       if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
-        toRegister := (toRegister + 0x60) & 0xFF;
+        toRegister := (toRegister + 0x60) & 0xFF
         f.carryFlag = true
       }
       if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
-        toRegister := (toRegister + 0x06) & 0xFF;
+        toRegister := (toRegister + 0x06) & 0xFF
         f.halfCarryFlag = false
       }
     } else if (f.carryFlag && f.halfCarryFlag) {
-      toRegister := ((toRegister + 0x9A) & 0xFF);
-      f.halfCarryFlag = false;
+      toRegister := ((toRegister + 0x9A) & 0xFF)
+      f.halfCarryFlag = false
     } else if (f.carryFlag) {
-      toRegister := ((toRegister + 0xA0) & 0xFF);
+      toRegister := ((toRegister + 0xA0) & 0xFF)
     } else if (f.halfCarryFlag) {
-      toRegister := ((toRegister + 0xFA) & 0xFF);
-      f.halfCarryFlag = false;
+      toRegister := ((toRegister + 0xFA) & 0xFF)
+      f.halfCarryFlag = false
     }
-	f.zeroFlag = (toRegister == 0);
+	f.zeroFlag = (toRegister == 0)
   }
   
   def CPL(toRegister : Register) = {
@@ -935,7 +935,7 @@ class Opcodes(cpu: Cpu) {
   }
   
   def CCF () = {
-    f.carryFlag = !f.carryFlag; //Love this. "Flipping" bits
+    f.carryFlag = !f.carryFlag //Love this. "Flipping" bits
     f.subFlag = false
     f.halfCarryFlag = false
   }
