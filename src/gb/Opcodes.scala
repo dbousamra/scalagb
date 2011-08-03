@@ -914,6 +914,12 @@ class Opcodes(cpu: Cpu) {
 	f.zeroFlag = (a == 0);
   }
   
+  def CPL(toRegister : Register) = {
+    toRegister ^= 0xFF
+    f.subFlag = true
+    f.halfCarryFlag = true
+  }
+  `
   def NOP() = Nil
   
   def HALT() = halt := 1
