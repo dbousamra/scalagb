@@ -53,6 +53,11 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
     }
   }
   
+  def readByte8Signed(address : Int) = {
+    val x = readByte8(address)
+    (x & 0x7F) - (x & 0x80)
+  }
+  
    //Helper function that just reads next Int and concatenates them.
   //eg. Int 1 = 0x4f and Int 2 = 0x13 would give 0x134f
   def readByte16(address : Int) : Int = {
