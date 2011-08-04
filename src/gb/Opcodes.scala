@@ -209,7 +209,7 @@ class Opcodes(cpu: Cpu) {
       case 0x19 => ADD_HL_n(h ++ l, d ++ e)
       case 0x29 => ADD_HL_n(h ++ l, h ++ l)
       case 0x39 => ADD_HL_nSP(h ++ l, sp)
-      case 0xE8 => ADDSP_n(sp, pc)
+      case 0xE8 => ADDSP_n(sp)
       case 0x03 => INC_nn(b ++ c)
       case 0x13 => INC_nn(d ++ e)
       case 0x23 => INC_nn(h ++ l)
@@ -239,10 +239,10 @@ class Opcodes(cpu: Cpu) {
       case 0xE9 => JP_HL(h ++ l, pc)
       case 0x18 => JR_n()
 
-      case 0x20 => JR_cc_n(pc, pc, !f.zeroFlag)
-      case 0x28 => JR_cc_n(pc, pc, f.zeroFlag)
-      case 0x30 => JR_cc_n(pc, pc, !f.carryFlag)
-      case 0x38 => JR_cc_n(pc, pc, f.carryFlag)
+      case 0x20 => JR_cc_n(pc, !f.zeroFlag)
+      case 0x28 => JR_cc_n(pc, f.zeroFlag)
+      case 0x30 => JR_cc_n(pc, !f.carryFlag)
+      case 0x38 => JR_cc_n(pc, f.carryFlag)
       
       case 0xCD => CALL_nn(pc, sp)
       case 0xC4 => CALL_cc_nn(pc, sp, !f.zeroFlag)
@@ -881,9 +881,9 @@ class Opcodes(cpu: Cpu) {
 
   }
 
-  def ADDSP_n(toRegister: Register, fromRegister: Register) = {
+  def ADDSP_n(toRegister: Register) = {
     
-    val i = unsignedToSigned(memory.readByte8(fromRegister))
+    val i = unsignedToSigned(memory.readByte8(pc))
     var j = (toRegister + i) & 0xFFFF
     f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
     f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
@@ -909,8 +909,8 @@ class Opcodes(cpu: Cpu) {
     else toRegister := (toRegister + 2) & 0xFFFF 
   }
   
-  def JR_cc_n(fromRegister : Register, toRegister : Register, flagStatus : Boolean) = {
-     if (flagStatus) fromRegister := (fromRegister + unsignedToSigned(memory.readByte8(fromRegister)) + 1) & 0xFFFF
+  def JR_cc_n(toRegister : Register, flagStatus : Boolean) = {
+     if (flagStatus) pc := (pc + unsignedToSigned(memory.readByte8(pc)) + 1) & 0xFFFF
      else toRegister := (toRegister + 1) & 0xFFFF
    
   }
