@@ -572,7 +572,7 @@ class Opcodes(cpu: Cpu) {
   }
   
   def LD_HL_SP(fromRegister : Register, toRegister : Register) = {
-   var x = unsignedToSigned(memory.readByte8(fromRegister))
+   var x = memory.readByte8Signed(fromRegister)
    toRegister := (sp + x) & 0xFFFF
    f.carryFlag = ((sp ^ x ^ toRegister) & 0x100) == 0x100
    f.halfCarryFlag = ((sp ^ x ^ toRegister) & 0x10) == 0x10
@@ -883,7 +883,7 @@ class Opcodes(cpu: Cpu) {
 
   def ADDSP_n(toRegister: Register) = {
     
-    val i = unsignedToSigned(memory.readByte8(pc))
+    val i = memory.readByte8Signed(pc)
     var j = (toRegister + i) & 0xFFFF
     f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
     f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
@@ -910,7 +910,7 @@ class Opcodes(cpu: Cpu) {
   }
   
   def JR_cc_n(toRegister : Register, flagStatus : Boolean) = {
-     if (flagStatus) pc := (pc + unsignedToSigned(memory.readByte8(pc)) + 1) & 0xFFFF
+     if (flagStatus) pc := (pc + memory.readByte8Signed(pc) + 1) & 0xFFFF
      else toRegister := (toRegister + 1) & 0xFFFF
    
   }
@@ -920,7 +920,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def JR_n() = {
-	pc := unsignedToSigned(memory.readByte8(pc))
+	pc := memory.readByte8Signed(pc)
   }
 
   def LD_A_C(toRegister: Register, fromRegister: Register) = {
@@ -1060,8 +1060,4 @@ class Opcodes(cpu: Cpu) {
   def DI() = interruptable = false
 
   def EI() = interruptable = true
-
-  def unsignedToSigned(x : Int) = {
-    (x & 0x7F) - (x & 0x80)
-  }
 }
