@@ -55,11 +55,11 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
 
   def debugTraces2(opcode : Int) = { 
     "PC = " + pc.getHexString + " Just executed=" + opcode.toHexString +
-    " AF: " + a.getHexString + "" + f.getHexString +
-    " BC: " + b.getHexString + "" + c.getHexString +
-    " HL: " + h.getHexString + "" + l.getHexString +
-    " DE: " + d.getHexString + "" + e.getHexString + 
-    " SP: " + sp.getHexString + "" +
+    " AF: " + a.getHexString + " " + f.getHexString +
+    " BC: " + b.getHexString + " " + c.getHexString +
+    " HL: " + h.getHexString + " " + l.getHexString +
+    " DE: " + d.getHexString + " " + e.getHexString + 
+    " SP: " + sp.getHexString + " " +
     " PC: " + pc.getHexString
     
   }

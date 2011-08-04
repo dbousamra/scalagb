@@ -8,7 +8,7 @@ class Opcodes(cpu: Cpu) {
   case object |+| extends Op { override val offset = 1 }
 
   def execute(opcode: Int) = {
-	println("Executing opcode: " + opcode.toHexString)
+    println("Executing opcode: " + opcode.toHexString)
     def HandleCB(opcode: Int) = {
       var i = memory.readByte8(pc)
       pc += 1
@@ -108,7 +108,7 @@ class Opcodes(cpu: Cpu) {
       case 0x21 => LD_n_n(l, h, pc)
       case 0x31 => LD_n_nSP(sp, pc)
       case 0xF9 => LD_SP_HL(h ++ l, sp) //TODO: No implemented
-      case 0xF8 => LD_HL_SP(h ++l, sp)
+      case 0xF8 => LD_HL_SP(h ++ l, sp)
       case 0x08 => LD_n_A16Write(pc, sp) //TODO: Possibly incorrect.
       case 0xF5 => PUSH_nn(sp, a, f)
       case 0xC5 => PUSH_nn(sp, b, c)
@@ -243,7 +243,7 @@ class Opcodes(cpu: Cpu) {
       case 0x28 => JR_cc_n(pc, f.zeroFlag)
       case 0x30 => JR_cc_n(pc, !f.carryFlag)
       case 0x38 => JR_cc_n(pc, f.carryFlag)
-      
+
       case 0xCD => CALL_nn(pc, sp)
       case 0xC4 => CALL_cc_nn(pc, sp, !f.zeroFlag)
       case 0xCC => CALL_cc_nn(pc, sp, f.zeroFlag)
@@ -258,7 +258,7 @@ class Opcodes(cpu: Cpu) {
       case 0xF7 => RST_n(sp, pc, 0x30)
       case 0xFF => RST_n(sp, pc, 0x38)
       case 0xC9 => RET(sp, pc)
-      
+
     }
   }
 
@@ -568,17 +568,17 @@ class Opcodes(cpu: Cpu) {
   }
 
   def LD_SP_HL(fromRegister: Register, toRegister: Register) = {
-     sp := fromRegister
+    sp := fromRegister
   }
-  
-  def LD_HL_SP(fromRegister : Register, toRegister : Register) = {
-   var x = memory.readByte8Signed(fromRegister)
-   toRegister := (sp + x) & 0xFFFF
-   f.carryFlag = ((sp ^ x ^ toRegister) & 0x100) == 0x100
-   f.halfCarryFlag = ((sp ^ x ^ toRegister) & 0x10) == 0x10
-   f.zeroFlag = false
-   f.subFlag = false
-   pc += 1
+
+  def LD_HL_SP(fromRegister: Register, toRegister: Register) = {
+    var x = memory.readByte8Signed(fromRegister)
+    toRegister := (sp + x) & 0xFFFF
+    f.carryFlag = ((sp ^ x ^ toRegister) & 0x100) == 0x100
+    f.halfCarryFlag = ((sp ^ x ^ toRegister) & 0x10) == 0x10
+    f.zeroFlag = false
+    f.subFlag = false
+    pc += 1
   }
 
   def PUSH_nn(fromRegister: Register, toRegister: Register, toRegister2: Register) = {
@@ -874,15 +874,15 @@ class Opcodes(cpu: Cpu) {
 
   def ADD_HL_nSP(fromRegister: Register, toRegister: Register) = {
     var x = fromRegister + toRegister
-    fromRegister := x & 0xFFFF
-    f.carryFlag = fromRegister > 0xFFFF
     f.halfCarryFlag = ((fromRegister & 0xFFF) + (toRegister & 0xFFF) > 0xFFF)
+    f.carryFlag = x > 0xFFFF
+    fromRegister := x & 0xFFFF
     f.subFlag = false
 
   }
 
   def ADDSP_n(toRegister: Register) = {
-    
+
     val i = memory.readByte8Signed(pc)
     var j = (toRegister + i) & 0xFFFF
     f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
@@ -906,13 +906,13 @@ class Opcodes(cpu: Cpu) {
 
   def JP_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
     if (flagStatus) fromRegister := ((memory.readByte8(fromRegister + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister)
-    else toRegister := (toRegister + 2) & 0xFFFF 
+    else toRegister := (toRegister + 2) & 0xFFFF
   }
-  
-  def JR_cc_n(toRegister : Register, flagStatus : Boolean) = {
-     if (flagStatus) pc := (pc + memory.readByte8Signed(pc) + 1) & 0xFFFF
-     else toRegister := (toRegister + 1) & 0xFFFF
-   
+
+  def JR_cc_n(toRegister: Register, flagStatus: Boolean) = {
+    if (flagStatus) pc := (pc + memory.readByte8Signed(pc) + 1) & 0xFFFF
+    else toRegister := (toRegister + 1) & 0xFFFF
+
   }
 
   def JP_HL(fromRegister: Register, toRegister: Register) = {
@@ -920,7 +920,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def JR_n() = {
-	pc := memory.readByte8Signed(pc)
+    pc := memory.readByte8Signed(pc)
   }
 
   def LD_A_C(toRegister: Register, fromRegister: Register) = {
@@ -946,29 +946,29 @@ class Opcodes(cpu: Cpu) {
     pc += 2
   }
 
- def DAA(toRegister : Register) = {
-    def update(set:(Int) => Unit) = {
-    if (!f.subFlag) {
-      if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
-        set(0x60)
-        f.carryFlag = true
-      }
-      if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
-        set(0x06)
+  def DAA(toRegister: Register) = {
+    def update(set: (Int) => Unit) = {
+      if (!f.subFlag) {
+        if (f.carryFlag || toRegister > 0x99) { //might need to be 0x9A
+          set(0x60)
+          f.carryFlag = true
+        }
+        if (f.halfCarryFlag || (toRegister & 0xF) > 0x9) {
+          set(0x06)
+          f.halfCarryFlag = false
+        }
+      } else if (f.carryFlag && f.halfCarryFlag) {
+        set(0x9A)
+        f.halfCarryFlag = false
+      } else if (f.carryFlag) {
+        set(0xA0)
+      } else if (f.halfCarryFlag) {
+        set(0xFA)
         f.halfCarryFlag = false
       }
-    } else if (f.carryFlag && f.halfCarryFlag) {
-      set(0x9A)
-      f.halfCarryFlag = false
-    } else if (f.carryFlag) {
-      set(0xA0)
-    } else if (f.halfCarryFlag) {
-      set(0xFA)
-      f.halfCarryFlag = false
-    }
     }
     update(i => toRegister := (toRegister + i) & 0xFF)
-	f.zeroFlag = (toRegister == 0)
+    f.zeroFlag = (toRegister == 0)
   }
 
   def CPL(toRegister: Register) = {
@@ -976,8 +976,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = true
     f.halfCarryFlag = true
   }
- 
-  def CCF () = {
+
+  def CCF() = {
     f.carryFlag = !f.carryFlag //Love this. "Flipping" bits
     f.subFlag = false
     f.halfCarryFlag = false
@@ -1011,7 +1011,7 @@ class Opcodes(cpu: Cpu) {
     a := ((f.carryFlag) * 0x80) | (a >> 1) // pretty cool
     f.halfCarryFlag = false
     f.subFlag = false
-    f.zeroFlag = (a == 0x00) 
+    f.zeroFlag = (a == 0x00)
   }
 
   //Similar to RLA 
@@ -1021,38 +1021,37 @@ class Opcodes(cpu: Cpu) {
     toRegister := (toRegister >> 1) + x
     f.zeroFlag = false
     f.subFlag = false
-    f.halfCarryFlag = false 
+    f.halfCarryFlag = false
   }
-  
-  def CALL_nn(toRegister : Register, toRegister2 : Register) = {
-    toRegister2 -= 2	
-    cpu.memory.writeByte16(toRegister2, toRegister + 2)	
+
+  def CALL_nn(toRegister: Register, toRegister2: Register) = {
+    toRegister2 -= 2
+    cpu.memory.writeByte16(toRegister2, toRegister + 2)
     toRegister := cpu.memory.readByte16(toRegister)
   }
-  
-  def CALL_cc_nn(fromRegister : Register, toRegister : Register, flagStatus : Boolean) = {
-    
+
+  def CALL_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
+
     if (flagStatus) {
       fromRegister -= 2
       memory.writeByte16(fromRegister, toRegister + 2)
       toRegister := cpu.memory.readByte16(toRegister)
-    }
-     else toRegister := (toRegister + 2) & 0xFFFF
+    } else toRegister := (toRegister + 2) & 0xFFFF
   }
-  
-  def RST_n(toRegister : Register, fromRegister : Register, offsetAddress : Int) = {
-    toRegister := (toRegister - 1) & 0xFFFF 
-		memory.writeByte16(toRegister, pc >> 8) 
-		toRegister := (toRegister - 1) & 0xFFFF 
-		memory.writeByte16(toRegister, pc & 0xFF) 
-		pc := offsetAddress 
+
+  def RST_n(toRegister: Register, fromRegister: Register, offsetAddress: Int) = {
+    toRegister := (toRegister - 1) & 0xFFFF
+    memory.writeByte16(toRegister, pc >> 8)
+    toRegister := (toRegister - 1) & 0xFFFF
+    memory.writeByte16(toRegister, pc & 0xFF)
+    pc := offsetAddress
   }
-  
-  def RET(fromRegister : Register, toRegister : Register) = {
+
+  def RET(fromRegister: Register, toRegister: Register) = {
     toRegister := memory.readByte16(fromRegister)
     fromRegister += 2
   }
-  
+
   def NOP() = {}
 
   def HALT() = halt := 1
