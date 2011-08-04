@@ -586,6 +586,7 @@ class Opcodes(cpu: Cpu) {
     memory.writeByte8(fromRegister, toRegister)
     fromRegister -= 1
     memory.writeByte8(fromRegister, toRegister2)
+
   }
 
   def POP_nn(fromRegister: Register, toRegister: Register, toRegister2: Register) = {
@@ -872,11 +873,10 @@ class Opcodes(cpu: Cpu) {
   }
 
   def ADD_HL_nSP(fromRegister: Register, toRegister: Register) = {
-    var hl = fromRegister
-    hl += sp
-    fromRegister := hl
-    f.carryFlag = hl > 0xFFFF
-    f.halfCarryFlag = ((fromRegister & 0xFFF) + (sp & 0xFFF) > 0xFFF)
+    var x = fromRegister + toRegister
+    fromRegister := x & 0xFFFF
+    f.carryFlag = fromRegister > 0xFFFF
+    f.halfCarryFlag = ((fromRegister & 0xFFF) + (toRegister & 0xFFF) > 0xFFF)
     f.subFlag = false
 
   }
