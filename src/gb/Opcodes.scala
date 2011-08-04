@@ -8,7 +8,7 @@ class Opcodes(cpu: Cpu) {
   case object |+| extends Op { override val offset = 1 }
 
   def execute(opcode: Int) = {
-
+	println("Executing opcode: " + opcode.toHexString)
     def HandleCB(opcode: Int) = {
       var i = memory.readByte8(pc)
       pc += 1
@@ -108,6 +108,7 @@ class Opcodes(cpu: Cpu) {
       case 0x21 => LD_n_n(l, h, pc)
       case 0x31 => LD_n_nSP(sp, pc)
       case 0xF9 => LD_SP_HL(h ++ l, sp) //TODO: No implemented
+      case 0xF8 => LD_HL_SP(h ++l, sp)
       case 0x08 => LD_n_A16Write(pc, sp) //TODO: Possibly incorrect.
       case 0xF5 => PUSH_nn(sp, a, f)
       case 0xC5 => PUSH_nn(sp, b, c)
@@ -248,7 +249,6 @@ class Opcodes(cpu: Cpu) {
       case 0xCC => CALL_cc_nn(pc, sp, f.zeroFlag)
       case 0xD4 => CALL_cc_nn(pc, sp, !f.carryFlag)
       case 0xDC => CALL_cc_nn(pc, sp, f.carryFlag)
-      
       case 0xC7 => RST_n(sp, pc, 0x00)
       case 0xCF => RST_n(sp, pc, 0x08)
       case 0xD7 => RST_n(sp, pc, 0x10)
@@ -257,7 +257,6 @@ class Opcodes(cpu: Cpu) {
       case 0xEF => RST_n(sp, pc, 0x28)
       case 0xF7 => RST_n(sp, pc, 0x30)
       case 0xFF => RST_n(sp, pc, 0x38)
-      
       case 0xC9 => RET(sp, pc)
       
     }
@@ -569,7 +568,17 @@ class Opcodes(cpu: Cpu) {
   }
 
   def LD_SP_HL(fromRegister: Register, toRegister: Register) = {
-    //TODO - not sure how to concatenate H and L into one
+     sp := fromRegister
+  }
+  
+  def LD_HL_SP(fromRegister : Register, toRegister : Register) = {
+   var x = unsignedToSigned(memory.readByte8(fromRegister))
+   toRegister := (sp + x) & 0xFFFF
+   f.carryFlag = ((sp ^ x ^ toRegister) & 0x100) == 0x100
+   f.halfCarryFlag = ((sp ^ x ^ toRegister) & 0x10) == 0x10
+   f.zeroFlag = false
+   f.subFlag = false
+   pc += 1
   }
 
   def PUSH_nn(fromRegister: Register, toRegister: Register, toRegister2: Register) = {
@@ -873,14 +882,15 @@ class Opcodes(cpu: Cpu) {
   }
 
   def ADDSP_n(toRegister: Register, fromRegister: Register) = {
-    val i = memory.readByte8(fromRegister)
+    
+    val i = unsignedToSigned(memory.readByte8(fromRegister))
     var j = (toRegister + i) & 0xFFFF
-    f.carryFlag = ((toRegister ^ i ^ j & 0x100) == 0x100)
-    f.halfCarryFlag = ((toRegister ^ i ^ j & 0x10) == 0x10)
+    f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
+    f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
     f.zeroFlag = false
     f.subFlag = false
     sp := j
-    pc += 1
+    pc += 1 & 0xFFFF
   }
 
   def INC_nn(toRegister: Register) = {
@@ -896,11 +906,11 @@ class Opcodes(cpu: Cpu) {
 
   def JP_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
     if (flagStatus) fromRegister := ((memory.readByte8(fromRegister + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister)
-    else toRegister := (toRegister + 2) & 0xFFFF;
+    else toRegister := (toRegister + 2) & 0xFFFF 
   }
   
   def JR_cc_n(fromRegister : Register, toRegister : Register, flagStatus : Boolean) = {
-     if (flagStatus) fromRegister := (fromRegister + memory.readByte8(fromRegister) + 1) & 0xFFFF
+     if (flagStatus) fromRegister := (fromRegister + unsignedToSigned(memory.readByte8(fromRegister)) + 1) & 0xFFFF
      else toRegister := (toRegister + 1) & 0xFFFF
    
   }
@@ -910,9 +920,7 @@ class Opcodes(cpu: Cpu) {
   }
 
   def JR_n(fromRegister: Register) = {
-	var i = memory.readByte8(pc)
-	if (i > 0x7F) i = -((~i + 1) & 0xFF)
-	pc += 1 + i	
+	pc := unsignedToSigned(memory.readByte8(pc))
   }
 
   def LD_A_C(toRegister: Register, fromRegister: Register) = {
@@ -1003,7 +1011,7 @@ class Opcodes(cpu: Cpu) {
     a := ((f.carryFlag) * 0x80) | (a >> 1) // pretty cool
     f.halfCarryFlag = false
     f.subFlag = false
-    f.zeroFlag = (a == 0x00);
+    f.zeroFlag = (a == 0x00) 
   }
 
   //Similar to RLA 
@@ -1013,7 +1021,7 @@ class Opcodes(cpu: Cpu) {
     toRegister := (toRegister >> 1) + x
     f.zeroFlag = false
     f.subFlag = false
-    f.halfCarryFlag = false;
+    f.halfCarryFlag = false 
   }
   
   def CALL_nn(toRegister : Register, toRegister2 : Register) = {
@@ -1033,11 +1041,11 @@ class Opcodes(cpu: Cpu) {
   }
   
   def RST_n(toRegister : Register, fromRegister : Register, offsetAddress : Int) = {
-    toRegister := (toRegister - 1) & 0xFFFF;
-		memory.writeByte16(toRegister, pc >> 8);
-		toRegister := (toRegister - 1) & 0xFFFF;
-		memory.writeByte16(toRegister, pc & 0xFF);
-		pc := offsetAddress;
+    toRegister := (toRegister - 1) & 0xFFFF 
+		memory.writeByte16(toRegister, pc >> 8) 
+		toRegister := (toRegister - 1) & 0xFFFF 
+		memory.writeByte16(toRegister, pc & 0xFF) 
+		pc := offsetAddress 
   }
   
   def RET(fromRegister : Register, toRegister : Register) = {
@@ -1053,4 +1061,7 @@ class Opcodes(cpu: Cpu) {
 
   def EI() = interruptable = true
 
+  def unsignedToSigned(x : Int) = {
+    (x & 0x7F) - (x & 0x80)
+  }
 }
