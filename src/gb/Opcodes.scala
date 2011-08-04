@@ -237,7 +237,7 @@ class Opcodes(cpu: Cpu) {
       case 0xDA => JP_cc_nn(pc, pc, f.carryFlag)
 
       case 0xE9 => JP_HL(h ++ l, pc)
-      case 0x18 => JR_n(pc)
+      case 0x18 => JR_n()
 
       case 0x20 => JR_cc_n(pc, pc, !f.zeroFlag)
       case 0x28 => JR_cc_n(pc, pc, f.zeroFlag)
@@ -919,7 +919,7 @@ class Opcodes(cpu: Cpu) {
     toRegister := fromRegister
   }
 
-  def JR_n(fromRegister: Register) = {
+  def JR_n() = {
 	pc := unsignedToSigned(memory.readByte8(pc))
   }
 
