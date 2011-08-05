@@ -8,7 +8,7 @@ class Opcodes(cpu: Cpu) {
   case object |+| extends Op { override val offset = 1 }
 
   def execute(opcode: Int) = {
-    println("Executing opcode: " + opcode.toHexString)
+    //println("Executing opcode: " + opcode.toHexString)
     def HandleCB(opcode: Int) = {
       var i = memory.readByte8(pc)
       pc += 1

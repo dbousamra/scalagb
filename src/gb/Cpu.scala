@@ -10,11 +10,13 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   var sp : Register = new Register
   var halt : Register = new Register
   var interruptable = true
+  var currentOpcode = 0
   
   var opcodes : Opcodes = new Opcodes(this)
   var gpu : Gpu = new Gpu(memory)
   var memory : Memory = new Memory(gpu, this, romFilename)
   
+  var stackTrace = List[String]()
   
   def reset() = {
     resetRegisters()
@@ -42,22 +44,29 @@ class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   }
 
   def run() = {
-    val opcode = memory.readByte8(pc)
-    pc += 1
     
-    opcodes.execute(opcode)
-    pc &= 0xFFFF //prevent overflow
+    currentOpcode = memory.readByte8(pc)
+    
+    
     if (DEBUG_MODE) {
-      println(debugTraces2(opcode))
+      println(debugTraces(currentOpcode))
+      stackTrace = debugTraces(currentOpcode) :: stackTrace
+      
     }
+    pc += 1
+    opcodes.execute(currentOpcode)
+    pc &= 0xFFFF //prevent overflow
+    
+    
+    
   }
 
 
-  def debugTraces2(opcode : Int) = { 
+  def debugTraces(opcode : Int) = { 
     "PC = " + pc.getHexString + " Just executed=" + opcode.toHexString +
     " AF: " + a.getHexString + " " + f.getHexString +
     " BC: " + b.getHexString + " " + c.getHexString +
-    " HL: " + h.getHexString + " " + l.getHexString +
+    " HL: " + h.getHexString + "" + l.getHexString +
     " DE: " + d.getHexString + " " + e.getHexString + 
     " SP: " + sp.getHexString + " " +
     " PC: " + pc.getHexString

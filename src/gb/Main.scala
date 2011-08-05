@@ -10,7 +10,5 @@ object Main {
       cpu.run()
       x += 1
     }
-  }
-    
-    
+  } 
 }
