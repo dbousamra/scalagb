@@ -263,14 +263,14 @@ class Opcodes(cpu: Cpu) {
   }
 
   def cb(opcode: Int) = opcode match {
-    //    case 0x0 => RLCr_b(opcode, cpu)
-    //	case 0x1 => RLCr_c(opcode, cpu)
-    //	case 0x2 => RLCr_d(opcode, cpu)
-    //	case 0x3 => RLCr_e(opcode, cpu)
-    //	case 0x4 => RLCr_h(opcode, cpu)
-    //	case 0x5 => RLCr_l(opcode, cpu)
-    //	case 0x6 => RLCHL(opcode, cpu)
-    //	case 0x7 => RLCr_a(opcode, cpu)
+    case 0x0 => RLC_n(b)
+    case 0x1 => RLC_n(c)
+    case 0x2 => RLC_n(d)
+    case 0x3 => RLC_n(e)
+    case 0x4 => RLC_n(h)
+    case 0x5 => RLC_n(l)
+    case 0x6 => RLC_n16(h ++ l) //not sure if i can use RLC_n or if I need my 16 bit method
+    case 0x7 => RLC_n(a)
     //	case 0x8 => RRCr_b(opcode, cpu)
     //	case 0x9 => RRCr_c(opcode, cpu)
     //	case 0xa => RRCr_d(opcode, cpu)
@@ -862,7 +862,6 @@ class Opcodes(cpu: Cpu) {
   //TODO: HL, BC, DE are referred to as 16 bit registers occasionally. 
   //Maybe some accessors/mutators that auto combine them so we can perform instructions on them as 16 bit registers as well as 8 bit
 
-  
   //TODO: JavaBoy doesn't seem to change the flags, whereas doco says you do. Commented out to pass tests
   def ADD_HL_n(fromRegister: Register, toRegister: Register) = {
     var sum = fromRegister + toRegister
@@ -874,15 +873,15 @@ class Opcodes(cpu: Cpu) {
 
   def ADD_HL_nSP(fromRegister: Register, toRegister: Register) = {
     var x = fromRegister + toRegister
-//    f.halfCarryFlag = ((fromRegister & 0xFFF) + (toRegister & 0xFFF) > 0xFFF)
-//    f.carryFlag = x > 0xFFFF
+    //    f.halfCarryFlag = ((fromRegister & 0xFFF) + (toRegister & 0xFFF) > 0xFFF)
+    //    f.carryFlag = x > 0xFFFF
     fromRegister := (x & 0xFFFF)
-    
+
     if (fromRegister > 65535) f |= 0x10
     else f &= 0xEF
-    
-//    f.subFlag = false
-//
+
+    //    f.subFlag = false
+    //
   }
 
   def ADDSP_n(toRegister: Register) = {
@@ -891,10 +890,10 @@ class Opcodes(cpu: Cpu) {
     var j = (toRegister + i) & 0xFFFF
     //TODO: The JavaBoy logs say I shouldnt set flags on here, but doco says otherwise. WTF
     //Disabling now so I can pass.
-//    f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
-//    f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
-//    f.zeroFlag = false
-//    f.subFlag = false
+    //    f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
+    //    f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
+    //    f.zeroFlag = false
+    //    f.subFlag = false
     sp := j
     pc += 1 & 0xFFFF
   }
@@ -1065,4 +1064,34 @@ class Opcodes(cpu: Cpu) {
   def DI() = interruptable = false
 
   def EI() = interruptable = true
+
+  //CB 16 bit flags:
+
+  def RLC_n(fromRegister: Register) = {
+    f.carryFlag = (fromRegister & 0x80) == 0x80
+    fromRegister := ((fromRegister << 1) & 0xFF) | f.carryFlag
+    f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = fromRegister == 0x00
+  }
+
+  def RLC_n16(fromRegister: Register) = {
+    var x = memory.readByte8(fromRegister)
+    f.carryFlag = (x & 0x80) == 0x80
+    x = ((x << 1) & 0xFF) | f.carryFlag
+    memory.writeByte8(fromRegister, x)
+    f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = x == 0x00
+  }
+
+  def RL_n(fromRegister: Register) = {
+    var x = (fromRegister & 0x80) == 0x80
+    fromRegister := ((fromRegister << 1) & 0xFF) | f.carryFlag
+    f.carryFlag = x
+    f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = fromRegister == 0
+  }
+
 }
