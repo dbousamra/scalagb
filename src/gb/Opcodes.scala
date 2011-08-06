@@ -271,23 +271,23 @@ class Opcodes(cpu: Cpu) {
     case 0x5 => RLC_n(l)
     case 0x6 => RLC_n16(h ++ l) //not sure if i can use RLC_n or if I need my 16 bit method
     case 0x7 => RLC_n(a)
-    //	case 0x8 => RRCr_b(opcode, cpu)
-    //	case 0x9 => RRCr_c(opcode, cpu)
-    //	case 0xa => RRCr_d(opcode, cpu)
-    //	case 0xb => RRCr_e(opcode, cpu)
-    //	case 0xc => RRCr_h(opcode, cpu)
-    //	case 0xd => RRCr_l(opcode, cpu)
-    //	case 0xe => RRCHL(opcode, cpu)
-    //	case 0xf => RRCr_a(opcode, cpu)
-    //	case 0x10 => RLr_b(opcode, cpu)
-    //	case 0x11 => RLr_c(opcode, cpu)
-    //	case 0x12 => RLr_d(opcode, cpu)
-    //	case 0x13 => RLr_e(opcode, cpu)
-    //	case 0x14 => RLr_h(opcode, cpu)
-    //	case 0x15 => RLr_l(opcode, cpu)
-    //	case 0x16 => RLHL(opcode, cpu)
-    //	case 0x17 => RLr_a(opcode, cpu)
-    //	case 0x18 => RRr_b(opcode, cpu)
+	case 0x8 => RRC_n(b)
+	case 0x9 => RRC_n(c)
+	case 0xa => RRC_n(d)
+	case 0xb => RRC_n(e)
+	case 0xc => RRC_n(h)
+	case 0xd => RRC_n(l)
+	case 0xe => RRC_n16(h ++ l)
+	case 0xf => RRC_n(a)
+	case 0x10 => RL_n(b)
+	case 0x11 => RL_n(c)
+	case 0x12 => RL_n(d)
+	case 0x13 => RL_n(e)
+	case 0x14 => RL_n(h)
+	case 0x15 => RL_n(l)
+	case 0x16 => RL_n16(h ++ l)
+	case 0x17 => RL_n(a)
+//	case 0x18 => RRr_b(opcode, cpu)
     //	case 0x19 => RRr_c(opcode, cpu)
     //	case 0x1a => RRr_d(opcode, cpu)
     //	case 0x1b => RRr_e(opcode, cpu)
@@ -1091,7 +1091,35 @@ class Opcodes(cpu: Cpu) {
     f.carryFlag = x
     f.halfCarryFlag = false
     f.subFlag = false
-    f.zeroFlag = fromRegister == 0
+    f.zeroFlag = fromRegister == 0x00
   }
 
+  def RL_n16(fromRegister: Register) = {
+	var i = memory.readByte8(fromRegister)
+	var x = (i & 0x80) == 0x80
+	i = ((i << 1) & 0xFF) | f.carryFlag
+	f.carryFlag = x
+	memory.writeByte8(fromRegister, i)
+    f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = i == 0x00
+   }
+  
+  def RRC_n(fromRegister: Register) = {
+    f.carryFlag = (fromRegister & 0x01) == 0x01
+	fromRegister := (f.carryFlag * 0x80) | (fromRegister >> 1) //times bool by 0x80
+	f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = fromRegister == 0x00
+  }
+  
+  def RRC_n16(fromRegister: Register) = {
+    var x = memory.readByte8(fromRegister)
+	f.carryFlag = (x & 0x01) == 0x01
+	x = (f.carryFlag * 0x80) | (x >> 1)
+	memory.writeByte8(fromRegister, x)
+	f.halfCarryFlag = false
+    f.subFlag = false
+    f.zeroFlag = fromRegister == 0x00
+  }
 }
