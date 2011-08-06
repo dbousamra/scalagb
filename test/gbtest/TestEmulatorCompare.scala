@@ -12,14 +12,13 @@ class EmulatorCompare extends AssertionsForJUnit {
 
   @Test def testEmulator() {
 
-    var comparisonDepth = 50
+    var comparisonDepth = 544
     val romName = "roms/testRom1.gb"
     val stackTraceFileName = "test/gbtest/testRom1"
-    val iterations = 100
     var x = 0
     val cpu: Cpu = new Cpu(romFilename = romName, DEBUG_MODE = true)
     cpu.reset()
-    while (x < iterations) {
+    while (x < comparisonDepth) {
       cpu.run()
       x += 1
     }
