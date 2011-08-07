@@ -263,6 +263,7 @@ class Opcodes(cpu: Cpu) {
       case 0xD8 => RET_cc(pc, sp, f.carryFlag)
 
     }
+    
   }
 
   def LD_nn_n(register: Register) = {
@@ -350,13 +351,11 @@ class Opcodes(cpu: Cpu) {
   }
   
   def ADD_A_n_a() = {
-    var z = a
-    a += a
-    if (a > 255) f := 0x10 else f := 0
-    a &= 255
-    if (a != 0) f |= 0x80
-    val x = (a ^ a ^ z) & 0x10
-    if (x != 0) a |= 0x20
+    f.halfCarryFlag = ((a & 0x8) == 0x8);
+	f.carryFlag = (a > 0x7F);
+	a.value = (a << 1) & 0xFF;
+	f.zeroFlag = (a == 0);
+	f.subFlag = false;
   }
   
 
@@ -693,11 +692,13 @@ class Opcodes(cpu: Cpu) {
   def LDH_n_A(fromRegister: Register, valueRegister: Register) = {
     memory.writeByte8(0xFF00 + memory.readByte8(fromRegister), valueRegister)
     pc += 1
-  }
-
+  } 
+  
   def LDH_A_n(toRegister: Register, fromRegister: Register) = {
-    toRegister := memory.readByte8(0xFF00 + memory.readByte8(fromRegister))
-    pc := (pc + 1) & 0xFFFF
+    //toRegister := memory.readByte8(0xFF00 + memory.readByte8(fromRegister))
+    val n = memory.readByte8(fromRegister)
+    toRegister := memory.readByte8(0xFF00 + n)
+    pc += 1
   }
 
   def LD_n_nSP(toRegister: Register, fromRegister: Register) = {
@@ -782,13 +783,12 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
     f.halfCarryFlag = false
   }
-
-  def CALL_nn(toRegister: Register, toRegister2: Register) = {
+  
+  def CALL_nn(toRegister: Register, toRegister2: Register) = { 
     toRegister2 -= 2
     cpu.memory.writeByte16(toRegister2, toRegister + 2)
     toRegister := cpu.memory.readByte16(toRegister)
   }
-
   def CALL_cc_nn(fromRegister: Register, toRegister: Register, flagStatus: Boolean) = {
 
     if (flagStatus) {
@@ -814,8 +814,7 @@ class Opcodes(cpu: Cpu) {
   def RET_cc(fromRegister: Register, fromRegister2: Register, flag: Boolean) = {
     if (flag) {
       //fromRegister := (memory.readByte8((fromRegister2 + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister2)
-      //fromRegister2 := (fromRegister2 + 0x02) & 0xFFFF
-      fromRegister := cpu.memory.readByte16(fromRegister2)
+      fromRegister := memory.readByte16(fromRegister2)
       fromRegister2 += 2
     }
   }

@@ -40,14 +40,16 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
     	case 0xE00 if ((address & 0xFF) < 0xA0) => gpuOam(address & 0xFF)
     	case 0xE00 => 0
     	//TODO: IO stuff
-    	case 0xF00 if address == 0xFFFF => 1 
+    	case 0xF00 if address == 0xFFFF => 1 //ie register
     	case 0xF00 if address >= 0xFF7F => zeroPageRam(address & 0x07F)
-    	case 0xF00 => (address & 0xFF) match {
+    	case 0xF00 => (address & 0xF0) match {
     	  //TODO: IO stuff
-    	  case 0x00 => 1
-    	  case 0x10 | 0x20 | 0x30 => 1
+    	  //case 0x00 => 1
+    	  //case 0x10 | 0x20 | 0x30 => 1
     	  //TODO: GPU readByte stuff
-    	  case 0x40 | 0x50 | 0x60 | 070 => 1
+    	  //case 0x40 | 0x50 | 0x60 | 070 => 1
+    	  //case _ => println("TEST"); 1
+    	  case _ => notImplemented; 0
     	}
     case _ => println("Error in" + this.getClass.getName + "with address: " + address); 1
     }
@@ -135,6 +137,10 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
   //TODO
   def gpuUpdateTile(address : Int, value : Int) = {
     println("GPU UPDATE TILE");
+  }
+  
+  def notImplemented() = {
+    println("Not implemented")
   }
   
 }
