@@ -47,9 +47,9 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
     	  //case 0x00 => 1
     	  //case 0x10 | 0x20 | 0x30 => 1
     	  //TODO: GPU readByte stuff
-    	  //case 0x40 | 0x50 | 0x60 | 070 => 1
+    	  case 0x40 | 0x50 | 0x60 | 070 => gpu.readByte8(address)
     	  //case _ => println("TEST"); 1
-    	  case _ => notImplemented; 0
+    	  case _ => notImplemented; println("Trying to match on " + (address & 0xF0).toHexString); 0
     	}
     case _ => println("Error in" + this.getClass.getName + "with address: " + address); 1
     }
