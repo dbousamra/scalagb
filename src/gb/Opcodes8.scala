@@ -121,7 +121,7 @@ class Opcodes(cpu: Cpu) {
       case 0xC1 => POP_nn(sp, c, b)
       case 0xD1 => POP_nn(sp, e, d)
       case 0xE1 => POP_nn(sp, l, h)
-      case 0x87 => ADD_A_n(a, a)
+      case 0x87 => ADD_A_n_a; println("87" + " " + a.value.toHexString );
       case 0x80 => ADD_A_n(b, a)
       case 0x81 => ADD_A_n(c, a)
       case 0x82 => ADD_A_n(d, a)
@@ -348,6 +348,17 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
 
   }
+  
+  def ADD_A_n_a() = {
+    var z = a
+    a += a
+    if (a > 255) f := 0x10 else f := 0
+    a &= 255
+    if (a != 0) f |= 0x80
+    val x = (a ^ a ^ z) & 0x10
+    if (x != 0) a |= 0x20
+  }
+  
 
   def ADD_A_n16Read(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + memory.readByte8((fromRegister))
@@ -686,7 +697,7 @@ class Opcodes(cpu: Cpu) {
 
   def LDH_A_n(toRegister: Register, fromRegister: Register) = {
     toRegister := memory.readByte8(0xFF00 + memory.readByte8(fromRegister))
-    pc += 1
+    pc := (pc + 1) & 0xFFFF
   }
 
   def LD_n_nSP(toRegister: Register, fromRegister: Register) = {
@@ -802,8 +813,10 @@ class Opcodes(cpu: Cpu) {
 
   def RET_cc(fromRegister: Register, fromRegister2: Register, flag: Boolean) = {
     if (flag) {
-      fromRegister := (memory.readByte8((fromRegister2 + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister2)
-      fromRegister2 := (fromRegister2 + 0x02) & 0xFFFF
+      //fromRegister := (memory.readByte8((fromRegister2 + 1) & 0xFFFF) << 8) | memory.readByte8(fromRegister2)
+      //fromRegister2 := (fromRegister2 + 0x02) & 0xFFFF
+      fromRegister := cpu.memory.readByte16(fromRegister2)
+      fromRegister2 += 2
     }
   }
   

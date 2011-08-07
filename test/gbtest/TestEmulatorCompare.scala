@@ -12,7 +12,7 @@ class EmulatorCompare extends AssertionsForJUnit {
 
   @Test def testEmulator() {
 
-    var comparisonDepth = 544
+    var comparisonDepth = 600
     val romName = "roms/testRom1.gb"
     val stackTraceFileName = "test/gbtest/testRom1"
     var x = 0

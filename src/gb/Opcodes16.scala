@@ -5,7 +5,9 @@ class Opcodes16(cpu: Cpu) {
 
   import cpu._
 
-  def cb(opcode: Int) = opcode match {
+  def cb(opcode: Int) = {
+  
+    opcode match {
     case 0x0 => RLC_n(b)
     case 0x1 => RLC_n(c)
     case 0x2 => RLC_n(d)
@@ -287,6 +289,7 @@ class Opcodes16(cpu: Cpu) {
     case 0xff => SET_b_r(a, 0x80)
 
     case _ => println("No CP opcode found")
+  }
   }
 
   def RLC_n(fromRegister: Register) = {
