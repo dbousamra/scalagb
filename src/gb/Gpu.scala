@@ -26,6 +26,8 @@ class Gpu(memory : Memory) {
   
   var bgTileBase, bgMapBase, bgOn : Int = 0
   var objectSize : Int = 0
+  var objStatus : Int = 0
+  var bgStatus : Int = 0
   
   val reg = new Array[Int](0xFFFF)
   val oam = new Array[Int](8192)
@@ -33,9 +35,12 @@ class Gpu(memory : Memory) {
   var palette = new Palette
   
   
-  def readByte8(address : Int) : Int = (address - 0xFF40) match{
+  def readByte8(address : Int) : Int = {
+    println("Trying to match gpu.readByte8 on " + address + " " + (address - 0xFF40))
+    (address - 0xFF40) match {
+  
     
-    case 0x00 => 1
+    case 0x00 => handleGPUReset()
     
     case 0x01 if (currentLine == raster) => 0x4 | lineMode
     case 0x01 => 0 | lineMode
@@ -50,6 +55,7 @@ class Gpu(memory : Memory) {
     
     case _ =>  reg(address)
   }
+}
   
   def writeByte8(address : Int, value : Int) = {
     var x = address - 0xFF40
@@ -82,6 +88,20 @@ class Gpu(memory : Memory) {
 
   def writeOam(address : Int, value : Int) = {
     
+  }
+  
+  
+  def handleGPUReset() : Int = {
+    var x = 0
+    
+    if (lcdStatus != 0) x |= 0x80 else x |= 0
+    if (bgTileBase == 0x0000) x |= 0x10 else x |= 0
+    if (bgMapBase == 0x1C00) x |= 0x08 else x |= 0
+    if (objectSize != 0) x |= 0x04 else x |= 0
+    if (objStatus != 0) x |= 0x02 else x |= 0
+    if (bgStatus != 0) x |= 0x01 else x |= 0
+    
+    return x
   }
 
 
