@@ -49,9 +49,9 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
     	  //TODO: GPU readByte stuff
     	  case 0x40 | 0x50 | 0x60 | 070 => gpu.readByte8(address)
     	  //case _ => println("TEST"); 1
-    	  case _ => notImplemented; println("Trying to match on " + (address & 0xF0).toHexString); 0
+    	  case _ => notImplemented; 0
     	}
-    case _ => println("Error in" + this.getClass.getName + "with address: " + address); 1
+    case _ =>  0
     }
   }
   
@@ -101,7 +101,7 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
       case 0xF00 => (address & 0xF0) match {
         case 0x10 | 0x20 | 0x30 => 1
         case 0x40 | 0x50 | 0x60 | 0x70 => gpu.writeByte8(address, value)
-        case _ => println("No match found")
+        case _ => 0
       }
     }
     case _ => println("Error in" + this.getClass.getName + "with address: " + address)
@@ -136,11 +136,11 @@ class Memory (gpu: Gpu, cpu: Cpu, romFilename : String) {
   
   //TODO
   def gpuUpdateTile(address : Int, value : Int) = {
-    println("GPU UPDATE TILE");
+    //println("GPU UPDATE TILE");
   }
   
   def notImplemented() = {
-    println("Not implemented")
+    0
   }
   
 }

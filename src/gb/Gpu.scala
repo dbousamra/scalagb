@@ -36,7 +36,7 @@ class Gpu(memory : Memory) {
   
   
   def readByte8(address : Int) : Int = {
-    println("Trying to match gpu.readByte8 on " + address + " " + (address - 0xFF40))
+    //println("Trying to match gpu.readByte8 on " + address + " " + (address - 0xFF40))
     (address - 0xFF40) match {
   
     
