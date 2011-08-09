@@ -32,8 +32,12 @@ object ColorPanel extends SimpleSwingApplication {
               cpu.reset()
               timer.start()
           })
-          contents += new MenuItem(Action("Stop") { println(title) })      
-          contents += new MenuItem(Action("Reset") { println(title) }) 
+          contents += new MenuItem(Action("Stop") { timer.stop() })
+          contents += new MenuItem(Action("Reset") {
+            timer.stop()
+            cpu.reset()
+            timer.start()
+          })
           contents += new Separator        
         }
       }
