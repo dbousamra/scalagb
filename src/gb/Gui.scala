@@ -27,10 +27,12 @@ object ColorPanel extends SimpleSwingApplication {
               val chooser = new FileChooser()
               chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb")
               chooser.showOpenDialog(this)
-              timer.stop()
-              cpu = new Cpu(chooser.selectedFile.getAbsolutePath(), true)
-              cpu.reset()
-              timer.start()
+              if (chooser.selectedFile != null) {
+                  timer.stop()
+                  cpu = new Cpu(chooser.selectedFile.getAbsolutePath(), true)
+                  cpu.reset()
+                  timer.start()
+              }
           })
           contents += new MenuItem(Action("Stop") { timer.stop() })
           contents += new MenuItem(Action("Reset") {
