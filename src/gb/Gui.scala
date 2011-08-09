@@ -6,10 +6,12 @@ import java.awt.event._
 import java.awt
 import javax.swing.Timer
 import swing._
+import javax.swing.filechooser.FileFilter
+import javax.swing.filechooser.FileNameExtensionFilter
 
 object ColorPanel extends SimpleSwingApplication {
   private var c: Color = new Color(0)
-  private val cpu: Cpu = new Cpu(romFilename = "roms/testRom1.gb", DEBUG_MODE = true)
+  private var cpu: Cpu = new Cpu(romFilename = "roms/testRom1.gb", DEBUG_MODE = true)
   cpu.reset()
   private val frameTitle = "ScalaGB"
 
@@ -21,7 +23,15 @@ object ColorPanel extends SimpleSwingApplication {
     contents = p
     menuBar = new MenuBar {   
         contents += new Menu("File") {      
-          contents += new MenuItem("Load Rom")      
+          contents += new MenuItem(Action("Load Rom") {
+              val chooser = new FileChooser()
+              chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb")
+              chooser.showOpenDialog(this)
+              timer.stop()
+              cpu = new Cpu(chooser.selectedFile.getAbsolutePath(), true)
+              cpu.reset()
+              timer.start()
+          })
           contents += new MenuItem(Action("Stop") { println(title) })      
           contents += new MenuItem(Action("Reset") { println(title) }) 
           contents += new Separator        
