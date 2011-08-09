@@ -82,5 +82,5 @@ object ColorPanel extends SimpleSwingApplication {
   }
 
   val timer = new Timer(1, p) //can control timing from here.
-  timer.start()
+  //timer.start()
 }
