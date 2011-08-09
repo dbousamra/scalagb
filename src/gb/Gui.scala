@@ -5,6 +5,7 @@ import java.awt.{ Color, Graphics2D, Dimension }
 import java.awt.event._
 import java.awt
 import javax.swing.Timer
+import swing._
 
 object ColorPanel extends SimpleSwingApplication {
   private var c: Color = new Color(0)
@@ -18,16 +19,25 @@ object ColorPanel extends SimpleSwingApplication {
   def top = new MainFrame {
     title = frameTitle
     contents = p
+    menuBar = new MenuBar {   
+        contents += new Menu("File") {      
+          contents += new MenuItem("Load Rom")      
+          contents += new MenuItem(Action("Stop") { println(title) })      
+          contents += new MenuItem(Action("Reset") { println(title) }) 
+          contents += new Separator        
+        }
+      }
   }
 
   val p = new Panel with ActionListener {
-    override val preferredSize = new Dimension(300, 300)
-
+	preferredSize = new Dimension(width, height)
     val data = Array.ofDim[Color](25, 25)
     data(0)(0) = Color.BLACK
     data(4)(4) = Color.RED
     data(0)(4) = Color.GREEN
     data(4)(0) = Color.BLUE
+    
+    
 
     override def paintComponent(g: Graphics2D) {
       val dx = g.getClipBounds.width.toFloat / data.length
