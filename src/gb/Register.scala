@@ -1,6 +1,6 @@
 package gb
 
-class Register(private var _value:Int = 0) {
+class Register(private var _value:Int = 0, val name:String = "Temp") {
 
   def value = _value
   def value_=(i: Int) = _value = i
@@ -31,6 +31,7 @@ class Register(private var _value:Int = 0) {
   def ^=(i:Int) = value ^= i
   def ++(r:Register) = new Register16(this, r)
   
+  override def toString = name + ": " + getHexString
 }
 
 class Register16(r1: Register, r2: Register) extends Register {

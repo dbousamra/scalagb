@@ -3,12 +3,19 @@ import Register._
 class Cpu(romFilename : String, DEBUG_MODE : Boolean) {
   
   var clockT, clockM : Register = new Register
-  var a, b, c, d, e, h, l, f : Register = new Register
+  var a : Register = new Register(name = "a")
+  var b : Register = new Register(name = "b")
+  var c : Register = new Register(name = "c")
+  var d : Register = new Register(name = "d")
+  var e : Register = new Register(name = "e")
+  var h : Register = new Register(name = "h")
+  var l : Register = new Register(name = "l")
+  var f : Register = new Register(name = "f")
   var reserve_a, reserve_b, reserve_c : Register = new Register
   var reserve_d, reserve_e, reserve_h, reserve_l, reserve_f : Register = new Register
-  var pc : Register = new Register
-  var sp : Register = new Register
-  var halt : Register = new Register
+  var pc : Register = new Register(name = "pc")
+  var sp : Register = new Register(name = "sp")
+  var halt : Register = new Register(name = "halt")
   var interruptable = true
   var currentOpcode = 0
   
