@@ -1,5 +1,6 @@
 package gb
 import Mode._
+import java.awt.Color
 
 class Palette() {
 
@@ -30,12 +31,37 @@ class Gpu(memory: Memory, cpu: Cpu) {
   var objStatus: Int = 0
   var bgStatus: Int = 0
 
-  val reg = new Array[Int](0xFFFF)
-  val oam = new Array[Int](8192)
-  val tileMap = new Array[Int](8192)
+  var vram = new Array[Int](8192)
+  val reg = new Array[Int](65535)
+  var oam = new Array[Int](160)
+  var tileMap = Array.ofDim[Int](512, 8, 8)
 
   var palette = new Palette
+  var lcd = Array.ofDim[Color](160, 144)
   
+  def resetAndInitalize() = {
+    
+	//reset VRAM and OAM
+    vram transform (_ => 0)
+    oam transform (_ => 0)
+
+    for (i <- 0 until 4) {
+      palette.bg(i) = 255
+      palette.object0(i) = 255
+      palette.object1(i) = 255
+    }
+
+    //reset tileMap
+    for (xss <- tileMap; xs <- xss)
+      xs transform (_ => 0)
+
+    //reset LCD
+    for {
+      row <- lcd.indices
+      column <- lcd(row).indices
+    } lcd(row)(column) = Color.RED
+  }
+
   def step() = {
     modeClocks += cpu.reserve_ClockM
 
@@ -49,8 +75,44 @@ class Gpu(memory: Memory, cpu: Cpu) {
       case 0x03 => 3
 
     }
+
+    def handleHBlank() = {
+      if (modeClocks >= H_BLANK.clocksSpent) {
+
+        //render screen
+        if (currentLine == 143) {
+          lineMode = V_BLANK.modeType
+          //render screen function. Not sure how i want to represent screen: 2d array? 
+        } else {
+          lineMode = SCANLINE_OAM.modeType
+        }
+
+        currentLine += 1
+        currentScan += 640
+        lineMode = H_BLANK.modeType
+      }
+    }
+
+    def handleVBlank() = {
+      if (modeClocks >= V_BLANK.clocksSpent) {
+        modeClocks = 0
+        currentLine += 1
+        if (currentLine > 153) {
+          currentLine = 0
+          currentScan = 0
+          lineMode = SCANLINE_OAM.modeType
+        }
+      }
+    }
+
+    def handleOAMRead() = {
+      if (modeClocks >= SCANLINE_OAM.clocksSpent) {
+        modeClocks = 0
+        lineMode = SCANLINE_OAM.modeType
+      }
+    }
   }
-  
+
   def readByte8(address: Int): Int = {
     //println("Trying to match gpu.readByte8 on " + address + " " + (address - 0xFF40))
     (address - 0xFF40) match {
@@ -120,52 +182,18 @@ class Gpu(memory: Memory, cpu: Cpu) {
     return x
   }
 
-  def handleHBlank() = {
-    if (modeClocks >= H_BLANK.clocksSpent) {
-
-      //render screen
-      if (currentLine == 143) {
-        lineMode = V_BLANK.modeType
-        //render screen function. Not sure how i want to represent screen: 2d array? 
-      } else {
-        lineMode = SCANLINE_OAM.modeType
-      }
-
-      currentLine += 1
-      currentScan += 640
-      lineMode = H_BLANK.modeType
-    }
-  }
-
-  def handleVBlank() = {
-    if (modeClocks >= V_BLANK.clocksSpent) {
-      modeClocks = 0
-      currentLine += 1
-      if (currentLine > 153) {
-        currentLine = 0
-        currentScan = 0
-        lineMode = SCANLINE_OAM.modeType
-      }
-    }
-  }
-  
-  def handleOAMRead() = {
-    if (modeClocks >= SCANLINE_OAM.clocksSpent) {
-      modeClocks = 0
-      lineMode = SCANLINE_OAM.modeType
-    }
-  }
-  
   def updateTileMap(addr: Int, value: Int) = {
     var address = addr
     var tempAddress = address
-    if((address & 1) != 0) tempAddress -= 1; address -= 1
+    if ((address & 1) != 0) tempAddress -= 1; address -= 1
     var tile = (address >> 4) & 511
     var y = (address >> 1) & 7
     var sx = 0
     for (x <- 0 until 8) {
-     sx = 1 << (7 - x)
-     
+      sx = 1 << (7 - x)
+
+      //this.tileMap[tile]
+
     }
   }
 }

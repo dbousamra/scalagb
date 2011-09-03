@@ -25,7 +25,7 @@ object ColorPanel extends SimpleSwingApplication {
         contents += new Menu("File") {      
           contents += new MenuItem(Action("Load Rom") {
               val chooser = new FileChooser()
-              chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb")
+              chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb", "gbc")
               chooser.showOpenDialog(this)
               if (chooser.selectedFile != null) {
                   timer.stop()
@@ -47,26 +47,25 @@ object ColorPanel extends SimpleSwingApplication {
 
   val p = new Panel with ActionListener {
 	preferredSize = new Dimension(width, height)
-    val data = Array.ofDim[Color](25, 25)
-    data(0)(0) = Color.BLACK
-    data(4)(4) = Color.RED
-    data(0)(4) = Color.GREEN
-    data(4)(0) = Color.BLUE
-    
+//    val data = Array.ofDim[Color](25, 25)
+//    data(0)(0) = Color.BLACK
+//    data(4)(4) = Color.RED
+//    data(0)(4) = Color.GREEN
+//    data(4)(0) = Color.BLUE
     
 
     override def paintComponent(g: Graphics2D) {
-      val dx = g.getClipBounds.width.toFloat / data.length
-      val dy = g.getClipBounds.height.toFloat / data.map(_.length).max
+      val dx = g.getClipBounds.width.toFloat / cpu.gpu.lcd.length
+      val dy = g.getClipBounds.height.toFloat / cpu.gpu.lcd.map(_.length).max
       for {
-        x <- 0 until data.length
-        y <- 0 until data(x).length
+        x <- 0 until cpu.gpu.lcd.length
+        y <- 0 until cpu.gpu.lcd(x).length
         x1 = (x * dx).toInt
         y1 = (y * dy).toInt
         x2 = ((x + 1) * dx).toInt
         y2 = ((y + 1) * dy).toInt
       } {
-        data(x)(y) match {
+        cpu.gpu.lcd(x)(y) match {
           case c: Color => g.setColor(c)
           case _ => g.setColor(Color.WHITE)
         }

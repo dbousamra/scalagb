@@ -29,6 +29,7 @@ class Cpu(romFilename: String, DEBUG_MODE: Boolean) {
 
   def reset() = {
     resetRegisters()
+    gpu.resetAndInitalize()
   }
 
   def resetRegisters() = {
