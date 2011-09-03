@@ -32,6 +32,7 @@ class Gpu(memory: Memory, cpu: Cpu) {
 
   val reg = new Array[Int](0xFFFF)
   val oam = new Array[Int](8192)
+  val tileMap = new Array[Int](8192)
 
   var palette = new Palette
   
@@ -119,8 +120,6 @@ class Gpu(memory: Memory, cpu: Cpu) {
     return x
   }
 
-  
-
   def handleHBlank() = {
     if (modeClocks >= H_BLANK.clocksSpent) {
 
@@ -156,5 +155,17 @@ class Gpu(memory: Memory, cpu: Cpu) {
       lineMode = SCANLINE_OAM.modeType
     }
   }
-    
+  
+  def updateTileMap(addr: Int, value: Int) = {
+    var address = addr
+    var tempAddress = address
+    if((address & 1) != 0) tempAddress -= 1; address -= 1
+    var tile = (address >> 4) & 511
+    var y = (address >> 1) & 7
+    var sx = 0
+    for (x <- 0 until 8) {
+     sx = 1 << (7 - x)
+     
+    }
+  }
 }

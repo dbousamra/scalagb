@@ -639,16 +639,28 @@ class Opcodes(cpu: Cpu) {
 
   def ADDSP_n(toRegister: Register) = {
 
-    val i = memory.readByte8Signed(pc)
-    var j = (toRegister + i) & 0xFFFF
-    //TODO: The JavaBoy logs say I shouldnt set flags on here, but doco says otherwise. WTF
-    //Disabling now so I can pass.
-    //    f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
-    //    f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
-    //    f.zeroFlag = false
-    //    f.subFlag = false
-    sp := j
-    pc += 1 & 0xFFFF
+//    val i = memory.readByte8Signed(pc)
+//    var j = (toRegister + i) & 0xFFFF
+//    TODO: The JavaBoy logs say I shouldnt set flags on here, but doco says otherwise. WTF
+//    Disabling now so I can pass.
+//        f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
+//        f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
+//        f.zeroFlag = false
+//    //    f.subFlag = false
+//    sp := j
+//    pc += 1 & 0xFFFF
+//    
+    
+    var signedByte = memory.readByte8(pc << 24) >> 24
+    var temp_value = (sp + signedByte) & 0xFFFF
+    f.carryFlag = (((toRegister ^ signedByte ^ temp_value) & 0x100) == 0x100)
+    f.halfCarryFlag = (((toRegister ^ signedByte ^ temp_value) & 0x10) == 0x10)
+    sp := temp_value
+    pc := (pc +1) & 0xFFFF
+    f.zeroFlag = false
+    f.subFlag = false
+    
+    
   }
 
   def INC_nn(toRegister: Register) = {
