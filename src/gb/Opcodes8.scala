@@ -121,7 +121,7 @@ class Opcodes(cpu: Cpu) {
       case 0xC1 => POP_nn(sp, c, b)
       case 0xD1 => POP_nn(sp, e, d)
       case 0xE1 => POP_nn(sp, l, h)
-      case 0x87 => ADD_A_n_a; println("87" + " " + a.value.toHexString );
+      case 0x87 => ADD_A_n_a; println("87" + " " + a.value.toHexString);
       case 0x80 => ADD_A_n(b, a)
       case 0x81 => ADD_A_n(c, a)
       case 0x82 => ADD_A_n(d, a)
@@ -261,9 +261,8 @@ class Opcodes(cpu: Cpu) {
       case 0xC8 => RET_cc(pc, sp, f.zeroFlag)
       case 0xD0 => RET_cc(pc, sp, !f.carryFlag)
       case 0xD8 => RET_cc(pc, sp, f.carryFlag)
-
     }
-    
+
   }
 
   def LD_nn_n(register: Register) = {
@@ -349,15 +348,14 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
 
   }
-  
+
   def ADD_A_n_a() = {
     f.halfCarryFlag = ((a & 0x8) == 0x8);
-	f.carryFlag = (a > 0x7F);
-	a.value = (a << 1) & 0xFF;
-	f.zeroFlag = (a == 0);
-	f.subFlag = false;
+    f.carryFlag = (a > 0x7F);
+    a.value = (a << 1) & 0xFF;
+    f.zeroFlag = (a == 0);
+    f.subFlag = false;
   }
-  
 
   def ADD_A_n16Read(fromRegister: Register, toRegister: Register) = {
     var sum = toRegister + memory.readByte8((fromRegister))
@@ -639,28 +637,27 @@ class Opcodes(cpu: Cpu) {
 
   def ADDSP_n(toRegister: Register) = {
 
-//    val i = memory.readByte8Signed(pc)
-//    var j = (toRegister + i) & 0xFFFF
-//    TODO: The JavaBoy logs say I shouldnt set flags on here, but doco says otherwise. WTF
-//    Disabling now so I can pass.
-//        f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
-//        f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
-//        f.zeroFlag = false
-//    //    f.subFlag = false
-//    sp := j
-//    pc += 1 & 0xFFFF
-//    
-    
-    var signedByte = memory.readByte8(pc << 24) >> 24
+    //    val i = memory.readByte8Signed(pc)
+    //    var j = (toRegister + i) & 0xFFFF
+    //    TODO: The JavaBoy logs say I shouldnt set flags on here, but doco says otherwise. WTF
+    //    Disabling now so I can pass.
+    //        f.carryFlag = (((toRegister ^ i ^ j) & 0x100) == 0x100)
+    //        f.halfCarryFlag = (((toRegister ^ i ^ j) & 0x10) == 0x10)
+    //        f.zeroFlag = false
+    //    //    f.subFlag = false
+    //    sp := j
+    //    pc += 1 & 0xFFFF
+    //    
+
+    var signedByte = memory.readByte8(pc) << 24 >> 24
     var temp_value = (sp + signedByte) & 0xFFFF
     f.carryFlag = (((toRegister ^ signedByte ^ temp_value) & 0x100) == 0x100)
     f.halfCarryFlag = (((toRegister ^ signedByte ^ temp_value) & 0x10) == 0x10)
     sp := temp_value
-    pc := (pc +1) & 0xFFFF
+    pc := (pc + 1) & 0xFFFF
     f.zeroFlag = false
     f.subFlag = false
-    
-    
+
   }
 
   def INC_nn(toRegister: Register) = {
@@ -704,8 +701,8 @@ class Opcodes(cpu: Cpu) {
   def LDH_n_A(fromRegister: Register, valueRegister: Register) = {
     memory.writeByte8(0xFF00 + memory.readByte8(fromRegister), valueRegister)
     pc += 1
-  } 
-  
+  }
+
   def LDH_A_n(toRegister: Register, fromRegister: Register) = {
     //toRegister := memory.readByte8(0xFF00 + memory.readByte8(fromRegister))
     val n = memory.readByte8(fromRegister)
@@ -795,8 +792,8 @@ class Opcodes(cpu: Cpu) {
     f.subFlag = false
     f.halfCarryFlag = false
   }
-  
-  def CALL_nn(toRegister: Register, toRegister2: Register) = { 
+
+  def CALL_nn(toRegister: Register, toRegister2: Register) = {
     toRegister2 -= 2
     cpu.memory.writeByte16(toRegister2, toRegister + 2)
     toRegister := cpu.memory.readByte16(toRegister)
@@ -830,9 +827,9 @@ class Opcodes(cpu: Cpu) {
       fromRegister2 += 2
     }
   }
-  
+
   //TODO: IRQ shit
-  def RETI(fromRegister : Register) = {
+  def RETI(fromRegister: Register) = {
     pc := memory.readByte16(sp)
     sp += 2
   }

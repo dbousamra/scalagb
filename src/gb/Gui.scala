@@ -21,60 +21,56 @@ object ColorPanel extends SimpleSwingApplication {
   def top = new MainFrame {
     title = frameTitle
     contents = p
-    menuBar = new MenuBar {   
-        contents += new Menu("File") {      
-          contents += new MenuItem(Action("Load Rom") {
-              val chooser = new FileChooser()
-              chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb", "gbc")
-              chooser.showOpenDialog(this)
-              if (chooser.selectedFile != null) {
-                  timer.stop()
-                  cpu = new Cpu(chooser.selectedFile.getAbsolutePath(), true)
-                  cpu.reset()
-                  timer.start()
-              }
-          })
-          contents += new MenuItem(Action("Stop") { timer.stop() })
-          contents += new MenuItem(Action("Reset") {
+    menuBar = new MenuBar {
+      contents += new Menu("File") {
+        contents += new MenuItem(Action("Load Rom") {
+          val chooser = new FileChooser()
+          chooser.fileFilter = new FileNameExtensionFilter("GameBoy ROM", "gb", "gbc")
+          chooser.showOpenDialog(this)
+          if (chooser.selectedFile != null) {
             timer.stop()
+            cpu = new Cpu(chooser.selectedFile.getAbsolutePath(), true)
             cpu.reset()
             timer.start()
-          })
-          contents += new Separator        
-        }
+          }
+        })
+        contents += new MenuItem(Action("Stop") { timer.stop() })
+        contents += new MenuItem(Action("Reset") {
+          timer.stop()
+          cpu.reset()
+          timer.start()
+        })
+        contents += new Separator
       }
+    }
   }
 
   val p = new Panel with ActionListener {
-	preferredSize = new Dimension(width, height)
-//    val data = Array.ofDim[Color](25, 25)
-//    data(0)(0) = Color.BLACK
-//    data(4)(4) = Color.RED
-//    data(0)(4) = Color.GREEN
-//    data(4)(0) = Color.BLUE
-    
+    preferredSize = new Dimension(width, height)
 
     override def paintComponent(g: Graphics2D) {
       val dx = g.getClipBounds.width.toFloat / cpu.gpu.lcd.length
       val dy = g.getClipBounds.height.toFloat / cpu.gpu.lcd.map(_.length).max
-      for {
-        x <- 0 until cpu.gpu.lcd.length
-        y <- 0 until cpu.gpu.lcd(x).length
-        x1 = (x * dx).toInt
-        y1 = (y * dy).toInt
-        x2 = ((x + 1) * dx).toInt
-        y2 = ((y + 1) * dy).toInt
-      } {
-        cpu.gpu.lcd(x)(y) match {
-          case c: Color => g.setColor(c)
-          case _ => g.setColor(Color.WHITE)
+
+      if (cpu.gpu.writeLcd) {
+        for {
+          x <- 0 until cpu.gpu.lcd.length
+          y <- 0 until cpu.gpu.lcd(x).length
+          x1 = (x * dx).toInt
+          y1 = (y * dy).toInt
+          x2 = ((x + 1) * dx).toInt
+          y2 = ((y + 1) * dy).toInt
+        } {
+          cpu.gpu.lcd(x)(y) match {
+            case c: Color => g.setColor(c)
+            case _ => g.setColor(Color.WHITE)
+          }
+          g.fillRect(x1, y1, x2 - x1, y2 - y1)
         }
-        g.fillRect(x1, y1, x2 - x1, y2 - y1)
       }
     }
 
     def actionPerformed(e: ActionEvent) {
-      c = new Color((c.getRGB() + 1000) % 16777216)
       repaint
       cpu.run
     }

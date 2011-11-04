@@ -60,10 +60,11 @@ class Cpu(romFilename: String, DEBUG_MODE: Boolean) {
     if (DEBUG_MODE) {
       println(debugTraces(currentOpcode))
       stackTrace = debugTraces(currentOpcode) :: stackTrace
-
     }
     pc += 1
     opcodes.execute(currentOpcode)
+    clockM += Timers.addTime8(currentOpcode)
+    gpu.step
     pc &= 0xFFFF //prevent overflow
 
   }
@@ -75,7 +76,7 @@ class Cpu(romFilename: String, DEBUG_MODE: Boolean) {
       " HL: " + (h ++ l).getHexString +
       " DE: " + d.getHexString + " " + e.getHexString +
       " SP: " + sp.getHexString + " " +
-      " PC: " + pc.getHexString
+      " PC: " + pc.getHexString + " " + clockM.toInt
 
   }
 

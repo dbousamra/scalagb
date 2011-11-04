@@ -1,9 +1,279 @@
 package gb
 
-class Timers {
-	
-  def addTime8(opcode: Int) = {
-    
+object Timers {
+
+  def addTime8(opcode: Int) = opcode match {
+    case 0xCB => 1
+    case 0x06 => 1
+    case 0x0E => 1
+    case 0x16 => 1
+    case 0x1E => 1
+    case 0x26 => 1
+    case 0x2E => 1
+    case 0x7F => 1
+    case 0x78 => 1
+    case 0x79 => 1
+    case 0x7A => 1
+    case 0x7B => 1
+    case 0x7C => 1
+    case 0x7D => 1
+    case 0x7E => 2
+    case 0x40 => 1
+    case 0x41 => 1
+    case 0x42 => 1
+    case 0x43 => 1
+    case 0x44 => 1
+    case 0x45 => 1
+    case 0x46 => 2
+    case 0x48 => 1
+    case 0x49 => 1
+    case 0x4A => 1
+    case 0x4B => 1
+    case 0x4C => 1
+    case 0x4D => 1
+    case 0x4E => 2
+    case 0x50 => 1
+    case 0x51 => 1
+    case 0x52 => 1
+    case 0x53 => 1
+    case 0x54 => 1
+    case 0x55 => 1
+    case 0x56 => 2
+    case 0x58 => 1
+    case 0x59 => 1
+    case 0x5A => 1
+    case 0x5B => 1
+    case 0x5C => 1
+    case 0x5D => 1
+    case 0x5E => 2
+    case 0x60 => 1
+    case 0x61 => 1
+    case 0x62 => 1
+    case 0x63 => 1
+    case 0x64 => 1
+    case 0x65 => 1
+    case 0x66 => 2
+    case 0x68 => 1
+    case 0x69 => 1
+    case 0x6A => 1
+    case 0x6B => 1
+    case 0x6C => 1
+    case 0x6D => 1
+    case 0x6E => 2
+    case 0x70 => 2
+    case 0x71 => 2
+    case 0x72 => 2
+    case 0x73 => 2
+    case 0x74 => 2
+    case 0x75 => 2
+    case 0x36 => 3
+
+    case 0x0A => 2
+    case 0x1A => 2
+    case 0xFA => 4
+    case 0x3E => 2
+    case 0x47 => 1
+    case 0x4F => 1
+    case 0x57 => 1
+    case 0x5F => 1
+    case 0x67 => 1
+    case 0x6F => 1
+    case 0x02 => 2
+    case 0x12 => 2
+    case 0x77 => 2
+    case 0xEA => 4
+
+    case 0xF2 => 2
+    case 0x3A => 2
+    case 0x32 => 2
+    case 0x2A => 2
+    case 0x22 => 2
+    case 0xE0 => 3
+    case 0xF0 => 3
+
+    case 0x01 => 3
+    case 0x11 => 3
+    case 0x21 => 3
+    case 0x31 => 3
+
+    case 0xF9 => 2
+    case 0xF8 => 3
+    case 0x08 => 5
+
+    case 0xF5 => 4
+    case 0xC5 => 4
+    case 0xD5 => 4
+    case 0xE5 => 4
+
+    case 0xF1 => 3
+    case 0xC1 => 3
+    case 0xD1 => 3
+    case 0xE1 => 3
+
+    case 0x87 => 1
+    case 0x80 => 1
+    case 0x81 => 1
+    case 0x82 => 1
+    case 0x83 => 1
+    case 0x84 => 1
+    case 0x85 => 1
+    case 0x86 => 2
+    case 0xC6 => 2
+
+    case 0x8F => 1
+    case 0x88 => 1
+    case 0x89 => 1
+    case 0x8A => 1
+    case 0x8B => 1
+    case 0x8C => 1
+    case 0x8D => 1
+    case 0x8E => 2
+    case 0xCE => 2
+
+    case 0x97 => 1
+    case 0x90 => 1
+    case 0x91 => 1
+    case 0x92 => 1
+    case 0x93 => 1
+    case 0x94 => 1
+    case 0x95 => 1
+    case 0x96 => 2
+    case 0xD6 => 2
+
+    case 0x9F => 1
+    case 0x98 => 1
+    case 0x99 => 1
+    case 0x9A => 1
+    case 0x9B => 1
+    case 0x9C => 1
+    case 0x9D => 1
+    case 0x9E => 2
+
+    case 0xA7 => 1
+    case 0xA0 => 1
+    case 0xA1 => 1
+    case 0xA2 => 1
+    case 0xA3 => 1
+    case 0xA4 => 1
+    case 0xA5 => 1
+    case 0xA6 => 2
+    case 0xE6 => 2
+
+    case 0xB7 => 1
+    case 0xB0 => 1
+    case 0xB1 => 1
+    case 0xB2 => 1
+    case 0xB3 => 1
+    case 0xB4 => 1
+    case 0xB5 => 1
+    case 0xB6 => 2
+    case 0xF6 => 2
+
+    case 0xAF => 1
+    case 0xA8 => 1
+    case 0xA9 => 1
+    case 0xAA => 1
+    case 0xAB => 1
+    case 0xAC => 1
+    case 0xAD => 1
+    case 0xAE => 2
+    case 0xEE => 2
+
+    case 0xBF => 1
+    case 0xB8 => 1
+    case 0xB9 => 1
+    case 0xBA => 1
+    case 0xBB => 1
+    case 0xBC => 1
+    case 0xBD => 1
+    case 0xBE => 2
+    case 0xFE => 2
+
+    case 0x3C => 1
+    case 0x04 => 1
+    case 0x0C => 1
+    case 0x14 => 1
+    case 0x1C => 1
+    case 0x24 => 1
+    case 0x2C => 1
+    case 0x34 => 3
+
+    case 0x3D => 1
+    case 0x05 => 1
+    case 0x0D => 1
+    case 0x15 => 1
+    case 0x1D => 1
+    case 0x25 => 1
+    case 0x2D => 1
+    case 0x35 => 3
+
+    case 0x09 => 2
+    case 0x19 => 2
+    case 0x29 => 2
+    case 0x39 => 2
+
+    case 0xE8 => 4
+
+    case 0x03 => 2
+    case 0x13 => 2
+    case 0x23 => 2
+    case 0x33 => 2
+
+    case 0x0B => 2
+    case 0x1B => 2
+    case 0x2B => 2
+    case 0x3B => 2
+
+    case 0x27 => 1
+    case 0x2F => 1
+
+    case 0x3F => 1
+    case 0x37 => 1
+    case 0x00 => 1
+
+    case 0xF3 => 1
+    case 0xFB => 1
+
+    case 0x07 => 1
+    case 0x17 => 1
+    case 0x0F => 1
+    case 0x1F => 1
+
+    case 0xC3 => 3
+
+    case 0xC2 => 3
+    case 0xCA => 3
+    case 0xD2 => 3
+    case 0xDA => 3
+
+    case 0xE9 => 1
+    case 0x18 => 2
+
+    case 0x20 => 2
+    case 0x28 => 2
+    case 0x30 => 2
+    case 0x38 => 2
+
+    case 0xCD => 3
+    case 0xC4 => 3
+    case 0xCC => 3
+    case 0xD4 => 3
+    case 0xDC => 3
+
+    case 0xC7 => 8
+    case 0xCF => 8
+    case 0xD7 => 8
+    case 0xDF => 8
+    case 0xE7 => 8
+    case 0xEF => 8
+    case 0xF7 => 8
+    case 0xFF => 8
+    case 0xC9 => 2
+
+    case 0xC0 => 2
+    case 0xC8 => 2
+    case 0xD0 => 2
+    case 0xD8 => 2
   }
-  
+
 }
